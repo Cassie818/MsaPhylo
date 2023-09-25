@@ -28,7 +28,8 @@ class ChangeAA:
             for j, record in enumerate(records):
                 if j >= len(shuffled_records):
                     shuffled_records.append(record)
-                shuffled_records[j].seq = shuffled_records[j].seq[:i] + shuffled_column[j] + shuffled_records[j].seq[i+1:]
+                shuffled_records[j].seq = shuffled_records[j].seq[:i] + shuffled_column[j] + shuffled_records[j].seq[
+                                                                                             i + 1:]
 
         SeqIO.write(shuffled_records, output_file, "fasta")
         print('Generated Mix columns data!')
@@ -113,5 +114,3 @@ if __name__ == '__main__':
         "sa": "_shuffle_all.fasta",
         "mc": "_mix_column.fasta"
     }
-
-

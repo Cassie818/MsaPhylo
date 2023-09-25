@@ -1,12 +1,19 @@
 import torch
 import numpy as np
+import pandas as pd
 import os
+from ete3 import Tree
+from scipy import stats
+from Bio import SeqIO
+import csv
+import extracting
 
 LAYER = 12
 HEAD = 12
 
 
 class EvDist:
+
     """Class for evolutionary distance processing"""
 
     def __init__(self, protein_family, msa_type):
@@ -60,7 +67,7 @@ class EvDist:
         """
         Calculate the correlation between evolutionary distances from the trees and pairwise Euclidean distances of embeddings
         """
-        output_file = os.path.join('./Results', f"{self.protein_family}_ev_and_euclidean_analysis.csv")
+        output_file = os.path.join('./Results', f"{self.protein_family}_ev_and_euclidean_analysis_emb.csv")
 
         # Load embeddings
         embeddings = torch.load(self.emb)
@@ -70,13 +77,13 @@ class EvDist:
         sequence_list = [seq.split(' ')[0] for seq in sequences]
 
         # Compute evolutionary distances
-        ev_distances = self.evolutionary_distance(Tree(self.tree), sequence_list)
+        ev_dist = self.evolutionary_distance(Tree(self.tree), sequence_list)
         correlations = []
 
         # Compute Euclidean distances and their correlation with evolutionary distances
         for layer in range(LAYER):
-            euc_distances = self.pairwise_euclidean_distance(embeddings[layer].mean(1))
-            spear_corr = stats.spearmanr(ev_distances.flatten(), euc_distances.flatten())
+            euc_distances = self.pairwise_euclidean_distance(embeddings[layer])
+            spear_corr = stats.spearmanr(ev_dist.flatten(), euc_distances.flatten())
             correlations.append([self.protein_family, layer, spear_corr.correlation, spear_corr.pvalue])
 
         # Save to CSV file
@@ -89,34 +96,27 @@ class EvDist:
         """
         Calculate the correlation between evolutionary distances from the trees and column attention
         """
-        output_file = os.path.join('./Results', f"{self.protein_family}_ev_and_euclidean_analysis.csv")
+        output_file = os.path.join('./Results', f"{self.protein_family}_ev_and_euclidean_analysis_col_attention.csv")
         spear_ev_dist_corr = []
 
         # Load sequence names and extract shorter names
         sequences = [record.id for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
         sequence_list = [seq.split(' ')[0] for seq in sequences]
+
         # Compute evolutionary distances
-        ev_distances = self.evolutionary_distance(Tree(self.tree), sequence_list)
+        ev_dist = self.evolutionary_distance(Tree(self.tree), sequence_list)
 
         # Load column attention
-        attn = torch.load(self.attn)
+        col_attn = torch.load(self.attn)
         # Remove start token
-        attn_mean_on_cols_symm = attn["col_attentions"].cpu().numpy()[0, :, :, 1:, :, :].mean(axis=2)
+        attn_mean_on_cols_symm = col_attn["col_attentions"].cpu().numpy()[0, :, :, 1:, :, :].mean(axis=2)
         attn_mean_on_cols_symm += attn_mean_on_cols_symm.transpose(0, 1, 3, 2)
-        # Generate the row and column indices of the upper triangular part of the attention matrix
-        tri_indices = np.triu_indices(attn_mean_on_cols_symm.shape[-1])
-        # Select the upper triangle of attention and distance matrix
-        attn = attn_mean_on_cols_symm[..., tri_indices[0], tri_indices[1]]  # (12,12, M * (M+1) / 2)
-        ev = ev_distances[tri_indices]
-        # Reshape the attention matrix
-        attn = attn.transpose(2, 0, 1).reshape(-1, 12 * 12)
-        df_attn = pd.DataFrame(attn, columns=[f"lyr{i}_hd{j}" for i in range(12) for j in range(12)])
 
         for layer in range(LAYER):
             for head in range(HEAD):
-                attns = df_attn[f"lyr{layer}_hd{head}"].values
-                sp_corr = stats.spearmanr(ev, attns)
-                spear_ev_dist_corr.append([self.pfam, layer, head, sp_corr.correlation, sp_corr.pvalue])
+                attn = attn_mean_on_cols_symm[layer, head, :, :]
+                sp_corr = stats.spearmanr(ev_dist.flatten(), attn.flatten())
+                spear_ev_dist_corr.append([self.protein_family, layer, head, sp_corr.correlation, sp_corr.pvalue])
         # field names
         fields = ['Protein family', 'Layer', 'Head', 'Correlation', 'P-value']
         # save csv file
@@ -125,3 +125,13 @@ class EvDist:
             write = csv.writer(f)
             write.writerow(fields)
             write.writerows(spear_ev_dist_corr)
+
+
+if __name__ == '__main__':
+    protein_family_list = ['PF00004']
+    msa_type_list = ['no']
+    for protein_family in protein_family_list:
+        for msa_type in msa_type_list:
+            evd = EvDist(protein_family, msa_type)
+            evd.compute_embedding_correlation()
+            evd.compute_attention_correlation()
