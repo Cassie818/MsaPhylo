@@ -3,13 +3,39 @@ import string
 from esm import Alphabet, MSATransformer, pretrained
 from Bio import SeqIO
 
+EMB_PATH = './Embeddings/'
+ATTN_PATH = './Attentions/'
+MSA_PATH = './Msa/'
+TREE_PATH = './Trees/'
+
+MSA_TYPE_MAP = {
+    "default": "_seed_hmmalign_no_inserts.fasta",
+    "sc": "_shuffle_column.fasta",
+    "sa": "_shuffle_all.fasta",
+    "mc": "_mix_column.fasta"
+}
+
+EMB_TYPE_MAP = {
+    "default": "_emb_no_shuffle_",
+    "sc": "_emb_shuffle_column_",
+    "sa": "_emb_shuffle_all_",
+    "mc": "_emb_mix_column_"
+}
+
+ATTN_TYPE_MAP = {
+    "default": "_attn_no_shuffle_",
+    "sc": "_attn_shuffle_column_",
+    "sa": "_attn_shuffle_all_",
+    "mc": "_attn_mix_column_"
+}
+
 
 def remove_insertions(sequence):
+    """ Removes any insertions into the sequence. Needed to load aligned sequences in an MSA. """
     deletekeys = dict.fromkeys(string.ascii_lowercase)
     deletekeys["."] = None
     deletekeys["*"] = None
     translation = str.maketrans(deletekeys)
-    """ Removes any insertions into the sequence. Needed to load aligned sequences in an MSA. """
     return sequence.translate(translation)
 
 
@@ -66,3 +92,13 @@ class Extractor:
 
         torch.save(results, attn)
         print("Column attention saved in output file:", attn)
+
+
+if __name__ == '__main__':
+    protein_family_list = ['PF00004']
+    msa_type_list = ['no']
+    for protein_family in protein_family_list:
+        for msa_type in msa_type_list:
+            ext = Extractor(protein_family, msa_type)
+            ext.get_embedding()
+            ext.get_col_attention()
