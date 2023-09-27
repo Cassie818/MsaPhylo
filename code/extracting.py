@@ -63,12 +63,12 @@ class Extractor:
         model.eval()
         msa_data = [self.read_msa()]
         msa_labels, msa_strs, msa_tokens = batch_converter(msa_data)
+        seq_num = len(msa_labels)
 
         with torch.no_grad():
             for layer in range(self.encoding_layer):
                 out = model(msa_tokens, repr_layers=[layer], return_contacts=False)
-                token_representations = out["representations"][layer].view(-1, self.sequence_length + 1,
-                                                                           self.encoding_dim)
+                token_representations = out["representations"][layer].view(seq_num, -1, self.encoding_dim)
                 # remove the start token
                 token_representations = token_representations[:, 1:, :]
                 print(f"Finish extracting embeddings from layer {layer}.")
