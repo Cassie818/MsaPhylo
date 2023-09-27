@@ -86,35 +86,37 @@ class NJtree:
             Phylo.write(tree, phylo_path, "newick")
 
     def build_attention_tree1(self):
-        # load the sequence names
+
+        # Load the sequence names
         prot_sequences = [record.id for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
-        # load attention
+        # Load attention
         attention = torch.load(self.col_attn)
         # remove start token
-        attns_mean_on_cols_symm = attention["col_attentions"].cpu().numpy()[0, :, :, 1:, :, :].mean(axis=2)
-        attns_mean_on_cols_symm += attns_mean_on_cols_symm.transpose(0, 1, 3, 2)
-        phylo_path = '/content/drive/MyDrive/Plmphylo/emb/tree/' + f"{self.pfam}_0_4.nwk"
-        attns = attns_mean_on_cols_symm[0, 4, :, :]
-        dist = [di[:idx + 1] for idx, di in enumerate(attns.tolist())]
+        attn_mean_on_cols_symm = attention["col_attentions"].cpu().numpy()[0, :, :, 1:, :, :].mean(axis=2)
+        attn_mean_on_cols_symm += attn_mean_on_cols_symm.transpose(0, 1, 3, 2)
+        attn = attn_mean_on_cols_symm[0, 4, :, :]
+        phylo_path = f"{TREE_PATH}{self.protein_family}_0_4.nwk"
+        dist = [di[:idx + 1] for idx, di in enumerate(attn.tolist())]
         dm = DistanceMatrix(prot_sequences, dist)
         constructor = DistanceTreeConstructor()
-        tree = constructor.nj(dm)  # build the tree
+        tree = constructor.nj(dm)
         # save the tree
         Phylo.write(tree, phylo_path, "newick")
 
     def build_attention_tree2(self):
-        # load the sequence names
+
+        # Load the sequence names
         prot_sequences = [record.id for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
-        # load attention
+        # Load attention
         attention = torch.load(self.col_attn)
         # remove start token
-        attns_mean_on_cols_symm = attention["col_attentions"].cpu().numpy()[0, :, :, 1:, :, :].mean(axis=2)
-        attns_mean_on_cols_symm += attns_mean_on_cols_symm.transpose(0, 1, 3, 2)
-        phylo_path = '/content/drive/MyDrive/Plmphylo/emb/tree/' + f"{self.pfam}_11_9.nwk"
-        attns = attns_mean_on_cols_symm[11, 9, :, :]
-        dist = [di[:idx + 1] for idx, di in enumerate(attns.tolist())]
+        attn_mean_on_cols_symm = attention["col_attentions"].cpu().numpy()[0, :, :, 1:, :, :].mean(axis=2)
+        attn_mean_on_cols_symm += attn_mean_on_cols_symm.transpose(0, 1, 3, 2)
+        attn = attn_mean_on_cols_symm[11, 9, :, :]
+        phylo_path = f"{TREE_PATH}{self.protein_family}_0_4.nwk"
+        dist = [di[:idx + 1] for idx, di in enumerate(attn.tolist())]
         dm = DistanceMatrix(prot_sequences, dist)
         constructor = DistanceTreeConstructor()
-        tree = constructor.nj(dm)  # build the tree
+        tree = constructor.nj(dm)
         # save the tree
         Phylo.write(tree, phylo_path, "newick")
