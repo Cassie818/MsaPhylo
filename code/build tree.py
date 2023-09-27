@@ -4,7 +4,6 @@ from Bio import Phylo
 from Bio.Phylo.TreeConstruction import DistanceMatrix
 from Bio.Phylo.TreeConstruction import DistanceTreeConstructor
 from Bio import SeqIO
-from scipy.spatial.distance import pdist, squareform
 
 EMB_PATH = './Embeddings/Case/'
 ATTN_PATH = './Attentions/Case/'

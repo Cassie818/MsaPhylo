@@ -1,6 +1,6 @@
 import torch
 import string
-from esm import Alphabet, MSATransformer, pretrained
+from esm import pretrained
 from Bio import SeqIO
 
 EMB_PATH = './Embeddings/'

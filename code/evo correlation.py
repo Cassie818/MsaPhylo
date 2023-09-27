@@ -1,12 +1,10 @@
 import torch
 import numpy as np
-import pandas as pd
 import os
 from ete3 import Tree
 from scipy import stats
 from Bio import SeqIO
 import csv
-import extracting
 
 LAYER = 12
 HEAD = 12
