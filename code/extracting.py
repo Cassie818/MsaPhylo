@@ -69,7 +69,7 @@ class Extractor:
             for layer in range(self.encoding_layer):
                 out = model(msa_tokens, repr_layers=[layer], return_contacts=False)
                 token_representations = out["representations"][layer].view(seq_num, -1, self.encoding_dim)
-                # remove the start token
+                # Remove the start token
                 token_representations = token_representations[:, 1:, :]
                 print(f"Finish extracting embeddings from layer {layer}.")
                 plm_embedding[layer] = token_representations

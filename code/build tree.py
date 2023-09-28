@@ -41,14 +41,16 @@ class NJtree:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = "esm_msa1b_t12_100M_UR50S"
         self.protein_family = protein_family
-        self.msa_type = msa_type if msa_type in MSA_TYPE_MAP else "default"
+        self.msa_type = msa_type
         self.msa_fasta_file = f'{MSA_PATH}{protein_family}{MSA_TYPE_MAP[self.msa_type]}'
         self.emb = f'{EMB_PATH}{self.protein_family}{EMB_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
         self.col_attn = f'{ATTN_PATH}{self.protein_family}{ATTN_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
 
     @staticmethod
     def euc_distance(a, b):
-        """Calculate Euclidean distance between two points."""
+        """
+        Calculate Euclidean distance between two points.
+        """
         return np.sqrt(np.sum((a - b) ** 2))
 
     def pairwise_euclidean_distance(self, emb):
@@ -67,9 +69,9 @@ class NJtree:
 
     def build_embedding_tree(self):
 
-        # load embeddings
+        # Load embeddings
         embeddings = torch.load(self.emb)
-        # load the sequence names
+        # Load the sequence names
         sequences = [record.id for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
 
         for layer in range(LAYER):
@@ -90,7 +92,7 @@ class NJtree:
         prot_sequences = [record.id for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
         # Load attention
         attention = torch.load(self.col_attn)
-        # remove start token
+        # Remove start token
         attn_mean_on_cols_symm = attention["col_attentions"].cpu().numpy()[0, :, :, 1:, :, :].mean(axis=2)
         attn_mean_on_cols_symm += attn_mean_on_cols_symm.transpose(0, 1, 3, 2)
         attn = attn_mean_on_cols_symm[0, 4, :, :]
@@ -108,7 +110,7 @@ class NJtree:
         prot_sequences = [record.id for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
         # Load attention
         attention = torch.load(self.col_attn)
-        # remove start token
+        # Remove start token
         attn_mean_on_cols_symm = attention["col_attentions"].cpu().numpy()[0, :, :, 1:, :, :].mean(axis=2)
         attn_mean_on_cols_symm += attn_mean_on_cols_symm.transpose(0, 1, 3, 2)
         attn = attn_mean_on_cols_symm[11, 9, :, :]
@@ -117,5 +119,5 @@ class NJtree:
         dm = DistanceMatrix(prot_sequences, dist)
         constructor = DistanceTreeConstructor()
         tree = constructor.nj(dm)
-        # save the tree
+        # Save the tree
         Phylo.write(tree, phylo_path, "newick")
