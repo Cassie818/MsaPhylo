@@ -42,7 +42,7 @@ class NJtree:
         self.model_name = "esm_msa1b_t12_100M_UR50S"
         self.protein_family = protein_family
         self.msa_type = msa_type if msa_type in MSA_TYPE_MAP else "default"
-        self.msa_fasta_file = msa_type if msa_type in MSA_TYPE_MAP else "default"
+        self.msa_fasta_file = f'{MSA_PATH}{protein_family}{MSA_TYPE_MAP[self.msa_type]}'
         self.emb = f'{EMB_PATH}{self.protein_family}{EMB_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
         self.col_attn = f'{ATTN_PATH}{self.protein_family}{ATTN_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
 
@@ -112,7 +112,7 @@ class NJtree:
         attn_mean_on_cols_symm = attention["col_attentions"].cpu().numpy()[0, :, :, 1:, :, :].mean(axis=2)
         attn_mean_on_cols_symm += attn_mean_on_cols_symm.transpose(0, 1, 3, 2)
         attn = attn_mean_on_cols_symm[11, 9, :, :]
-        phylo_path = f"{TREE_PATH}{self.protein_family}_0_4.nwk"
+        phylo_path = f"{TREE_PATH}{self.protein_family}_11_9.nwk"
         dist = [di[:idx + 1] for idx, di in enumerate(attn.tolist())]
         dm = DistanceMatrix(prot_sequences, dist)
         constructor = DistanceTreeConstructor()

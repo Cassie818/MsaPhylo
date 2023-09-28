@@ -63,7 +63,7 @@ class Extractor:
         model.eval()
         msa_data = [self.read_msa()]
         msa_labels, msa_strs, msa_tokens = batch_converter(msa_data)
-        seq_num = len(msa_labels)
+        seq_num = len(msa_labels[0])
 
         with torch.no_grad():
             for layer in range(self.encoding_layer):
