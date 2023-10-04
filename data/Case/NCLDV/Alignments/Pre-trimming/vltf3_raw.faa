@@ -1,4 +1,4 @@
->N_asco_dipuas
+>Diadromus_pulchellus_ascovirus_4a
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -16,7 +16,7 @@ VYTCLENAIQ-NAGLAV---------PGVEDRRQKYALLT----KHQLLYFMKGLGL---
 -----CVDTDRKNFINIQYILLLLLKRN-----GEKVDENDFVSVKNVDKKQARDIMCRK
 IF----SSLGWK-YVK--------------------------------------------
 ----------------------------------
->N_asco_hevias
+>Heliothis_virescens_ascovirus_3e
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -34,7 +34,7 @@ VFESLTKAMR-ECNVMG---------DTGD-LQRDGASVT----KGDVLYYLKQLNY---
 -----AGKRERRSFINMQIVLYQLLRRY-----GHKCKLEDFASIKSLEQRARRDELYKE
 LF----MSLGWK-YEDI-------------------------------------------
 ----------------------------------
->N_asco_spofru
+>Spodoptera_frugiperda_ascovirus_1a
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -52,7 +52,7 @@ VFESLIKAMR-ECNIMG---------NTGD-RERDAANVT----KGDVLYYLKQLNY---
 -----AGKRERRSFINMQIVLYQLLRRY-----GHDCKLEDFASIKSLEQRARRDELYKE
 LF----TSLGWK-YEEI-------------------------------------------
 ----------------------------------
->N_asco_tricni
+>Trichoplusia_ni_ascovirus_2c
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -70,7 +70,7 @@ VYVSLVKAMR-ECNVMG---------NTGV-KEVDGANVT----KGVVLYFLKQLNF---
 -----AGKKERRSFINMQIVLYQLLKRY-----NHPCKLDDFASIKSLEQRARRDELYKD
 LF----NALGWK-YEDI-------------------------------------------
 ----------------------------------
->N_asfa_afswfe
+>African_swine_fever_virus
 -----MD-----------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -88,7 +88,7 @@ VLQQLKKIIK-RDNKCI-------------------ALLT----VENIRKMLKEINR---
 ------CKKGRINRNYYPYYIYKIFDAILPPNDTTNRRILQYIHLQGNDTLANNDSEWES
 ICM-ELPEIKWK---PTDRTHCV-----HFF-----------------------------
 ----------------------------------
->N_asfa_faustv
+>Faustovirus
 -----MLKLI--------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -106,7 +106,7 @@ ELNRIRDCCR-RDDISD-------------------EELD----CETIREYLVECDM---
 -----KIPGEDLNRSYYPYFIYKIFEDYFKDN-NQKLKLLDCIHLQSRETVIKNDNKYRE
 ICDISLPEDNLV-YKCTDYSKRLLKLVR--------------------------------
 ----------------------------------
->N_irid_amtivi
+>Ambystoma_tigrinum_virus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -124,7 +124,7 @@ VLSDLDAKIK-AYNLTV---------EGVE-GFVRYSRVT----KQHVAAFLKELKH---
 ---------RQDHMINVKYILYQLLKKH-----GHGPDGPDILTVKTGSKEVLYDDSFRK
 IY----TDLGWK-FTPL-------------------------------------------
 ----------------------------------
->N_irid_anmiir
+>Anopheles_minimus_irodovirus
 MDIINMDKKR--------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -142,7 +142,7 @@ IYTLLETKLV-ERKLVV-----LDPKSRTD-KLKKYEKVT----RALVLEILKELEL---
 -----GKPAKRKNFINAQFVLYQLLRKH-----GHPCNEMDFLTLKTSERKRFHHTICKE
 LF----NILGWK-YSYSI------------------------------------------
 ----------------------------------
->N_irid_arvuir
+>Armadillidium_vulgare_iridescent_virus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -160,7 +160,7 @@ IYDELEEQLV-NNRIIPPRSKTDSSGNPLS-QIKRYKKVT----RAHVQLFLKALGY---
 -----FKDIERKNFINTQYVLFQLLQKH-----KYPCSKDDFAVLKTTERKACHDDICKT
 LF----DSLGWD-YRFVR------------------------------------------
 ----------------------------------
->N_irid_frogvi
+>Frog_virus_3
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -178,7 +178,7 @@ VLSDLDAKIK-AYNLTV---------EGVE-GFVRYSRVT----KQHVAAFLKELRH---
 ---------RQGHMINVKYILYQLLKKH-----GHGPDGPDILTVKTGSKGVLYDDSFRK
 IY----TDLGWK-FTPL-------------------------------------------
 ----------------------------------
->N_irid_grouir
+>Grouper_iridovirus
 -----MYD----------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -196,7 +196,7 @@ VLDDLDRKLA-AYNLLV---------EGVE-GFVRYAKVT----KHHVAIFLKELKH---
 ---------KLEHLINVKYSLYQLLKKH-----GHSPDRPDVLTVKASSKGNLYDDVYRK
 LY----DHLGWE-FTAL-------------------------------------------
 ----------------------------------
->N_irid_inir22
+>Invertebrate_iridovirus_22
 -----MSPSR--------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -214,7 +214,7 @@ IYTILEVKLM-EKKIIN--------NEYND-RLKRFEKVT----RIMVLDILKELESK--
 EG-SKNKISKRKNFINAQFVLYQLLRKH-----GHPCNEMDFLTLKTSERKRFHHTICKE
 LF----KILGWK-YSFSI------------------------------------------
 ----------------------------------
->N_irid_inir25
+>Invertebrate_iridovirus_25
 -----MSKPR--------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -232,7 +232,7 @@ IYTILEVKLV-EKKLIN--------DTTRD-RFKRFEKVT----RVMVLNILKELESK--
 NGDGKAKNLKRKNFINAQFVLYQLLRKH-----GHPCNEMDFLTLKTSERKRFHHTICKE
 LF----SILGWK-YSYSI------------------------------------------
 ----------------------------------
->N_irid_inspki
+>Infectious_spleen_and_kidney_necrosis_virus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -250,7 +250,7 @@ VLVNIRDHLQ-KYRIKE-------------------ADVT----LQQVLSILKVNKH---
 ---------TLCTQAGATYVFFQLLRHN-----GYEYNCHTFMQAKTLSKKQSQDVACNA
 LC----DRMSWT-FWPL-------------------------------------------
 ----------------------------------
->N_irid_irvi03
+>Invertebrate_iridescent_virus_3
 -----MSKKQ--------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -268,7 +268,7 @@ IYTILETKLL-EKNLLN-------TEPGLT-VEKRYEKVT----RAMVLDILKELGSK--
 DE---RGGTKRKNFINAQFVLYQLLRKH-----NHPCNSMDFLTLKKSERKRFHHTICKK
 LF----SILEWK-YSYSI----------------C-------------------------
 ----------------------------------
->N_irid_irvi06
+>Invertebrate_iridescent_virus_6
 -----M------------------------------------------------------
 ------------------------------------------------------------
 --------I---------------------------------------------------
@@ -286,7 +286,7 @@ IYDELEEQLV-NHQIIEPANKKDKFGNPIS-QSKRFKIVT----RAHILFFLKELGY---
 -----FKDIERKNFINTQYVLFQLLRKH-----GYNCNKDDFAVLKTTERKACHDDICKT
 LF----DALGWK-YMFVM------------------------------------------
 ----------------------------------
->N_irid_irvi30
+>Invertebrate_iridescent_virus_30
 -----MSPSR--------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -304,7 +304,7 @@ IYTILEVKLM-EKKIIN--------NEYND-RFKRFEKVT----RIMVLDILKELESK--
 EG-SKNKISKRKNFINAQFVLYQLLRKH-----GHPCNEMDFLTLKTSERKRFHHTICKE
 LF----NILGWK-YSFSI------------------------------------------
 ----------------------------------
->N_irid_lydich
+>Lymphocystis_disease_virus_isolate_China
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -322,7 +322,7 @@ IYHELEKKFK-SYKLLI---------PDVE-SFVKYSKIT----KNHVLIFLKELKY---
 ---------DEKENLDVNYVLVHLLIRR-----FYRFEKDSFHLNKSGYKLKSHNSLCSK
 LF----KVLNWD-FTPL-------------------------------------------
 ----------------------------------
->N_irid_redsea
+>Red_seabream_iridovirus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -340,7 +340,7 @@ VLVNIRDHLH-KYRIKE-------------------GDVT----LQQVLSILKVNKH---
 ---------ALCTQAGATYVFFQLLRHN-----GYEYNCHTFMQAKTLSKKQSQDAACNA
 LC----DRMSWT-FWPL-------------------------------------------
 ----------------------------------
->N_irid_singro
+>Singapore_grouper_iridovirus
 -----MYD----------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -358,7 +358,7 @@ VLDDLDRKLA-AYNLLV---------EGVE-GFVRYAKVT----KHHVAIFLKELKH---
 ---------KLEHLINVKYSLYQLLKKH-----GHSPDRPDVLTVKASSKGNLYDDVYRK
 LY----DHLGWE-FTAL-------------------------------------------
 ----------------------------------
->N_irid_wisiri
+>Wiseana_iridescent_virus
 -----MSKIR--------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -376,7 +376,7 @@ IYTILEVKLV-EKKLIN--------DSTRD-RFKRFEKIT----RVMVLNILKELESK--
 SGDGKAKNLKRKNFINAQFVLYQLLRKH-----GHPCNEMDFLTLKTSERKRFHHTICKE
 LF----SILGWK-YSYSI------------------------------------------
 ----------------------------------
->N_mars_cannvi
+>Cannes_8_virus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -394,7 +394,7 @@ VKEKIVSELK-KYGIPL-------------------ESVT----KKHIYMVLVDNNL---
 ------KEKERRKSLNAWYVLYKLLQHL-----KYTPNPDDFCFLKNTMKTRDCDEKFLE
 VC----KRLGWNDFRYTL------------------------------------------
 ----------------------------------
->N_mars_lausan
+>Lausannevirus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -412,7 +412,7 @@ VKELIKTELS-KYGIDI-------------------KDAK----KKHVYMVLVDNNM---
 -----IKEKERRKSLNAWYVLFKLLQHL-----RYVPNPDDFCFLKNTTKTKDCDEKFGK
 VC----EILGWN-FQYTI------------------------------------------
 ----------------------------------
->N_mars_marsei
+>Marseillevirus_marseillevirus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -430,7 +430,7 @@ VKEKIVSELK-KYGIPL-------------------ESVT----KKHIYMVLVDNNL---
 ------KEKERRKSLNAWYVLYKLLQHL-----KYTPNPDDFCFLKNTMKTRDCDEKFLE
 VC----KRLGWNDFRYTL------------------------------------------
 ----------------------------------
->N_mars_melbou
+>Melbournevirus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -448,7 +448,7 @@ VKEKIVSELK-KYGIPL-------------------ESVT----KKHIYMVLVDNNL---
 ------KEKERRKSLNAWYVLYKLLQHL-----KYTPNPDDFCFLKNTMKTRDCDEKFLE
 VC----KRLGWNDFRYTL------------------------------------------
 ----------------------------------
->N_mars_pormio
+>Port-miou_virus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -466,7 +466,7 @@ VKELIKTELS-KYGIDI-------------------KDAK----KKHVYMVLVDNNM---
 -----IKEKERRKSLNAWYVLFKLLQHL-----RYVPNPDDFCFLKNTTKTKDCDEKFGK
 VC----EILGWN-FQYTI------------------------------------------
 ----------------------------------
->N_mars_tunifo
+>Tunisvirus_fontaine2
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -484,7 +484,7 @@ VLTLVKTELS-KYGIPI-------------------EQAK----KKHVYMVLVDNNM---
 -----IKEKERRKSLNAWYVLFKLLQHL-----GYTPNPDDFCFLKNTTKTKDCDEKFGR
 VS----EILGWK-FQYTI------------------------------------------
 ----------------------------------
->N_mimi_accama
+>Acanthamoeba_castellanii_mamavirus
 ------------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -502,7 +502,7 @@ VYEAIKRELK-KRKIDK-------------------NDLD----IFRLRRILKKLNY---
 ------CPKNRKNFLNYSYVLHKFCELL-----ELDEYTNYFPLLKNNAKLLQHDKIWKN
 IC----DYQGWY-FYKSL------------------------------------------
 ----------------------------------
->N_mimi_acpole
+>Acanthamoeba_polyphaga_lentillevirus
 ------------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -520,7 +520,7 @@ VYEAIKRELK-KRKIDK-------------------NDLD----IFRLRRILKKLNY---
 ------CPKNRKNFLNYSYVLHKFCELL-----ELDEYTNYFPLLKNNAKLLQHDKIWKN
 IC----DYQGWY-FYKSL------------------------------------------
 ----------------------------------
->N_mimi_acpomi
+>Acanthamoeba_polyphaga_mimivirus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -538,7 +538,7 @@ VYEAIKRELK-KRKIDK-------------------NDLD----IFRLRRILKKLNY---
 ------CPKNRKNFLNYSYVLHKFCELL-----ELDEYTNYFPLLKNNAKLLQHDKIWKN
 IC----DYQGWY-FYKSL------------------------------------------
 ----------------------------------
->N_mimi_acpomo
+>Acanthamoeba_polyphaga_moumouvirus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -556,7 +556,7 @@ VFESIKRELK-KRKINK-------------------NDLD----IFRLRRILKKLNY---
 ------CPKDRKNFLNYSYVLHKFCELL-----DLDEYINYFPLLKNNAKLLQHDKIWKN
 IC----EYMRWE-FIKSI------------------------------------------
 ----------------------------------
->N_mimi_carovi
+>Cafeteria_roenbergensis_virus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -574,7 +574,7 @@ VYLEIIKELN-KKRITE------------------YSALN----RTIIREILRKLKL---
 ------KPKNRKNMLSYPYILHKLCELL-----EEDKLLSSFPLLKSQDVLREQDIIWKR
 IC----NKLNWE-FYSSFK-----------------------------------------
 ----------------------------------
->N_mimi_megchi
+>Megavirus_chiliensis
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -592,7 +592,7 @@ VFESIKRELK-KRKINK-------------------NDLD----IFRLRRILKKLNY---
 ------CPKNRKNFLNYSYVLHKFCELL-----DLDEYISYFPLLKNNAKLLQHDKIWKN
 IC----EYMRWE-FYKSI------------------------------------------
 ----------------------------------
->N_mimi_megcou
+>Megavirus_courdo7
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -610,7 +610,7 @@ LM----AELEELKS-MNPNKYSHEDIRRK-----AHLMDTIEKLRNDIYSIENCTESL--
 ------CPKNRKNFLNYSYVLHKFCELL-----DLDEYISYFPLLKNNAKLLQHDKIWKN
 IC----EYMRWE-FYKSI------------------------------------------
 ----------------------------------
->N_mimi_moumon
+>Moumouvirus_Monve
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -628,7 +628,7 @@ VFESIKRELK-KRKINK-------------------NDLD----IFRLRRILKKLNY---
 ------CPKDRKNFLNYSYVLHKFCELL-----DLDEYINYFPLLKNNAKLLQHDKIWKN
 IC----EYMRWE-FIKSI------------------------------------------
 ----------------------------------
->N_pand_pandul
+>Pandoravirus_dulcis
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -646,7 +646,7 @@ VLDSVMEWHA-AQGITS------------------IDDIT----TLTVRQALKAKAF---
 -----RIDPTRINFLSYGYVLYKFFQLL-----EWTEYLPYFSLLKGRDKLEKQEAIWKG
 IC----KDVKWP-FIPAPAGPPPPPRASSSRTSLSSSSSSPSSPSSPSSSASKPSTKTAV
 AAVATLPEPRHVRAPSALVKAMAAARASRSVAVP
->N_pand_pansal
+>Pandoravirus_salinus
 -----MCAKKKRSG--------SAACAQRGSGAPFLGAASKRDRTPRAPSKRRAASQRPM
 RGGARTRGRNGQSREGAEAEPPARRSGDLRPRDNHTEQTAAISDRPDSSLLGTHARSYFY
 PRTLLGPPIGAALVRSAPQCARTHAHTQKERKKKEEETTRRSPSAPKAAEKKSGVRRYQR
@@ -664,7 +664,7 @@ VLDSVMEWHA-AQGITS------------------IDDIT----TLTVRQALKANAF---
 -----RIDPTRINFLSYGYVLYKFFQLL-----DWTEYLPYFSLLKGRDKLEKQEAIWKG
 IC----KDVEWP-FIPAPAGPPPAPRASTSR-----SVASPATKASSSSSVGGAATVPMP
 TAAATLPVPRHVRAPSILAKAVAAARASRSVPAP
->N_phyc_actuch
+>Acanthocystis_turfacea_Chlorella_virus_1
 -----MRLCR--------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -682,7 +682,7 @@ VVEAVRAEFK-KNRIST------------------SSEIK----PSKVKQFLKKLGY---
 ------KPPERKNFLSYTYVVYKFSELL-----GEDELLPYLPLLKCRQNLHVQDKIWKG
 IC----QDLQWE-YIATV------------------------------------------
 ----------------------------------
->N_phyc_chervi
+>Chrysochromulina_ericina_virus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -700,7 +700,7 @@ IIENIRQQIK-KERLDI-------------------KIMS----NKRTKEILKKLKY---
 ------CPEDRVNFLNYYYTIYKLCELL-----NQREFLPYFPMLKDREKRIEQDEIWKK
 IC----KELNWK-FIPTI------------------------------------------
 ----------------------------------
->N_phyc_ecsivi
+>Ectocarpus_siliculosus_virus
 -----MDRCD-----------------------------DER------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -718,7 +718,7 @@ VVDSVRLELK-KQRIDD------------------IKTIS----HTKVREILKKLRL---
 -----IQSEPRQNMLSYSFLIHKFLELM-----SWDEYLPYFPLLRSVDKIQYQDWIWRK
 LC----AEVGFE-YIRSTM-----------------------------------------
 ----------------------------------
->N_phyc_emhu20
+>Emiliania_huxleyi_virus_202
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -736,7 +736,7 @@ IIKKVMEGLA-VRGVHP-------------------DDVD----QHVVLDVLKKNKMK--
 ------MPPDRKNFLSYGYCIYRIYQLM-----GADDLLPTLSLLSGNGKIPPQDAIMKN
 IY----KDMEWD-WPGDMPVKS--------------------------------------
 ----------------------------------
->N_phyc_emhu86
+>Emiliania_huxleyi_virus_86
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -754,7 +754,7 @@ VIKKVMEGLA-LRNVHP-------------------DEVD----QHIVLDILKKNKMK--
 ------MPADRKNFLSYSYCIYRIYELM-----GADDLLPTLSLLSGTGKIPPQDAVMKK
 IY----NEMEWD-WPGDMPEKMTMPKSTAE------------------------------
 ----------------------------------
->N_phyc_feldvi
+>Feldmannia_species_virus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -772,7 +772,7 @@ ITELVKKELR-KERITD------------------MSKVD----HIKIKAILKKLRK---
 -----IKGKKRQNMLSYSFLIHKFLQIM-----SLDEYLPYFPLLVSADKIQVQDSIWQE
 LC----KEVNFE-FIKSTM-----------------------------------------
 ----------------------------------
->N_phyc_orgla1
+>Organic_lake_phycodnavirus_1
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -790,7 +790,7 @@ IISQIENQVK-KERIEL-------------------SELT----NKKTKEILKKLGY---
 ------CPNDRVNFLNYYYTLYKLCELL-----GETSYLKHFPMLKEQKK-VEQDEIWKN
 IC----RELDWE-FISTL------------------------------------------
 ----------------------------------
->N_phyc_orgla2
+>Organic_lake_phycodnavirus_2
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -808,7 +808,7 @@ IIKQIESQVK-KERIEL-------------------YELT----NKKTKEILKKLGH---
 ------CPNDRVNFLNYYYTLYKLCELL-----GEMAYLPHFPMLKEQKK-VEQDEIWKN
 IC----IDLDWE-FIPTL------------------------------------------
 ----------------------------------
->N_phyc_osttau
+>Ostreococcus_tauri_virus_1
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -826,7 +826,7 @@ VMDQLRSELK-KMKIKN------------------LEEIT----HAKIRGLLKKLRL---
 ------CPSDRKNFLSYSYVLYKFCELL-----EEDEYLQYFPLLKSKSKLYAQDQIWKK
 IC----ADLQWE-FIPTI------------------------------------------
 ----------------------------------
->N_phyc_pabuch
+>Paramecium_bursaria_Chlorella_virus_1
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -844,7 +844,7 @@ VINAVKAEFK-KNRIST------------------TSEIK----PSKVKQFLKKLGY---
 ------KPPKRKNFLSYNYVLYKFSELL-----GEDDLLQYFPLLKCPKNLHNQDVIWKK
 IC----NDLQWE-FIATV------------------------------------------
 ----------------------------------
->N_phyc_phaglo
+>Phaeocystis_globosa_virus
 -----MNK----------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -862,7 +862,7 @@ VFENIKTQIK-KERLEI-------------------KDLT----NKKTKEILKNLGY---
 ------CPADRVNFLNYYYTLYKLCELL-----GETQFMGYFPMLKDRQKKIDQDAIWKL
 IC----GDLGWE-YIQTV------------------------------------------
 ----------------------------------
->N_uncl_molsib
+>Mollivirus_sibericum
 -----MSSKRKRTS-------------------P--------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -880,7 +880,7 @@ TKSSAAVRNAHDKAVLRQLRGED---PPDLTWEQKIIVRVMFRAIQAPYRKWME------
 -----VVDPERSQFIHYSLCLDMFFLLL-----GWTGYLPFYGAIRGYRELVIQLAIFKG
 IC----RELKWQ-FIVAPHLIVVENAASRKR-----KAAAQKRLEDKTSALASREAEEDG
 DGTSEDRVEDEQSQPLPQETGQATAKA-------
->N_uncl_pitsib
+>Pithovirus_sibericum
 -----M---------------------W-ENSLP--------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -898,7 +898,7 @@ LFNDLDEYFT-SYGMKTGEHIQ--RSIPLD-ERGRKRGTS----KDLMFKALSERGY---
 -------KIGRRSCLSTDYMLLILLIRK-----GYKCTSDDFKIVKTAEIFEEYEEIRNR
 VY----SELKWD-YHSLG------------------------------------------
 ----------------------------------
->N_irid_lydi01
+>Lymphocystis_disease_virus_1
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -916,7 +916,7 @@ IYSELDKKFN-SYKLLI---------PGIE-GFVKYSKIT----KNHVLIFLKELKY---
 ---------VELENLDVNYILIHLLKRH-----KYNFENDSFHLNKSNRKLRIHNNLCIR
 LF----KLLNWN-FNPL-------------------------------------------
 ----------------------------------
->N_uncl_cedvir
+>Cedratvirus_A11
 -----M---------------------WEEDNLP--------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -934,7 +934,7 @@ LFIDLDDFFT-SYGMKRGELV---RELPVN-DKGKKEGTS----KPLMFKALNEKGY---
 -------KTGRRSCLNTDYMLLILLLKQ-----GYKCSSEDFKIVRTDDIFDEYEDTRRK
 VY----DELGWK-PVSLA------------------------------------------
 ----------------------------------
->N_phyc_hetaka
+>Heterosigma_akashiwo_virus_01_isolate_HaV53
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -952,7 +952,7 @@ IIHKLLCEIK-KERITD------------------SKQIT----HERIKKYLKKIGY---
 ------CPPNRKNFLSYSYTLHKFSELL-----ERRDLLVLFQLLKSRDKLYQQDRIWKK
 IC----EDLEWE-FIPSL------------------------------------------
 ----------------------------------
->N_uncl_catovi
+>Catovirus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -970,7 +970,7 @@ VYNNILAEIK-RQRLDS-----------------KIKRLPYMKLRSIIKNILKKLRY---
 ------CPDNRINFLNYSYILNKMFRII-----KMDEYAQCFPLLKSREKLREQDILWKN
 IC----NYLDWE-FHPSI------------------------------------------
 ----------------------------------
->N_uncl_hokovi
+>Hokovirus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -988,7 +988,7 @@ MLDQIKLELK-KNREYD------------------LIKIK----PQRIVEILKKIGK---
 ------KTKGRINYSSYSFIIYKICELL-----GYTQITSILQLLKSPEKLRSLDITWKS
 IC----YDLGWK-YIPSHMTR---------------------------------------
 ----------------------------------
->N_uncl_indivi
+>Indivirus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -1006,7 +1006,7 @@ KAKL----MDQYMMLID------SDYLVGKN-----NMIL--------------------
 ----------------YVAIFSNCGKLL-----SGFKYHPFIVIFKGNPV-----NCW--
 --------LQW-------------------------------------------------
 ----------------------------------
->N_uncl_kaumoe
+>Kaumoebavirus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -1024,7 +1024,7 @@ VKDDVKSCIV-RDYTRQ-------LSDGRR-ILNGTKNIK----CWQYREYLKEKGH---
 -----ENDGVSGNNPYFPYTLYKIIYEKFLNR-PEKRAIIECIHLQSTDTLIKHDIDWKR
 VC----DKTGFN-YRASDRSHVM-------------------------------------
 ----------------------------------
->N_uncl_klosne
+>Klosneuvirus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -1042,7 +1042,7 @@ SIILL---------------------------------------VILMKKILKKLAL---
 ------CPRNRTNFLSYSYVLHKIFELL-----ELDDFIKYFPLLKSRDKLKQQDKIWDM
 IC----TDLGWE-FYPSI------------------------------------------
 ----------------------------------
->N_uncl_pacman
+>Pacmanvirus
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
@@ -1060,7 +1060,7 @@ EINKIEYVIS-RDGYDR-------------------RELN----CEIMREILKDPIV---
 -------NPEGGNKPYYPYFIYKILEYMFKDN-PEKLRLLDYIHLQSRETVIKNDKFYFE
 ICELS-DDPALV-YTPTDPADRL-------------------------------------
 ----------------------------------
->N_uncl_orpheo
+>Orpheovirus
 MGE--MIPSQKQSWVNRHKIVTSPDIVWYNTNLPSYCSLDDNNGFVKVPRVINK------
 ---------------------------DLKYID---------------------------
 ------------------------------------------------------------
@@ -1078,7 +1078,7 @@ LYDKLDDYFI-KNGFEKGVYY---YDLPIN-SIGEKNGTS----KDMLYKALRETGY---
 -----KDHLNRKSCLNVQFRLFKHLEAR-----GHKCNKKDFKIPKTRDILELHERAWKI
 MA----QLSGLN-YIQTI------------------------------------------
 ----------------------------------
->N_mimi_tupaso
+>Tupanvirus_isolate_soda_lake
 -----M------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
