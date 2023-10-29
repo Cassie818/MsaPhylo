@@ -1,8 +1,5 @@
 import torch
 import numpy as np
-from Bio import Phylo
-from Bio.Phylo.TreeConstruction import DistanceMatrix
-from Bio.Phylo.TreeConstruction import DistanceTreeConstructor
 from Bio import SeqIO
 
 EMB_PATH = './Embeddings/Case/'
