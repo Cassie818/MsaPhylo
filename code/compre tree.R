@@ -3,13 +3,13 @@ library("TreeDist")
 library("ape")
 
 # Set the directory where the njtree files are located
-njtree_folder <- "/Users/cassie/Desktop/PlmPlylo/predictree/"
+njtree_folder <- "/Users/cassie/Desktop/PlmPlylo/gaptree/"
 
 # Get a list of all files in the directory with extension ".nwk"
-njtree_files <- list.files(path = njtree_folder, pattern = "^PF00153.*\\.nwk$", full.names = TRUE)
+njtree_files <- list.files(path = njtree_folder, pattern = "^PF00271.*\\.nwk$", full.names = TRUE)
 
 # Read the true tree
-truetree <- "/Users/cassie/Desktop/PlmPlylo/trees/PF00153.tree"
+truetree <- "/Users/cassie/Desktop/PlmPlylo/trees/PF00271.tree"
 true_tree <- ape::read.tree(truetree)
 
 # Create an empty list to store the scores
