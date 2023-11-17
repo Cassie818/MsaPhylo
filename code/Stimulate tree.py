@@ -97,7 +97,6 @@ class MSASimulator:
         print(f"Simulated MSA with gaps has been saved to '{filename}'.")
 
 
-# Usage example:
 simulator = MSASimulator()
 simulator.generate_random_tree()
 simulator.load_replacement_matrix("lg_LG.PAML.txt")
