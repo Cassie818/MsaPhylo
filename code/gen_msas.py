@@ -2,10 +2,6 @@ import csv
 import random
 from Bio import SeqIO
 
-import csv
-import random
-from Bio import SeqIO
-
 EMB_PATH = './Embeddings/Pfam/'
 ATTN_PATH = './Attentions/Pfam/'
 MSA_PATH = './data/Pfam/'
