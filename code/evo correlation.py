@@ -6,12 +6,37 @@ from scipy import stats
 from Bio import SeqIO
 import csv
 
+EMB_PATH = './Embeddings/Synthetic/'
+ATTN_PATH = './Attentions/Synthetic/'
+MSA_PATH = './data/Synthetic/'
+TREE_PATH = './Trees/Synthetic/'
+
+MSA_TYPE_MAP = {
+    "default": ".fasta",
+    "sc": "_shuffle_column.fasta",
+    "sa": "_shuffle_all.fasta",
+    "mc": "_mix_column.fasta"
+}
+
+EMB_TYPE_MAP = {
+    "default": "_emb_",
+    "sc": "_emb_shuffle_column_",
+    "sa": "_emb_shuffle_all_",
+    "mc": "_emb_mix_column_"
+}
+
+ATTN_TYPE_MAP = {
+    "default": "_attn_",
+    "sc": "_attn_shuffle_column_",
+    "sa": "_attn_shuffle_all_",
+    "mc": "_attn_mix_column_"
+}
+
 LAYER = 12
 HEAD = 12
 
 
 class EvDist:
-
     """Class for evolutionary distance processing"""
 
     def __init__(self, protein_family, msa_type):
@@ -22,7 +47,7 @@ class EvDist:
         self.msa_fasta_file = f'{MSA_PATH}{protein_family}{MSA_TYPE_MAP[self.msa_type]}'
         self.emb = f'{EMB_PATH}{self.protein_family}{EMB_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
         self.attn = f'{ATTN_PATH}{self.protein_family}{ATTN_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
-        self.tree = os.path.join('/content/drive/MyDrive/PhD/tree', f"{self.protein_family}.tree")
+        self.tree = os.path.join('./Trees/Synthetic/', f"{self.protein_family}.tree")
 
     @staticmethod
     def euc_distance(a, b):
