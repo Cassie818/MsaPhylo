@@ -33,9 +33,23 @@ def process_files(input_directory, output_directory, file_extension="fasta"):
             AlignIO.write(trimmed, output_file_path, file_extension)
 
 
+def msa_stats(file_path):
+    """ Print the number of sequences and the alignment length in an MSA FASTA file. """
+    for filename in os.listdir(file_path):
+        if filename.endswith(".fasta"):
+            alignment = AlignIO.read(file_path + filename, "fasta")
+            num_sequences = len(alignment)
+            alignment_length = alignment.get_alignment_length()
+
+            print(f"Number of sequences in the MSA of {filename}: {num_sequences}")
+            print(f"Length of the alignment of {filename}: {alignment_length} columns")
+
+
 # Set your input and output directories here
-input_directory = "./data/PFAM"
-output_directory = "./data/PFAM/trimmed"
+input_directory = "./data/Pfam/"
+output_directory = "./data/Pfam/trimmed/"
 
 # Process the files
 process_files(input_directory, output_directory)
+msa_stats(input_directory)
+msa_stats(output_directory)
