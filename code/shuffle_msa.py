@@ -37,12 +37,12 @@ class ShuffleMsa:
         print(f'Generated shuffle covariance data of {self.protein_domain}!')
 
     def _read_fasta(self):
-        with open(self.msa_file, 'r') as file:
-            lines = file.readlines()
+        with open(self.msa_file, 'r') as f:
+            content = f.readlines()
 
         sequences = []
         current_sequence = ''
-        for line in lines:
+        for line in content:
             line = line.rstrip()
             if line.startswith('>'):
                 if current_sequence:
@@ -71,11 +71,11 @@ class ShuffleMsa:
             else:
                 shuffled_sequences.append(sequence)
 
-        with open(output_seq_file, 'w') as file:
-            file.write('\n'.join(shuffled_sequences))
+        with open(output_seq_file, 'w') as f:
+            f.write('\n'.join(shuffled_sequences))
 
-        with open(output_order_file, 'w') as file:
-            writer = csv.writer(file)
+        with open(output_order_file, 'w') as f:
+            writer = csv.writer(f)
             writer.writerows(shuffled_order)
 
         print(f'Generated Shuffle columns data of {self.protein_domain}!')
