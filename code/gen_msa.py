@@ -11,7 +11,7 @@ class ChangeAA:
 
     def __init__(self, protein_family):
         self.protein_family = protein_family
-        self.msa_file = f'{MSA_PATH}{self.protein_family}_seed_hmmalign_no_inserts.fasta'
+        self.msa_file = f'{MSA_PATH}{self.protein_family}.fasta'
 
     @staticmethod
     def _shuffle_list(data_list):

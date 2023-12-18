@@ -6,30 +6,27 @@ from scipy import stats
 from Bio import SeqIO
 import csv
 
-EMB_PATH = './Embeddings/Synthetic/'
-ATTN_PATH = './Attentions/Synthetic/'
-MSA_PATH = './data/Synthetic/'
-TREE_PATH = './Trees/Synthetic/'
+EMB_PATH = './Embeddings/Pfam/'
+ATTN_PATH = './Attentions/Pfam/'
+MSA_PATH = './data/Pfam/'
+TREE_PATH = './Trees/Pfam/NJ/'
 
 MSA_TYPE_MAP = {
     "default": ".fasta",
-    "sc": "_shuffle_column.fasta",
-    "sa": "_shuffle_all.fasta",
-    "mc": "_mix_column.fasta"
+    "sc": "_shuffle_columns.fasta",
+    "scovar": "_shuffle_covariance.fasta"
 }
 
 EMB_TYPE_MAP = {
     "default": "_emb_",
-    "sc": "_emb_shuffle_column_",
-    "sa": "_emb_shuffle_all_",
-    "mc": "_emb_mix_column_"
+    "sc": "_emb_shuffle_columns_",
+    "scovar": "_emb_shuffle_covariance_"
 }
 
 ATTN_TYPE_MAP = {
     "default": "_attn_",
-    "sc": "_attn_shuffle_column_",
-    "sa": "_attn_shuffle_all_",
-    "mc": "_attn_mix_column_"
+    "sc": "_attn_shuffle_columns_",
+    "scovar": "_attn_shuffle_covariance_"
 }
 
 LAYER = 12
@@ -39,12 +36,12 @@ HEAD = 12
 class EvDist:
     """Class for evolutionary distance processing"""
 
-    def __init__(self, protein_family, msa_type):
+    def __init__(self, protein_domain, msa_typ):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = "esm_msa1b_t12_100M_UR50S"
-        self.protein_family = protein_family
-        self.msa_type = msa_type if msa_type in MSA_TYPE_MAP else "default"
-        self.msa_fasta_file = f'{MSA_PATH}{protein_family}{MSA_TYPE_MAP[self.msa_type]}'
+        self.protein_family = protein_domain
+        self.msa_type = msa_typ if msa_typ in MSA_TYPE_MAP else "default"
+        self.msa_fasta_file = f'{MSA_PATH}{protein_domain}{MSA_TYPE_MAP[self.msa_type]}'
         self.emb = f'{EMB_PATH}{self.protein_family}{EMB_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
         self.attn = f'{ATTN_PATH}{self.protein_family}{ATTN_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
         self.tree = os.path.join('./Trees/Synthetic/', f"{self.protein_family}.tree")
