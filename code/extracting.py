@@ -3,30 +3,26 @@ import string
 from esm import pretrained
 from Bio import SeqIO
 
-EMB_PATH = './Embeddings/'
-ATTN_PATH = './Attentions/'
-MSA_PATH = './Msa/'
-TREE_PATH = './Trees/'
+EMB_PATH = './Embeddings/Pfam/'
+ATTN_PATH = './Attentions/Pfam/'
+MSA_PATH = './data/Pfam/'
 
 MSA_TYPE_MAP = {
-    "default": "_seed_hmmalign_no_inserts.fasta",
-    "sc": "_shuffle_column.fasta",
-    "sa": "_shuffle_all.fasta",
-    "mc": "_mix_column.fasta"
+    "default": ".fasta",
+    "sc": "_shuffle_columns.fasta",
+    "scovar": "_shuffle_covariance.fasta"
 }
 
 EMB_TYPE_MAP = {
-    "default": "_emb_no_shuffle_",
-    "sc": "_emb_shuffle_column_",
-    "sa": "_emb_shuffle_all_",
-    "mc": "_emb_mix_column_"
+    "default": "_emb_",
+    "sc": "_emb_shuffle_columns_",
+    "scovar": "_emb_shuffle_covariance_"
 }
 
 ATTN_TYPE_MAP = {
-    "default": "_attn_no_shuffle_",
-    "sc": "_attn_shuffle_column_",
-    "sa": "_attn_shuffle_all_",
-    "mc": "_attn_mix_column_"
+    "default": "_attn_",
+    "sc": "_attn_shuffle_columns_",
+    "scovar": "_attn_shuffle_covariance_"
 }
 
 
@@ -41,13 +37,13 @@ def remove_insertions(sequence):
 
 class Extractor:
 
-    def __init__(self, protein_family, msa_type):
+    def __init__(self, protein_domain, msa_typ):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = "esm_msa1b_t12_100M_UR50S"
         self.encoding_dim, self.encoding_layer, self.max_seq_length = 768, 12, 1022
-        self.protein_family = protein_family
-        self.msa_type = msa_type if msa_type in MSA_TYPE_MAP else "default"
-        self.msa_fasta_file = f'{MSA_PATH}{protein_family}{MSA_TYPE_MAP[self.msa_type]}'
+        self.protein_family = protein_domain
+        self.msa_type = msa_typ if msa_typ in MSA_TYPE_MAP else "default"
+        self.msa_fasta_file = f'{MSA_PATH}{protein_domain}{MSA_TYPE_MAP[self.msa_type]}'
 
     def read_msa(self):
         return [(record.description, remove_insertions(str(record.seq)))
@@ -95,9 +91,12 @@ class Extractor:
 
 
 if __name__ == '__main__':
-    protein_family_list = ['PF00004']
-    msa_type_list = ['no']
-    for protein_family in protein_family_list:
+    msa_type_list = ['default', 'sc', 'scovar']
+    with open('./data/Pfam/protein_domain.txt', 'r') as file:
+        lines = file.readlines()
+    protein_domain_list = [line.strip() for line in lines]
+
+    for protein_family in protein_domain_list:
         for msa_type in msa_type_list:
             ext = Extractor(protein_family, msa_type)
             ext.get_embedding()
