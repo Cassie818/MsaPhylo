@@ -2,16 +2,14 @@ import csv
 import random
 from Bio import SeqIO
 
-EMB_PATH = './Embeddings/Pfam/'
-ATTN_PATH = './Attentions/Pfam/'
 MSA_PATH = './data/Pfam/'
 
 
-class ChangeAA:
+class ShuffleMsa:
 
-    def __init__(self, protein_family):
-        self.protein_family = protein_family
-        self.msa_file = f'{MSA_PATH}{self.protein_family}.fasta'
+    def __init__(self, protein_domain):
+        self.protein_domain = protein_domain
+        self.msa_file = f'{MSA_PATH}{self.protein_domain}.fasta'
 
     @staticmethod
     def _shuffle_list(data_list):
@@ -20,8 +18,8 @@ class ChangeAA:
         random.shuffle(data_list)
         return data_list
 
-    def mix_fasta_column(self):
-        output_file = f'{MSA_PATH}{self.protein_family}_mix_column.fasta'
+    def shuffle_covariance(self):
+        output_file = f'{MSA_PATH}{self.protein_domain}_shuffle_covariance.fasta'
         records = list(SeqIO.parse(self.msa_file, "fasta"))
         seq_length = len(records[0].seq)
         shuffled_records = []
@@ -36,7 +34,7 @@ class ChangeAA:
                                                                                              i + 1:]
 
         SeqIO.write(shuffled_records, output_file, "fasta")
-        print('Generated Mix columns data!')
+        print(f'Generated shuffle covariance data of {self.protein_domain}!')
 
     def _read_fasta(self):
         with open(self.msa_file, 'r') as file:
@@ -57,36 +55,9 @@ class ChangeAA:
 
         return sequences
 
-    def shuffle_fasta_all(self):
-        output_seq_file = f'{MSA_PATH}{self.protein_family}_shuffle_all.fasta'
-        output_order_file = f'{MSA_PATH}{self.protein_family}_shuffle_all_order.txt'
-        sequences = self._read_fasta()
-        sequence_length = len(sequences[1])
-
-        shuffled_sequences = []
-        shuffled_order = []
-
-        for sequence in sequences:
-            if not sequence.startswith('>'):
-                shuffled_indices = random.sample(range(sequence_length), sequence_length)
-                shuffled_order.append(shuffled_indices)
-                shuffled_sequence = ''.join(sequence[i] for i in shuffled_indices)
-                shuffled_sequences.append(shuffled_sequence)
-            else:
-                shuffled_sequences.append(sequence)
-
-        with open(output_seq_file, 'w') as file:
-            file.write('\n'.join(shuffled_sequences))
-
-        with open(output_order_file, 'w') as file:
-            writer = csv.writer(file)
-            writer.writerows(shuffled_order)
-
-        print('Generated Shuffle all data!')
-
-    def shuffle_fasta_column(self):
-        output_seq_file = f'{MSA_PATH}{self.protein_family}_shuffle_column.fasta'
-        output_order_file = f'{MSA_PATH}{self.protein_family}_shuffle_column_order.txt'
+    def shuffle_columns(self):
+        output_seq_file = f'{MSA_PATH}{self.protein_domain}_shuffle_columns.fasta'
+        output_order_file = f'{MSA_PATH}{self.protein_domain}_shuffle_columns_order.txt'
         sequences = self._read_fasta()
         sequence_length = len(sequences[1])
 
@@ -107,15 +78,15 @@ class ChangeAA:
             writer = csv.writer(file)
             writer.writerows(shuffled_order)
 
-        print('Generated Shuffle columns data!')
+        print(f'Generated Shuffle columns data of {self.protein_domain}!')
 
     def keep_fasta_column(self):
-        with open(self.msa_file, 'r') as file:
-            lines = file.readlines()
+        with open(self.msa_file, 'r') as f:
+            content = f.readlines()
 
         sequences = []
         current_sequence = ''
-        for line in lines:
+        for line in content:
             line = line.rstrip()
             if line.startswith('>'):
                 if current_sequence:
@@ -131,7 +102,7 @@ class ChangeAA:
         all_indices = list(range(sequence_length))
 
         for pos in range(sequence_length):
-            keep_column = f'{MSA_PATH}{self.protein_family}_keep_column{pos}.fasta'
+            keep_column = f'{MSA_PATH}{self.protein_domain}_keep_pos{pos}.fasta'
             remove_sequences = []
 
             for sequence in sequences:
@@ -141,5 +112,17 @@ class ChangeAA:
                     remove_sequence = ''.join([sequence[pos]])
                     remove_sequences.append(remove_sequence)
 
-            with open(keep_column, 'w') as file:
-                file.write('\n'.join(remove_sequences))
+            with open(keep_column, 'w') as f:
+                f.write('\n'.join(remove_sequences))
+
+
+if __name__ == '__main__':
+    msa_type_list = ['default', 'sc', 'scovar']
+    with open('./data/Pfam/protein_domain.txt', 'r') as file:
+        lines = file.readlines()
+    protein_domain_list = [line.strip() for line in lines]
+
+    for protein_domain in protein_domain_list:
+        shuffled = ShuffleMsa(protein_domain)
+        shuffled.shuffle_columns()
+        shuffled.shuffle_covariance()
