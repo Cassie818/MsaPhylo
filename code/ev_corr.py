@@ -34,7 +34,6 @@ HEAD = 12
 
 
 class EvDist:
-    """Class for evolutionary distance processing"""
 
     def __init__(self, protein_domain, msa_typ):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -44,7 +43,7 @@ class EvDist:
         self.msa_fasta_file = f'{MSA_PATH}{protein_domain}{MSA_TYPE_MAP[self.msa_type]}'
         self.emb = f'{EMB_PATH}{self.protein_family}{EMB_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
         self.attn = f'{ATTN_PATH}{self.protein_family}{ATTN_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
-        self.tree = os.path.join('./Trees/Synthetic/', f"{self.protein_family}.tree")
+        self.tree = os.path.join(TREE_PATH, f"{self.protein_family}.tree")
 
     @staticmethod
     def euc_distance(a, b):
@@ -52,7 +51,11 @@ class EvDist:
         return np.sqrt(np.sum((a - b) ** 2))
 
     def evolutionary_distance(self, phylo_tree, seq_labels):
-        """Calculate the evolutionary distance between sequences based on the phylogenetic tree."""
+
+        """
+        Calculate the evolutionary distance between sequences based on the phylogenetic tree.
+        """
+
         phylo_tree = Tree(self.tree)
         ev_distances = []
 
@@ -98,19 +101,19 @@ class EvDist:
 
         # Compute evolutionary distances
         ev_dist = self.evolutionary_distance(Tree(self.tree), sequence_list)
-        correlations = []
+        spear_ev_dist_corr = []
 
         # Compute Euclidean distances and their correlation with evolutionary distances
         for layer in range(LAYER):
-            euc_distances = self.pairwise_euclidean_distance(embeddings[layer])
-            spear_corr = stats.spearmanr(ev_dist.flatten(), euc_distances.flatten())
-            correlations.append([self.protein_family, layer, spear_corr.correlation, spear_corr.pvalue])
+            euc_dist = self.pairwise_euclidean_distance(embeddings[layer])
+            spear_corr = stats.spearmanr(ev_dist.flatten(), euc_dist.flatten())
+            spear_ev_dist_corr.append([self.protein_family, layer, spear_corr.correlation, spear_corr.pvalue])
 
         # Save to CSV file
         with open(output_file, 'w') as file:
             writer = csv.writer(file)
-            writer.writerow(['Protein family', 'Layer', 'Correlation', 'P value'])
-            writer.writerows(correlations)
+            writer.writerow(['Protein domain', 'Layer', 'Correlation', 'P value'])
+            writer.writerows(spear_ev_dist_corr)
 
     def compute_attention_correlation(self):
         """
@@ -128,7 +131,7 @@ class EvDist:
 
         # Load column attention
         col_attn = torch.load(self.attn)
-        # Remove start token
+        # Remove start token and  then save averaged and symmetrized column attention matrices
         attn_mean_on_cols_symm = col_attn["col_attentions"].cpu().numpy()[0, :, :, 1:, :, :].mean(axis=2)
         attn_mean_on_cols_symm += attn_mean_on_cols_symm.transpose(0, 1, 3, 2)
 
@@ -137,14 +140,12 @@ class EvDist:
                 attn = attn_mean_on_cols_symm[layer, head, :, :]
                 sp_corr = stats.spearmanr(ev_dist.flatten(), attn.flatten())
                 spear_ev_dist_corr.append([self.protein_family, layer, head, sp_corr.correlation, sp_corr.pvalue])
-        # field names
-        fields = ['Protein family', 'Layer', 'Head', 'Correlation', 'P-value']
-        # save csv file
-        with open(output_file, 'w') as f:
-            # using csv.writer method from CSV package
-            write = csv.writer(f)
-            write.writerow(fields)
-            write.writerows(spear_ev_dist_corr)
+
+        # Save to CSV file
+        with open(output_file, 'w') as file:
+            writer = csv.writer(file)
+            writer.writerow(['Protein domain', 'Layer', 'Head', 'Correlation', 'P-value'])
+            writer.writerows(spear_ev_dist_corr)
 
 
 if __name__ == '__main__':
