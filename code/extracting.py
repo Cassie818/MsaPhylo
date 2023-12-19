@@ -2,10 +2,10 @@ import torch
 import string
 from esm import pretrained
 from Bio import SeqIO
+from shuffle_msa import MSA_PATH
 
 EMB_PATH = './Embeddings/Pfam/'
 ATTN_PATH = './Attentions/Pfam/'
-MSA_PATH = './data/Pfam/'
 
 MSA_TYPE_MAP = {
     "default": ".fasta",

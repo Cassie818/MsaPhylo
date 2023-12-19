@@ -5,29 +5,9 @@ from ete3 import Tree
 from scipy import stats
 from Bio import SeqIO
 import csv
+from extracting import MSA_PATH, MSA_TYPE_MAP, EMB_PATH, EMB_TYPE_MAP, ATTN_PATH, ATTN_TYPE_MAP
 
-EMB_PATH = './Embeddings/Pfam/'
-ATTN_PATH = './Attentions/Pfam/'
-MSA_PATH = './data/Pfam/'
-TREE_PATH = './Trees/Pfam/NJ/'
-
-MSA_TYPE_MAP = {
-    "default": ".fasta",
-    "sc": "_shuffle_columns.fasta",
-    "scovar": "_shuffle_covariance.fasta"
-}
-
-EMB_TYPE_MAP = {
-    "default": "_emb_",
-    "sc": "_emb_shuffle_columns_",
-    "scovar": "_emb_shuffle_covariance_"
-}
-
-ATTN_TYPE_MAP = {
-    "default": "_attn_",
-    "sc": "_attn_shuffle_columns_",
-    "scovar": "_attn_shuffle_covariance_"
-}
+TREE_PATH = './Trees/NJ/'
 
 LAYER = 12
 HEAD = 12

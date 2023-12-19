@@ -1,35 +1,9 @@
 import torch
 import numpy as np
 from Bio import SeqIO
+from extracting import MSA_PATH, MSA_TYPE_MAP, EMB_PATH, EMB_TYPE_MAP, ATTN_PATH, ATTN_TYPE_MAP
 
-EMB_PATH = './Embeddings/Case/'
-ATTN_PATH = './Attentions/Case/'
-MSA_PATH = './data/Case/RdRp/'
 TREE_PATH = './Trees/'
-
-MSA_TYPE_MAP = {
-    "default": ".fasta",
-    "sc": "_shuffle_column.fasta",
-    "sa": "_shuffle_all.fasta",
-    "mc": "_mix_column.fasta"
-}
-
-EMB_TYPE_MAP = {
-    "default": "_emb_",
-    "sc": "_emb_shuffle_column_",
-    "sa": "_emb_shuffle_all_",
-    "mc": "_emb_mix_column_"
-}
-
-ATTN_TYPE_MAP = {
-    "default": "_attn_",
-    "sc": "_attn_shuffle_column_",
-    "sa": "_attn_shuffle_all_",
-    "mc": "_attn_mix_column_"
-}
-
-LAYER = 12
-HEAD = 12
 
 
 class NJtree:
@@ -195,5 +169,3 @@ class NJtree:
                 # Save the tree
                 with open(phylo_path, "w") as file:
                     file.write(tree)
-
-
