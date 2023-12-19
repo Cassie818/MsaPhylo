@@ -70,7 +70,8 @@ class EvDist:
         """
         Calculate the correlation between evolutionary distances from the trees and pairwise Euclidean distances of embeddings
         """
-        output_file = os.path.join('./Results', f"{self.protein_family}_ev_and_euclidean_analysis_emb.csv")
+        output_file = os.path.join('./Results',
+                                   f"{self.protein_family}_{self.msa_type}_ev_and_euclidean_analysis_emb.csv")
 
         # Load embeddings
         embeddings = torch.load(self.emb)
@@ -99,7 +100,7 @@ class EvDist:
         """
         Calculate the correlation between evolutionary distances from the trees and column attention
         """
-        output_file = os.path.join('./Results', f"{self.protein_family}_ev_and_euclidean_analysis_col_attention.csv")
+        output_file = os.path.join('./Results', f"{self.protein_family}_{self.msa_type}_ev_analysis_col_attention.csv")
         spear_ev_dist_corr = []
 
         # Load sequence names and extract shorter names
@@ -129,10 +130,13 @@ class EvDist:
 
 
 if __name__ == '__main__':
-    protein_family_list = ['PF00004']
-    msa_type_list = ['no']
-    for protein_family in protein_family_list:
+    msa_type_list = ['default', 'sc', 'scovar']
+    with open('./data/Pfam/protein_domain.txt', 'r') as file:
+        lines = file.readlines()
+    protein_domain_list = [line.strip() for line in lines]
+
+    for protein_domain in protein_domain_list:
         for msa_type in msa_type_list:
-            evd = EvDist(protein_family, msa_type)
+            evd = EvDist(protein_domain, msa_type)
             evd.compute_embedding_correlation()
             evd.compute_attention_correlation()

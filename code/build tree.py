@@ -2,6 +2,7 @@ import torch
 import numpy as np
 from Bio import SeqIO
 from extracting import MSA_PATH, MSA_TYPE_MAP, EMB_PATH, EMB_TYPE_MAP, ATTN_PATH, ATTN_TYPE_MAP
+from ev_corr import LAYER, HEAD
 
 TREE_PATH = './Trees/'
 
