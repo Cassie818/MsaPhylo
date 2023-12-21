@@ -15,24 +15,24 @@ def load_data(domain_name):
         default_corr = []
 
     # load sc data
-    sc_corr = {}
+    sc_dict = {}
     for root, dirs, files in os.walk(base_path):
         for dir in dirs:
             file_path = os.path.join(root, dir, f'{domain_name}_sc_ev_and_euclidean_analysis_emb.csv')
             if os.path.exists(file_path):
                 data = pd.read_csv(file_path)["Correlation"].to_list()
-                sc_corr[dir] = data
+                sc_dict[dir] = data
 
     # load scovar data
-    scovar_corr = {}
+    scovar_dict = {}
     for root, dirs, files in os.walk(base_path):
         for dir in dirs:
             file_path = os.path.join(root, dir, f'{domain_name}_scovar_ev_and_euclidean_analysis_emb.csv')
             if os.path.exists(file_path):
                 data = pd.read_csv(file_path)["Correlation"].to_list()
-                scovar_corr[dir] = data
+                scovar_dict[dir] = data
 
-    return default_corr, sc_corr, scovar_corr
+    return default_corr, sc_dict, scovar_dict
 
 
 def calculate_stats(data_dict):
@@ -47,7 +47,7 @@ with open('./data/Pfam/protein_domain.txt', 'r') as file:
     lines = file.readlines()
     protein_domains = [line.strip() for line in lines]
 
-fig, axes = plt.subplots(4, 5, figsize=(12, 8))
+fig, axes = plt.subplots(4, 5, figsize=(12, 9))
 axes = axes.flatten()
 
 for i, domain in enumerate(protein_domains):
@@ -59,10 +59,10 @@ for i, domain in enumerate(protein_domains):
     x_labels = list(range(len(means1)))
 
     ax = axes[i]
-    ax.plot(x_labels, default_corr, '-*', label='Default', color='green', markersize=4)
-    ax.errorbar(x_labels, means1, yerr=std_devs1, fmt='-o', ecolor='orange', markersize=4, capsize=2, color='orange',
+    ax.plot(x_labels, default_corr, '-*', label='Default', color='purple', markersize=3)
+    ax.errorbar(x_labels, means1, yerr=std_devs1, fmt='-o', ecolor='orange', markersize=3, capsize=2, color='orange',
                 label='Shuffled columns')
-    ax.errorbar(x_labels, means2, yerr=std_devs2, fmt='-^', ecolor='purple', markersize=4, capsize=2, color='purple',
+    ax.errorbar(x_labels, means2, yerr=std_devs2, fmt='-^', ecolor='blue', markersize=3, capsize=2, color='blue',
                 label='Shuffled covariance')
 
     ax.set_title(domain, fontsize=10)
@@ -74,6 +74,6 @@ for i, domain in enumerate(protein_domains):
 handles, labels = axes[0].get_legend_handles_labels()
 fig.legend(handles, labels, loc='lower center', ncol=3, bbox_to_anchor=(0.5, 0), fontsize=10)
 
-plt.subplots_adjust(hspace=0.4, wspace=0.3)
+plt.subplots_adjust(hspace=0.3, wspace=0.2)
 plt.tight_layout(rect=[0, 0.03, 1, 0.97])
 plt.show()
