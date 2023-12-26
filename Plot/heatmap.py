@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
-import os
 import pandas as pd
+import os
 
 
 def load_data(domain_name):
@@ -49,15 +48,24 @@ def create_heatmap(data, ax, title, x_labels, y_labels, vmin=None, vmax=None):
 protein_domains = ['PF00066', 'PF00168', 'PF00484', 'PF00672']
 
 data_dict = {}
+domain_vmins = {}
+domain_vmaxs = {}
+
 for domain in protein_domains:
     data_dict[domain] = load_data(domain)
 
-num_protein = 4
+for domain in protein_domains:
+    all_data = []
+    for key, data in data_dict[domain].items():
+        all_data.append(data)
+    domain_vmins[domain] = min([d.min() for d in all_data])
+    domain_vmaxs[domain] = max([d.max() for d in all_data])
+
+um_protein = 4
 typs = ['Default', 'Shuffled_columns', 'Shuffled_covariance']
 # Define the labels for the x and y axes
 x_labels = [str(i) for i in range(1, 13)]
 y_labels = [str(i) for i in range(1, 13)]
-
 fig, axes = plt.subplots(nrows=num_protein, ncols=len(typs), figsize=(10, 12))
 
 for i, protein_domain in enumerate(protein_domains):
@@ -71,7 +79,8 @@ for i, protein_domain in enumerate(protein_domains):
             data = pf_info[f'{protein_domain}_Shuffled_columns']
         elif typ == 'Shuffled_covariance':
             data = pf_info[f'{protein_domain}_Shuffled_covariance']
-        heatmap = create_heatmap(data, axes[i, j], title, x_labels, y_labels, vmin=-1, vmax=1)
+        heatmap = create_heatmap(data, axes[i, j], title, x_labels, y_labels, vmin=domain_vmins[protein_domain],
+                                 vmax=domain_vmaxs[protein_domain])
         # Add color bars to the rightmost column
         if j == len(typs) - 1:
             fig.colorbar(heatmap, ax=axes[i, j])
