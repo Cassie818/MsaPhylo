@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.font_manager
 
 
 def load_data(domain_name):
@@ -47,6 +48,7 @@ with open('./data/Pfam/protein_domain.txt', 'r') as file:
     lines = file.readlines()
     protein_domains = [line.strip() for line in lines]
 
+matplotlib.rcParams['font.family'] = 'DejaVu Serif'
 fig, axes = plt.subplots(4, 5, figsize=(12, 9))
 axes = axes.flatten()
 
@@ -65,9 +67,9 @@ for i, domain in enumerate(protein_domains):
     ax.errorbar(x_labels, means2, yerr=std_devs2, fmt='-^', ecolor='blue', markersize=3, capsize=2, color='blue',
                 label='Shuffled covariance')
 
-    ax.set_title(domain, fontsize=10)
-    ax.set_xlabel('Layers', fontsize=9)
-    ax.set_ylabel('Correlation', fontsize=9)
+    ax.set_title(domain, fontsize=12)
+    ax.set_xlabel('Layers', fontsize=10)
+    ax.set_ylabel('Correlation', fontsize=10)
 
     ax.grid(False)
 
