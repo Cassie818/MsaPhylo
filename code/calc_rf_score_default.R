@@ -4,6 +4,7 @@ library("ape")
 
 # Set the directory paths
 emb_folder <- "/Users/cassie/Desktop/PlmPlylo/embeddings"
+attn_folder <- "/Users/cassie/Desktop/PlmPlylo/attentions"
 
 nj_tree_folder <- "/Users/cassie/Desktop/MsaPhylo/Trees/Pfam/NJ/"
 ml_tree_folder <- "/Users/cassie/Desktop/MsaPhylo/Trees/Pfam/ML/"
@@ -32,6 +33,7 @@ write_scores <- function(data, file_path, file_exists) {
 for (prot_domain in prot_domains) {
   pattern_string <- paste0("^", prot_domain, ".*\\.nwk$")
   emb_files <- list.files(path = emb_folder, pattern = pattern_string, full.names = TRUE)
+  attn_files <- list.files(path = attn_folder, pattern = pattern_string, full.names = TRUE)
 
   # Construct paths for NJ and ML trees
   njtree <- file.path(nj_tree_folder, paste0(prot_domain, ".tree"))
@@ -41,7 +43,7 @@ for (prot_domain in prot_domains) {
   nj_tree <- ape::read.tree(njtree)
   ml_tree <- ape::read.tree(mltree)
 
-  # Loop through each embedding file
+  # Loop through each embedding trees
   for (emb_file in emb_files) {
     emb_tree <- ape::read.tree(emb_file)
 
@@ -62,6 +64,24 @@ for (prot_domain in prot_domains) {
     ml_file_exists <- TRUE
   }
 
+  # Loop through each attention tree
+  for (attn_file in attn_files){
+    attn_tree <- ape::read.tree(attn_file)
+
+    # Calculate Robinson Foulds scores
+    rf_nj_score <- RobinsonFoulds(attn_tree, nj_tree, similarity = TRUE, normalize = TRUE)
+    rf_ml_score <- RobinsonFoulds(attn_tree, ml_tree, similarity = TRUE, normalize = TRUE)
+
+    file_name <- basename(sub("\\.nwk$", "", attn_file))
+    nj_data <- data.frame(FileName = file_name, RFScore = rf_nj_score)
+    ml_data <- data.frame(FileName = file_name, RFScore = rf_ml_score)
+
+    # Write NJ and ML scores to respective files
+    write_scores(nj_data, nj_file_path, nj_file_exists)
+    write_scores(ml_data, ml_file_path, ml_file_exists)
+
+  }
+
   # Calculate and record the Robinson Foulds score between NJ and ML trees
   domain_name <- basename(prot_domain)
   rf_nj_ml_score <- RobinsonFoulds(nj_tree, ml_tree, similarity = TRUE, normalize = TRUE)
@@ -70,8 +90,4 @@ for (prot_domain in prot_domains) {
   write_scores(nj_ml_data, nj_ml_file_path, nj_ml_file_exists)
   nj_ml_file_exists <- TRUE  # Update file existence status
 }
-
-
-
-
 
