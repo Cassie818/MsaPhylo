@@ -1,6 +1,7 @@
 from functools import reduce
 import os
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 def load_data(typ):
@@ -80,3 +81,39 @@ def load_data(typ):
     final_scovar = final_scovar[['ProteinDomain', 'Mean', 'Variance']]
 
     return final_default, final_sc, final_scovar
+
+
+def plot_protein_domains(default_df, sc_df, scovar_df):
+    fig, axs = plt.subplots(4, 5, figsize=(12, 9), sharex=False, sharey=False)
+    axs = axs.flatten()  # Flatten the 2D array of axes for easier access
+
+    for i, (protein_domain, group) in enumerate(default_df.groupby('ProteinDomain')):
+        group = group.sort_values('Layer')
+        ax = axs[i]
+        layers = list(range(1, 13))
+        sc_data = sc_df[sc_df['ProteinDomain'] == protein_domain]
+        scovar_data = scovar_df[scovar_df['ProteinDomain'] == protein_domain]
+
+        ax.plot(layers, group['RFScore'], '-*', markersize=3, color='dodgerblue', label='Default')
+        ax.errorbar(layers, sc_data['Mean'], yerr=sc_data['Variance'], fmt='-o', markersize=3, color='red',
+                    label='Shuffled columns')
+        ax.errorbar(layers, scovar_data['Mean'], yerr=scovar_data['Variance'], fmt='-^', markersize=3,
+                    color='darkviolet',
+                    label='Shuffled covariance')
+        ax.set_title(protein_domain, fontsize=12)
+        ax.set_xlabel('Layer', fontsize=10)
+        ax.set_ylabel('RF score', fontsize=10)
+
+        ax.set_xticks(range(1, 13, 2))
+
+    handles, labels = axs[0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc='lower center', ncol=3, bbox_to_anchor=(0.5, 0), fontsize=10)
+
+    plt.subplots_adjust(hspace=0.3, wspace=0.2)
+    plt.tight_layout(rect=[0, 0.03, 1, 0.97])
+    plt.show()
+
+
+if __name__ == '__main__':
+    final_default, final_sc, final_scovar = load_data('ml')
+    plot_protein_domains(final_default, final_sc, final_scovar)
