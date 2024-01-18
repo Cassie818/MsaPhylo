@@ -1,4 +1,6 @@
 from functools import reduce
+import os
+import pandas as pd
 
 
 def load_data(typ):
