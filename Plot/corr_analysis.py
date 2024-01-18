@@ -62,9 +62,9 @@ for i, domain in enumerate(protein_domains):
 
     ax = axes[i]
     ax.plot(x_labels, default_corr, '-*', label='Default', color='purple', markersize=3)
-    ax.errorbar(x_labels, means1, yerr=std_devs1, fmt='-o', ecolor='orange', markersize=3, capsize=2, color='orange',
+    ax.errorbar(x_labels, means1, yerr=std_devs1, fmt='-o', markersize=3, color='orange',
                 label='Shuffled columns')
-    ax.errorbar(x_labels, means2, yerr=std_devs2, fmt='-^', ecolor='blue', markersize=3, capsize=2, color='blue',
+    ax.errorbar(x_labels, means2, yerr=std_devs2, fmt='-^', markersize=3, color='blue',
                 label='Shuffled covariance')
 
     ax.set_title(domain, fontsize=12)
