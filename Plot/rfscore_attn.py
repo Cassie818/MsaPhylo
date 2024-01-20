@@ -57,7 +57,7 @@ def load_data(typ):
 
     final_sc = final_sc[['ProteinDomain', 'Mean', 'Variance']]
 
-    # load scovar data
+    # load scovar data for column attention
     scovar_list = []
     for path in filepaths:
         scovar_rf = pd.read_csv(path)
@@ -97,6 +97,17 @@ def extract_var(df, protein_domain):
 
 
 def plot_heatmap(ax, data, vmax):
+    # define some parameters
+    x_labels = [str(i) for i in range(1, 13)]
+    y_labels = [str(i) for i in range(1, 13)]
+    cdict = {'red': [(0.0, 1.0, 1.0),
+                     (1.0, 1.0, 1.0)],
+             'green': [(0.0, 1.0, 1.0),
+                       (1.0, 0.0, 0.0)],
+             'blue': [(0.0, 1.0, 1.0),
+                      (1.0, 0.0, 0.0)]}
+    red_white_cmap = mcolors.LinearSegmentedColormap('RedWhite', cdict)
+
     im = ax.imshow(data, cmap=red_white_cmap, aspect='equal', vmin=0, vmax=vmax)
     ax.set_xticks(np.arange(0, 12, 2))
     ax.set_yticks(np.arange(0, 12, 2))
@@ -114,12 +125,14 @@ def overlay_variance(var_data, ax):
             ax.scatter(j, i, s=circle_size, color='gray', alpha=0.5)
 
 
-def plot_protein_domains(default_df, sc_df, scovar_df):
+def plot_protein_domains(default_df, sc_df, scovar_df, prot_domains):
     # fig, axs = plt.subplots()
-    fig, axs = plt.subplots(4, 3, figsize=(9, 12), gridspec_kw={"width_ratios": [10, 10, 10]})
+    fig, axs = plt.subplots(4, 3, figsize=(9, 12),
+                            gridspec_kw={"width_ratios": [10, 10, 10]})
+
+    typs = ['Default', 'Shuffled_columns', 'Shuffled_covariance']
 
     for i, protein_domain in enumerate(prot_domains):
-
         default = extract_data(default_df, protein_domain)
         sc = extract_data(sc_df, protein_domain)
         scovar = extract_data(scovar_df, protein_domain)
@@ -154,15 +167,5 @@ def plot_protein_domains(default_df, sc_df, scovar_df):
 
 if __name__ == '__main__':
     prot_domains = ['PF00066', 'PF00168', 'PF00484', 'PF00672']
-    typs = ['Default', 'Shuffled_columns', 'Shuffled_covariance']
-    x_labels = [str(i) for i in range(1, 13)]
-    y_labels = [str(i) for i in range(1, 13)]
-    cdict = {'red': [(0.0, 1.0, 1.0),
-                     (1.0, 1.0, 1.0)],
-             'green': [(0.0, 1.0, 1.0),
-                       (1.0, 0.0, 0.0)],
-             'blue': [(0.0, 1.0, 1.0),
-                      (1.0, 0.0, 0.0)]}
-    red_white_cmap = mcolors.LinearSegmentedColormap('RedWhite', cdict)
     final_default, final_sc, final_scovar = load_data('ml')
     plot_protein_domains(final_default, final_sc, final_scovar, prot_domains)
