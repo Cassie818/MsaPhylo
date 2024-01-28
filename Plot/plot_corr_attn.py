@@ -74,8 +74,7 @@ def create_domain_heatmaps(mean_dict, var_dict, protein_domains, domain_abs_max,
     y_labels = [str(i) for i in range(1, 13)]
 
     fig, axes = plt.subplots(nrows=num_protein, ncols=len(typs), figsize=(9, 12),
-                             gridspec_kw={"width_ratios": [10, 10, 10]},
-                             constrained_layout=True)
+                             gridspec_kw={"width_ratios": [10, 10, 10]})
 
     for i, protein_domain in enumerate(protein_domains):
         pf_info_mean = mean_dict[protein_domain]
@@ -100,7 +99,7 @@ def create_domain_heatmaps(mean_dict, var_dict, protein_domains, domain_abs_max,
 
     # Set column titles
     for j, typ in enumerate(typs):
-        axes[0, j].set_title(typ, fontsize=12)
+        axes[0, j].set_title(typ.replace("_", " "), fontsize=12)
 
     plt.subplots_adjust(wspace=0.01, hspace=0.35)
     plt.show()
