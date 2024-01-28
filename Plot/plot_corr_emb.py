@@ -6,7 +6,7 @@ import matplotlib.font_manager
 
 
 def load_data(domain_name):
-    base_path = 'Results'
+    base_path = 'Results2'
 
     # load default data
     default_corr_file = os.path.join(base_path, f'{domain_name}_default_ev_and_euclidean_analysis_emb.csv')
@@ -40,36 +40,39 @@ def calculate_stats(data_dict):
     list_length = len(next(iter(data_dict.values())))
     layer_data = {i: [data_dict[key][i] for key in data_dict] for i in range(list_length)}
     means = [np.mean(values) for values in layer_data.values()]
-    std_devs = [np.std(values) for values in layer_data.values()]
-    return means, std_devs
+    vars = [np.var(values) for values in layer_data.values()]
+    return means, vars
 
 
 with open('./data/Pfam/protein_domain.txt', 'r') as file:
     lines = file.readlines()
     protein_domains = [line.strip() for line in lines]
 
-matplotlib.rcParams['font.family'] = 'DejaVu Serif'
+matplotlib.rcParams['font.family'] = ['DejaVu Sans']
 fig, axes = plt.subplots(4, 5, figsize=(12, 9))
 axes = axes.flatten()
 
 for i, domain in enumerate(protein_domains):
     default_corr, sc_dict, scovar_dict = load_data(domain)
 
-    means1, std_devs1 = calculate_stats(sc_dict)
-    means2, std_devs2 = calculate_stats(scovar_dict)
+    means1, vars1 = calculate_stats(sc_dict)
+    means2, vars2 = calculate_stats(scovar_dict)
 
-    x_labels = list(range(len(means1)))
+    x_labels = list(range(1, 13, 2))
 
     ax = axes[i]
-    ax.plot(x_labels, default_corr, '-*', label='Default', color='purple', markersize=3)
-    ax.errorbar(x_labels, means1, yerr=std_devs1, fmt='-o', markersize=3, color='orange',
-                label='Shuffled columns')
-    ax.errorbar(x_labels, means2, yerr=std_devs2, fmt='-^', markersize=3, color='blue',
-                label='Shuffled covariance')
+    ax.plot(range(1, 13), default_corr, label='Default', color='black', linestyle=':')
+    ax.errorbar(range(1, 13), means1, yerr=vars1, color='orange', linestyle='-.', label='Shuffled columns',
+                elinewidth=2)
+    ax.errorbar(range(1, 13), means2, yerr=vars2, color='blue', linestyle='--', label='Shuffled covariance',
+                elinewidth=2)
 
     ax.set_title(domain, fontsize=12)
-    ax.set_xlabel('Layers', fontsize=10)
-    ax.set_ylabel('Correlation', fontsize=10)
+    if i >= 15:
+        ax.set_xlabel('Layer', fontsize=10)
+    if i % 5 == 0:
+        ax.set_ylabel('Rho', fontsize=10)
+    ax.set_xticks(x_labels)
 
     ax.grid(False)
 

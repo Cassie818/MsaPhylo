@@ -87,8 +87,7 @@ def overlay_variance(var_data, ax):
 
 def plot_protein_domains(default_df, sc_df, scovar_df, prot_domains):
     fig, axs = plt.subplots(4, 3, figsize=(9, 12),
-                            gridspec_kw={"width_ratios": [10, 10, 10]},
-                            constrained_layout=True)
+                            gridspec_kw={"width_ratios": [10, 10, 10]})
 
     typs = ['Default', 'Shuffled columns', 'Shuffled covariance']
 
