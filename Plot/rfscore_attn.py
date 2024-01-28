@@ -1,87 +1,49 @@
-from functools import reduce
 import matplotlib.pyplot as plt
-import matplotlib.colors as mcolors
-import os
-import pandas as pd
 import numpy as np
+import pandas as pd
+import os
+from functools import reduce
+import matplotlib.colors as mcolors
+
+
+def load_csv_and_process(file_path, pattern, type_name):
+    df = pd.read_csv(file_path)
+    df = df[df['FileName'].str.contains(pattern)]
+    df = df[df['FileName'].str.count('_') > 1]
+    df['ProteinDomain'] = df['FileName'].str.extract(r'(PF\d+)_')
+    df['Layers'] = df['FileName'].str.extract(f'{type_name}_(\d+)_')[0].astype(int)
+    df['Heads'] = df['FileName'].str.extract(f'{type_name}_\d+_(\d+)')[0].astype(int)
+    df = df.sort_values(by=['ProteinDomain', 'Layers', 'Heads']).drop(['FileName'], axis=1)
+    df = df.reindex(columns=['ProteinDomain', 'Layers', 'Heads', 'RFScore'])
+    return df
+
+
+def merge_and_calculate_stats(dfs):
+    merged_df = reduce(lambda left, right: pd.merge(left, right, on=['ProteinDomain', 'Layers', 'Heads'], how='outer'),
+                       dfs)
+    df_reduced = merged_df.drop(columns=['ProteinDomain', 'Layers', 'Heads'])
+    merged_df['RFScore'] = df_reduced.mean(axis=1)
+    merged_df['Variance'] = df_reduced.var(axis=1)
+    return merged_df[['ProteinDomain', 'RFScore', 'Variance']]
 
 
 def load_data(typ):
     base_path = 'RFscore'
 
-    # load default data for column attention
+    # Load default data
     default_rf_file = os.path.join(base_path, f'{typ}_rf_score_default.csv')
-
+    final_default = None
     if os.path.exists(default_rf_file):
-        default_rf = pd.read_csv(default_rf_file)
-        filtered_rf = default_rf[default_rf['FileName'].str.contains('default')]
-        filtered_rf['ProteinDomain'] = filtered_rf['FileName'].str.extract(r'(PF\d+)_')
-        filtered_rf['Layers'] = filtered_rf['FileName'].str.extract(r'default_(\d+)_\d+').astype(int)
-        filtered_rf['Heads'] = filtered_rf['FileName'].str.extract(r'default_\d+_(\d+)').astype(int)
-        sorted_rf = filtered_rf.sort_values(by=['ProteinDomain', 'Layers', 'Heads'])
-        final_default = sorted_rf.drop(['FileName'], axis=1)
-        new_order = ['ProteinDomain', 'Layers', 'Heads', 'RFScore']
-        final_default = final_default.reindex(columns=new_order)
+        final_default = load_csv_and_process(default_rf_file, 'default', 'default')
 
-    else:
-
-        return None
-
-    # load sc data for column attention
-    sc_list = []
-
+    # Load sc data
     filepaths = [f'RFscore/{typ}_rf_score_rep{i}.csv' for i in range(1, 6)]
+    sc_list = [load_csv_and_process(path, 'sc_', 'sc') for path in filepaths]
+    final_sc = merge_and_calculate_stats(sc_list)
 
-    for path in filepaths:
-        sc_rf = pd.read_csv(path)
-
-        sc_rf = sc_rf[~sc_rf['FileName'].str.contains('scovar')]
-        sc_rf = sc_rf[sc_rf['FileName'].str.count('_') > 1]
-        sc_rf['ProteinDomain'] = sc_rf['FileName'].str.extract(r'(PF\d+)_')
-        sc_rf['Layers'] = sc_rf['FileName'].str.extract(r'sc_(\d+)_')[0].astype(int)
-        sc_rf['Heads'] = sc_rf['FileName'].str.extract(r'sc_\d+_(\d+)')[0].astype(int)
-        sorted_rf = sc_rf.sort_values(by=['ProteinDomain', 'Layers', 'Heads'])
-        sorted_rf = sorted_rf.drop(['FileName'], axis=1)
-        new_order = ['ProteinDomain', 'Layers', 'Heads', 'RFScore']
-        sorted_rf = sorted_rf.reindex(columns=new_order)
-        sc_list.append(sorted_rf)
-
-    dataframes = [df for df in sc_list]
-    final_sc = reduce(lambda left, right: pd.merge(left, right, on=['ProteinDomain', 'Layers', 'Heads'], how='outer'),
-                      dataframes)
-    df_reduced = final_sc.drop(columns=['ProteinDomain', 'Layers', 'Heads'])
-    reps_means = df_reduced.mean(axis=1)
-    reps_variances = df_reduced.var(axis=1)
-    final_sc['Mean'] = reps_means
-    final_sc['Variance'] = reps_variances
-
-    final_sc = final_sc[['ProteinDomain', 'Mean', 'Variance']]
-
-    # load scovar data for column attention
-    scovar_list = []
-    for path in filepaths:
-        scovar_rf = pd.read_csv(path)
-        scovar_rf = scovar_rf[scovar_rf['FileName'].str.contains('scovar')]
-        scovar_rf = scovar_rf[scovar_rf['FileName'].str.count('_') > 1]
-        scovar_rf['ProteinDomain'] = scovar_rf['FileName'].str.extract(r'(PF\d+)_')
-        scovar_rf['Layers'] = scovar_rf['FileName'].str.extract(r'scovar_(\d+)_')[0].astype(int)
-        scovar_rf['Heads'] = scovar_rf['FileName'].str.extract(r'scovar_\d+_(\d+)')[0].astype(int)
-        sorted_rf = scovar_rf.sort_values(by=['ProteinDomain', 'Layers', 'Heads'])
-        sorted_rf = sorted_rf.drop(['FileName'], axis=1)
-        new_order = ['ProteinDomain', 'Layers', 'Heads', 'RFScore']
-        sorted_rf = sorted_rf.reindex(columns=new_order)
-        scovar_list.append(sorted_rf)
-
-    dataframes = [df for df in scovar_list]
-    final_scovar = reduce(
-        lambda left, right: pd.merge(left, right, on=['ProteinDomain', 'Layers', 'Heads'], how='outer'), dataframes)
-    df_reduced = final_scovar.drop(columns=['ProteinDomain', 'Layers', 'Heads'])
-    reps_means = df_reduced.mean(axis=1)
-    reps_variances = df_reduced.var(axis=1)
-    final_scovar['Mean'] = reps_means
-    final_scovar['Variance'] = reps_variances
-
-    final_scovar = final_scovar[['ProteinDomain', 'Mean', 'Variance']]
+    # Load scovar data
+    scovar_list = [load_csv_and_process(path, 'scovar', 'scovar') for path in filepaths]
+    final_scovar = merge_and_calculate_stats(scovar_list)
 
     return final_default, final_sc, final_scovar
 
@@ -97,7 +59,6 @@ def extract_var(df, protein_domain):
 
 
 def plot_heatmap(ax, data, vmax):
-    # define some parameters
     x_labels = [str(i) for i in range(1, 13)]
     y_labels = [str(i) for i in range(1, 13)]
     cdict = {'red': [(0.0, 1.0, 1.0),
@@ -107,7 +68,6 @@ def plot_heatmap(ax, data, vmax):
              'blue': [(0.0, 1.0, 1.0),
                       (1.0, 0.0, 0.0)]}
     red_white_cmap = mcolors.LinearSegmentedColormap('RedWhite', cdict)
-
     im = ax.imshow(data, cmap=red_white_cmap, aspect='equal', vmin=0, vmax=vmax)
     ax.set_xticks(np.arange(0, 12, 2))
     ax.set_yticks(np.arange(0, 12, 2))
@@ -126,11 +86,11 @@ def overlay_variance(var_data, ax):
 
 
 def plot_protein_domains(default_df, sc_df, scovar_df, prot_domains):
-    # fig, axs = plt.subplots()
     fig, axs = plt.subplots(4, 3, figsize=(9, 12),
-                            gridspec_kw={"width_ratios": [10, 10, 10]})
+                            gridspec_kw={"width_ratios": [10, 10, 10]},
+                            constrained_layout=True)
 
-    typs = ['Default', 'Shuffled_columns', 'Shuffled_covariance']
+    typs = ['Default', 'Shuffled columns', 'Shuffled covariance']
 
     for i, protein_domain in enumerate(prot_domains):
         default = extract_data(default_df, protein_domain)
@@ -144,28 +104,28 @@ def plot_protein_domains(default_df, sc_df, scovar_df, prot_domains):
         for j, typ in enumerate(typs):
             if typ == 'Default':
                 heatmap = plot_heatmap(axs[i, j], default, vmax)
-            elif typ == 'Shuffled_columns':
+            elif typ == 'Shuffled columns':
                 heatmap = plot_heatmap(axs[i, j], sc, vmax)
             else:
                 heatmap = plot_heatmap(axs[i, j], scovar, vmax)
 
             if i == 3:
-                axs[i, j].set_xlabel("Heads", fontsize=12)
+                axs[i, j].set_xlabel("Head", fontsize=12)
             if i == 0:
                 axs[0, j].set_title(typ, fontsize=12)
             if j == 0:
-                axs[i, j].set_ylabel(f"{protein_domain}\nLayers", fontsize=12)
+                axs[i, j].set_ylabel(f"{protein_domain}\nLayer", fontsize=12)
             if j == 2:
                 fig.colorbar(heatmap, ax=axs[i, j])
-            if j != 0:
-                overlay_variance(var_of_sc, axs[i, j])
                 overlay_variance(var_of_scovar, axs[i, j])
+            if j == 1:
+                overlay_variance(var_of_sc, axs[i, j])
 
     plt.subplots_adjust(wspace=0.01, hspace=0.35)
     plt.show()
 
 
 if __name__ == '__main__':
-    prot_domains = ['PF00066', 'PF00168', 'PF00484', 'PF00672']
+    selected_prot_domains = ['PF00066', 'PF00168', 'PF00484', 'PF00672']
     final_default, final_sc, final_scovar = load_data('ml')
-    plot_protein_domains(final_default, final_sc, final_scovar, prot_domains)
+    plot_protein_domains(final_default, final_sc, final_scovar, selected_prot_domains)
