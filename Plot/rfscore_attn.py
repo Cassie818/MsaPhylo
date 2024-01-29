@@ -92,6 +92,7 @@ def plot_protein_domains(default_df, sc_df, scovar_df, prot_domains):
     typs = ['Default', 'Shuffled columns', 'Shuffled covariance']
 
     for i, protein_domain in enumerate(prot_domains):
+
         default = extract_data(default_df, protein_domain)
         sc = extract_data(sc_df, protein_domain)
         scovar = extract_data(scovar_df, protein_domain)
@@ -101,6 +102,7 @@ def plot_protein_domains(default_df, sc_df, scovar_df, prot_domains):
         var_of_scovar = extract_var(scovar_df, protein_domain)
 
         for j, typ in enumerate(typs):
+
             if typ == 'Default':
                 heatmap = plot_heatmap(axs[i, j], default, vmax)
             elif typ == 'Shuffled columns':

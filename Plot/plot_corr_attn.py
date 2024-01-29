@@ -50,6 +50,7 @@ def calculate_mean_variance(domain_dict):
 
 def load_domain_abs_vmax(domain_name, data_dict):
     all_data = []
+
     for data in data_dict[domain_name].values():
         all_data.append(data)
         domain_vmins = min([d.min() for d in all_data])
