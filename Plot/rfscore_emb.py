@@ -42,15 +42,16 @@ def load_data(typ):
         # append to list
         sc_list.append(sorted_rf)
 
+
     dataframes = [df for df in sc_list]
     final_sc = reduce(lambda left, right: pd.merge(left, right, on=['ProteinDomain', 'Layer'], how='outer'), dataframes)
     df_reduced = final_sc.drop(columns=['ProteinDomain', 'Layer'])
     reps_means = df_reduced.mean(axis=1)
-    reps_variances = df_reduced.var(axis=1)
+    reps_std = df_reduced.std(axis=1)
     final_sc['Mean'] = reps_means
-    final_sc['Variance'] = reps_variances
+    final_sc['Std'] = reps_std
 
-    final_sc = final_sc[['ProteinDomain', 'Mean', 'Variance']]
+    final_sc = final_sc[['ProteinDomain', 'Layer', 'Mean', 'Std']]
 
     # load scovar data
     scovar_list = []
@@ -74,32 +75,30 @@ def load_data(typ):
                           dataframes)
     df_reduced = final_scovar.drop(columns=['ProteinDomain', 'Layer'])
     reps_means = df_reduced.mean(axis=1)
-    reps_variances = df_reduced.var(axis=1)
+    reps_std = df_reduced.var(axis=1)
     final_scovar['Mean'] = reps_means
-    final_scovar['Variance'] = reps_variances
+    final_scovar['Std'] = reps_std
 
-    final_scovar = final_scovar[['ProteinDomain', 'Mean', 'Variance']]
+    final_scovar = final_scovar[['ProteinDomain', 'Layer', 'Mean', 'Std']]
 
     return final_default, final_sc, final_scovar
-
 
 def plot_protein_domains(default_df, sc_df, scovar_df):
     fig, axs = plt.subplots(4, 5, figsize=(12, 9), sharex=False, sharey=False)
     axs = axs.flatten()  # Flatten the 2D array of axes for easier access
 
-    for i, (protein_domain, group) in enumerate(default_df.groupby('ProteinDomain')):
+    for i, (protein_domain, group) in enumerate(final_default.groupby('ProteinDomain')):
         group = group.sort_values('Layer')
         ax = axs[i]
         layers = list(range(1, 13))
-        sc_data = sc_df[sc_df['ProteinDomain'] == protein_domain]
-        scovar_data = scovar_df[scovar_df['ProteinDomain'] == protein_domain]
+        sc_data = final_sc[final_sc['ProteinDomain'] == protein_domain]
+        scovar_data = final_scovar[final_scovar['ProteinDomain'] == protein_domain]
 
-        ax.plot(layers, group['RFScore'], '-*', markersize=3, color='dodgerblue', label='Default')
-        ax.errorbar(layers, sc_data['Mean'], yerr=sc_data['Variance'], fmt='-o', markersize=3, color='red',
-                    label='Shuffled columns')
-        ax.errorbar(layers, scovar_data['Mean'], yerr=scovar_data['Variance'], fmt='-^', markersize=3,
-                    color='darkviolet',
-                    label='Shuffled covariance')
+        ax.plot(layers, group['RFScore'], color='dodgerblue', linestyle='--', label='Default')
+        ax.errorbar(layers, sc_data['Mean'], yerr=sc_data['Std'], color='red',
+                    linestyle='-.', label='Shuffled columns', elinewidth=1)
+        ax.errorbar(layers, scovar_data['Mean'], yerr=scovar_data['Std'], color='darkviolet',
+                    linestyle='--', label='Shuffled covariance', elinewidth=1)
         ax.set_title(protein_domain, fontsize=12)
         ax.set_xlabel('Layer', fontsize=10)
         ax.set_ylabel('RF score', fontsize=10)
