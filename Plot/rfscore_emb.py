@@ -42,7 +42,6 @@ def load_data(typ):
         # append to list
         sc_list.append(sorted_rf)
 
-
     dataframes = [df for df in sc_list]
     final_sc = reduce(lambda left, right: pd.merge(left, right, on=['ProteinDomain', 'Layer'], how='outer'), dataframes)
     df_reduced = final_sc.drop(columns=['ProteinDomain', 'Layer'])
@@ -83,6 +82,7 @@ def load_data(typ):
 
     return final_default, final_sc, final_scovar
 
+
 def plot_protein_domains(default_df, sc_df, scovar_df):
     fig, axs = plt.subplots(4, 5, figsize=(12, 9), sharex=False, sharey=False)
     axs = axs.flatten()  # Flatten the 2D array of axes for easier access
@@ -100,8 +100,10 @@ def plot_protein_domains(default_df, sc_df, scovar_df):
         ax.errorbar(layers, scovar_data['Mean'], yerr=scovar_data['Std'], color='darkviolet',
                     linestyle='--', label='Shuffled covariance', elinewidth=1)
         ax.set_title(protein_domain, fontsize=12)
-        ax.set_xlabel('Layer', fontsize=10)
-        ax.set_ylabel('RF score', fontsize=10)
+        if i >= 15:
+            ax.set_xlabel('Layer', fontsize=10)
+        if i % 5 == 0:
+            ax.set_ylabel('RF Score', fontsize=10)
 
         ax.set_xticks(range(1, 13, 2))
 
