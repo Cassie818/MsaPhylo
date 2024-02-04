@@ -35,8 +35,6 @@ class EvDist:
         """
         Calculate the evolutionary distance between sequences based on the phylogenetic tree.
         """
-
-        phylo_tree = Tree(self.tree)
         ev_distances = []
 
         for ref_seq_name in seq_labels:
