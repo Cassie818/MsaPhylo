@@ -15,13 +15,6 @@ def get_alignment_stats(alignments_file):
     return num_sequences, alignment_length, no_gap_length_avg
 
 
-def get_tree_height_avg(tree_file):
-    tree = Tree(tree_file)
-    tree_heights = [leaf.dist for leaf in tree.get_leaves()]
-    average_height = sum(tree_heights) / len(tree_heights) if tree_heights else 0
-    return average_height
-
-
 def calculate_total_distance_to_root(node):
     distance = 0
     while node.up:
@@ -49,17 +42,14 @@ def calc_stats(alignments_folder, trees_folder1, trees_folder2, output_file):
             print("Calculating statistics for:", base_name)
 
             num_sequences, alignment_length, no_gap_length_avg = get_alignment_stats(alignments_file)
-            avg_tree_height_nj = get_tree_height_avg(trees_file1)
-            avg_tree_height_ml = get_tree_height_avg(trees_file2)
             avg_extant_to_root_nj = get_mean_extant_to_root(trees_file1)
             avg_extant_to_root_ml = get_mean_extant_to_root(trees_file2)
 
-            data.append([base_name, num_sequences, alignment_length,
-                         no_gap_length_avg, avg_tree_height_nj, avg_tree_height_ml,
+            data.append([base_name, num_sequences,
+                         alignment_length, no_gap_length_avg,
                          avg_extant_to_root_nj, avg_extant_to_root_ml])
 
     df = pd.DataFrame(data, columns=["pfam_id", "sequence_num", "alignment_len", "avg_sequence_len",
-                                     "average_tree_height_NJ", "average_tree_height_ML",
                                      "average_extant_to_root_NJ", "average_extant_to_root_ML"])
     df.to_csv(output_file, sep='\t', index=False)
 
