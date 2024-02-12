@@ -1,44 +1,54 @@
 import torch
 import string
+from typing import List, Tuple
 from esm import pretrained
 from Bio import SeqIO
 from params import MSA_PATH, EMB_PATH, ATTN_PATH, MSA_TYPE_MAP, EMB_TYPE_MAP, ATTN_TYPE_MAP
 
 
-def remove_insertions(sequence):
-    """ Removes any insertions into the sequence. Needed to load aligned sequences in an MSA. """
-    deletekeys = dict.fromkeys(string.ascii_lowercase)
-    deletekeys["."] = None
-    deletekeys["*"] = None
-    translation = str.maketrans(deletekeys)
-    return sequence.translate(translation)
-
-
 class Extractor:
+    """Class for extracting embeddings and column attention heads."""
 
-    def __init__(self, protein_domain, msa_typ):
+    def __init__(
+            self,
+            prot_family: str,
+            msa_typ: str,
+    ):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = "esm_msa1b_t12_100M_UR50S"
-        self.encoding_dim, self.encoding_layer, self.max_seq_length = 768, 12, 1022
-        self.protein_family = protein_domain
+        self.encoding_dim, self.encoding_layer, self.max_seq_len, self.max_seq_depth = 768, 12, 1024, 1024
+        self.prot_family = prot_family
         self.msa_type = msa_typ if msa_typ in MSA_TYPE_MAP else "default"
-        self.msa_fasta_file = f'{MSA_PATH}{protein_domain}{MSA_TYPE_MAP[self.msa_type]}'
+        self.msa_fasta_file = f'{MSA_PATH}{prot_family}{MSA_TYPE_MAP[self.msa_type]}'
 
-    def read_msa(self):
-        return [(record.description, remove_insertions(str(record.seq)))
+    @staticmethod
+    def remove_insertions(sequence: str) -> str:
+        """ Removes any insertions into the sequence. Needed to load aligned sequences in an MSA. """
+        deletekeys = dict.fromkeys(string.ascii_lowercase)
+        deletekeys["."] = None
+        deletekeys["*"] = None
+        translation = str.maketrans(deletekeys)
+        return sequence.translate(translation)
+
+    def read_msa(self) -> List[Tuple[str, str]]:
+        """ Reads MSA file. """
+        return [(record.description, Extractor.remove_insertions(str(record.seq)))
                 for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
 
     def get_embedding(self):
         model, alphabet = pretrained.load_model_and_alphabet(self.model_name)
         batch_converter = alphabet.get_batch_converter()
 
-        emb = f'{EMB_PATH}{self.protein_family}{EMB_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
+        emb = f'{EMB_PATH}{self.prot_family}{EMB_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
         plm_embedding = {}
 
         model.eval()
         msa_data = [self.read_msa()]
         msa_labels, msa_strs, msa_tokens = batch_converter(msa_data)
         seq_num = len(msa_labels[0])
+        seq_len = len(msa_strs[0][0])
+        if seq_len > self.max_seq_depth or seq_num > self.max_seq_len:
+            raise ValueError("It exceeds the capacity of the MSA transformer!")
 
         with torch.no_grad():
             for layer in range(self.encoding_layer):
@@ -56,7 +66,7 @@ class Extractor:
         model, alphabet = pretrained.load_model_and_alphabet(self.model_name)
         batch_converter = alphabet.get_batch_converter()
 
-        attn = f'{ATTN_PATH}{self.protein_family}{ATTN_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
+        attn = f'{ATTN_PATH}{self.prot_family}{ATTN_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
 
         model.eval()
         msa_data = [self.read_msa()]
