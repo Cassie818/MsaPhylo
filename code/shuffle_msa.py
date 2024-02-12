@@ -1,8 +1,7 @@
 import csv
 import random
 from Bio import SeqIO
-
-MSA_PATH = './data/Pfam/'
+from params import MSA_PATH
 
 
 class ShuffleMsa:
