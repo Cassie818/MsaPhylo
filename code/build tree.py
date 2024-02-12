@@ -4,16 +4,16 @@ from Bio import SeqIO
 from params import MSA_PATH, MSA_TYPE_MAP, EMB_PATH, EMB_TYPE_MAP, ATTN_PATH, ATTN_TYPE_MAP, TREE_PATH, LAYER, HEAD
 
 
-class NJtree:
+class PlmTree:
 
-    def __init__(self, protein_family, msa_type):
+    def __init__(self, prot_family, msa_type):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = "esm_msa1b_t12_100M_UR50S"
-        self.protein_family = protein_family
+        self.prot_family = prot_family
         self.msa_type = msa_type
-        self.msa_fasta_file = f'{MSA_PATH}{protein_family}{MSA_TYPE_MAP[self.msa_type]}'
-        self.emb = f'{EMB_PATH}{self.protein_family}{EMB_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
-        self.col_attn = f'{ATTN_PATH}{self.protein_family}{ATTN_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
+        self.msa_fasta_file = f'{MSA_PATH}{prot_family}{MSA_TYPE_MAP[self.msa_type]}'
+        self.emb = f'{EMB_PATH}{self.prot_family}{EMB_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
+        self.col_attn = f'{ATTN_PATH}{self.prot_family}{ATTN_TYPE_MAP[self.msa_type]}{self.model_name}.pt'
 
     @staticmethod
     def euc_distance(a, b):
@@ -25,8 +25,8 @@ class NJtree:
     @staticmethod
     def neighbor_joining(distmat, names):
         """
-          Builds a tree from a distance matrix using the NJ algorithm using the
-             original algorithm published by Saitou and Nei.
+          Builds a tree from a distance matrix using the NJ algorithm using the original algorithm published by Saitou and Nei.
+          The original code from https://github.com/esbgkannan/chumby
 
           Parameters
           ----------
@@ -105,65 +105,35 @@ class NJtree:
 
     def build_embedding_tree(self):
 
-        # load embeddings
-        all_embeddings = torch.load(self.emb)
         # load the sequence names
         prot_sequences = [record.id for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
+        # load embeddings
+        all_embeddings = torch.load(self.emb)
 
         for layer in range(LAYER):
             euc_dist = self.pairwise_euclidean_distance(all_embeddings[layer])
-            phylo_path = f"{TREE_PATH}{self.protein_family}_{layer}.nwk"
+            phylo_path = f"{TREE_PATH}{self.prot_family}_{layer}.nwk"
             tree = self.neighbor_joining(euc_dist, prot_sequences)
             # Save the tree
             with open(phylo_path, "w") as file:
                 file.write(tree)
 
-    def build_attention_tree1(self):
+    def build_attention_tree(self):
 
         # Load the sequence names
         prot_sequences = [record.id for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
         # Load attention
         attention = torch.load(self.col_attn)
+
         # Remove start token
         attn_mean_on_cols_symm = attention["col_attentions"].cpu().numpy()[0, :, :, 1:, :, :].mean(axis=2)
         attn_mean_on_cols_symm += attn_mean_on_cols_symm.transpose(0, 1, 3, 2)
-        attn = attn_mean_on_cols_symm[0, 4, :, :]
-        phylo_path = f"{TREE_PATH}{self.protein_family}_0_4.nwk"
-        tree = self.neighbor_joining(attn, prot_sequences)
-        # Save the tree
-        with open(phylo_path, "w") as file:
-            file.write(tree)
 
-    def build_attention_tree2(self):
-
-        # Load the sequence names
-        prot_sequences = [record.id for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
-        # Load attention
-        attention = torch.load(self.col_attn)
-        # Remove start token
-        attn_mean_on_cols_symm = attention["col_attentions"].cpu().numpy()[0, :, :, 1:, :, :].mean(axis=2)
-        attn_mean_on_cols_symm += attn_mean_on_cols_symm.transpose(0, 1, 3, 2)
-        attn = attn_mean_on_cols_symm[11, 9, :, :]
-        phylo_path = f"{TREE_PATH}{self.protein_family}_11_9.nwk"
-        tree = self.neighbor_joining(attn, prot_sequences)
-        # Save the tree
-        with open(phylo_path, "w") as file:
-            file.write(tree)
-
-    def build_all_tree(self):
-
-        # Load the sequence names
-        prot_sequences = [record.id for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
-        # Load attention
-        attention = torch.load(self.col_attn)
-        # Remove start token
-        attn_mean_on_cols_symm = attention["col_attentions"].cpu().numpy()[0, :, :, 1:, :, :].mean(axis=2)
-        attn_mean_on_cols_symm += attn_mean_on_cols_symm.transpose(0, 1, 3, 2)
         for layer in range(LAYER):
             for head in range(HEAD):
                 attn = attn_mean_on_cols_symm[layer, head, :, :]
-                phylo_path = f"{TREE_PATH}{self.protein_family}_{layer}_{head}.nwk"
-                tree = self.neighbor_joining(attn, prot_sequences)
+                phylo_path = f"{TREE_PATH}{self.prot_family}_{layer}_{head}.nwk"
+                tree = PlmTree.neighbor_joining(attn, prot_sequences)
                 # Save the tree
                 with open(phylo_path, "w") as file:
                     file.write(tree)

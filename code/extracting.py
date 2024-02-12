@@ -36,6 +36,7 @@ class Extractor:
                 for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
 
     def get_embedding(self):
+        """ Extracts embeddings """
         model, alphabet = pretrained.load_model_and_alphabet(self.model_name)
         batch_converter = alphabet.get_batch_converter()
 
@@ -63,6 +64,7 @@ class Extractor:
         print("Embeddings saved in output file:", emb)
 
     def get_col_attention(self):
+        """ Extracts column attention """
         model, alphabet = pretrained.load_model_and_alphabet(self.model_name)
         batch_converter = alphabet.get_batch_converter()
 
@@ -87,6 +89,6 @@ if __name__ == '__main__':
 
     for protein_family in protein_domain_list:
         for msa_type in msa_type_list:
-            ext = Extractor(protein_family, msa_type)
-            ext.get_embedding()
-            ext.get_col_attention()
+            ex = Extractor(protein_family, msa_type)
+            ex.get_embedding()
+            ex.get_col_attention()
