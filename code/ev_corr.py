@@ -96,7 +96,7 @@ class EvDist:
         """
         Calculate the correlation between each column attention heads and evolutionary distances from the trees.
         """
-        output_file = os.path.join('./Results', f"{self.protein_family}_{self.msa_type}_ev_analysis_col_attention.csv")
+        output_file = os.path.join('./Results', f"{self.prot_family}_{self.msa_type}_ev_analysis_col_attention.csv")
         spear_ev_dist_corr = []
 
         # Load sequence names and extract shorter names
@@ -117,7 +117,7 @@ class EvDist:
             for head in range(HEAD):
                 attn = attn_mean_on_cols_symm[layer, head, :, :]
                 sp_corr = stats.spearmanr(ev_dist.flatten(), attn.flatten())
-                spear_ev_dist_corr.append([self.protein_family, layer, head, sp_corr.correlation, sp_corr.pvalue])
+                spear_ev_dist_corr.append([self.prot_family, layer, head, sp_corr.correlation, sp_corr.pvalue])
 
         # Save to CSV file
         with open(output_file, 'w') as file:
