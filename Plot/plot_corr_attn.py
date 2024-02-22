@@ -2,9 +2,10 @@ import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from typing import List, Dict
 
 
-def load_data(domain_name):
+def load_data(domain_name: str):
     default_dict = {}
     sc_dict = {}
     scovar_dict = {}
@@ -32,7 +33,7 @@ def load_data(domain_name):
     return default_dict, sc_dict, scovar_dict
 
 
-def calculate_mean_variance(domain_dict):
+def calculate_mean_variance(domain_dict: Dict):
     first_key = next(iter(domain_dict))
     rows, cols = domain_dict[first_key].shape
 
@@ -48,7 +49,7 @@ def calculate_mean_variance(domain_dict):
     return mean_matrix, variance_matrix
 
 
-def load_domain_abs_vmax(domain_name, data_dict):
+def load_domain_abs_vmax(domain_name: str, data_dict: Dict):
     all_data = []
 
     for data in data_dict[domain_name].values():
@@ -60,10 +61,10 @@ def load_domain_abs_vmax(domain_name, data_dict):
     return domain_abs_vmax
 
 
-def create_domain_heatmaps(mean_dict, var_dict, protein_domains, domain_abs_max, num_protein=4):
+def create_domain_heatmaps(mean_dict: Dict, var_dict: Dict, protein_domains: List[int],
+                           domain_abs_max: Dict, num_protein=4):
     """
     Create and display heatmaps for protein domains with variance overlay.
-
     :param mean_dict: Dictionary containing the mean heatmap data for each protein domain.
     :param var_dict: Dictionary containing the variance data for each protein domain.
     :param protein_domains: List of protein domain names.
@@ -75,7 +76,7 @@ def create_domain_heatmaps(mean_dict, var_dict, protein_domains, domain_abs_max,
     y_labels = [str(i) for i in range(1, 13)]
 
     fig, axes = plt.subplots(nrows=num_protein, ncols=len(typs), figsize=(9, 12),
-                             gridspec_kw={"width_ratios": [10, 10, 10]})
+                             gridspec_kw={"width_ratios": [10, 10, 12]})
 
     for i, protein_domain in enumerate(protein_domains):
         pf_info_mean = mean_dict[protein_domain]

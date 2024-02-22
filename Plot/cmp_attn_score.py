@@ -4,10 +4,12 @@ import pandas as pd
 import os
 from functools import reduce
 import matplotlib.colors as mcolors
-import code
+from pandas import DataFrame
+from typing import List, Dict
+from numpy.typing import ArrayLike
 
 
-def load_data(base_path, default_file_name):
+def load_data(base_path: str, default_file_name: str):
     """
     Loads attention score data for default, shuffled column, and shuffled covariance MSAs from a specified base path.
     """
@@ -29,7 +31,7 @@ def load_data(base_path, default_file_name):
     sc_dict = {'NJRFScore': [], 'MLRFScore': [], 'NJCID': [], 'MLCID': []}
     scovar_dict = {'NJRFScore': [], 'MLRFScore': [], 'NJCID': [], 'MLCID': []}
 
-    # Function to process files in directories
+    # Function to process shuffling files
     def process_files(directory, is_scovar=False):
         attn_file_path = os.path.join(directory, default_file_name)
         if os.path.exists(attn_file_path):
@@ -54,7 +56,8 @@ def load_data(base_path, default_file_name):
     return attn_data, sc_dict, scovar_dict
 
 
-def merge_and_calculate_stats(dfs, typ):
+def merge_and_calculate_stats(dfs: DataFrame, typ: str) -> DataFrame:
+
     df = pd.DataFrame()
     merged_df = reduce(lambda left, right: pd.merge(left, right, on=['FileName'], how='outer'), dfs)
     df['ProteinDomain'] = merged_df['FileName'].str.extract(r'(PF\d+)_')
@@ -68,6 +71,7 @@ def merge_and_calculate_stats(dfs, typ):
 
 
 def plot_heatmap(ax, data, vmin, vmax):
+
     x_labels = [str(i) for i in range(1, 13)]
     y_labels = [str(i) for i in range(1, 13)]
 
@@ -89,8 +93,9 @@ def plot_heatmap(ax, data, vmin, vmax):
     return im
 
 
-def overlay_variance(var_data, ax):
+def overlay_variance(var_data: ArrayLike, ax):
     max_variance = np.max(var_data)
+
     for i in range(var_data.shape[0]):
         for j in range(var_data.shape[1]):
             normalized_var = var_data[i, j] / max_variance
@@ -98,7 +103,8 @@ def overlay_variance(var_data, ax):
             ax.scatter(j, i, s=circle_size, color='gray', alpha=0.5)
 
 
-def extract_data(data, protein_domain, metrics, typ):
+def extract_data(data: DataFrame, protein_domain: List[str], metrics: str, typ: str):
+
     if typ == 'default':
         df = data[data['ProteinDomain'] == protein_domain]
         val = df[metrics].to_numpy().reshape(12, 12)
@@ -113,7 +119,9 @@ def extract_data(data, protein_domain, metrics, typ):
         return mean, var
 
 
-def plot_protein_domains(default_df, sc_dict, scovar_dict, prot_domains, metrics):
+def plot_protein_domains(default_df: DataFrame, sc_dict: Dict[str, int],
+                         scovar_dict: Dict[str, int], prot_domains: List[str], metrics: str):
+
     fig, axs = plt.subplots(4, 3, figsize=(9, 12),
                             gridspec_kw={"width_ratios": [10, 10, 11.5]})
 
@@ -156,7 +164,7 @@ def plot_protein_domains(default_df, sc_dict, scovar_dict, prot_domains, metrics
 if __name__ == '__main__':
     base_path = 'score'
     default_file_name = 'attn_score.csv'
-    attn_data, sc_dict, scovar_dict = load_data(base_path, default_file_name)
-    prot_domains = ['PF00168', 'PF12172', 'PF14317', 'PF20171']
     metrics = 'NJCID'
+    prot_domains = ['PF00168', 'PF12172', 'PF14317', 'PF20171']
+    attn_data, sc_dict, scovar_dict = load_data(base_path, default_file_name)
     plot_protein_domains(attn_data, sc_dict, scovar_dict, prot_domains, metrics)
