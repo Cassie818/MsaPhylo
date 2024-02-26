@@ -1,12 +1,15 @@
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import os
+import matplotlib.pyplot as plt
 from functools import reduce
 import matplotlib.colors as mcolors
 from pandas import DataFrame
 from typing import List, Dict
 from numpy.typing import ArrayLike
+import warnings
+
+warnings.filterwarnings('ignore')
 
 
 def load_data(base_path: str, default_file_name: str):
@@ -57,7 +60,9 @@ def load_data(base_path: str, default_file_name: str):
 
 
 def merge_and_calculate_stats(dfs: DataFrame, typ: str) -> DataFrame:
-
+    """
+    Merge five different dataframes and then calculate mean and std deviation
+    """
     df = pd.DataFrame()
     merged_df = reduce(lambda left, right: pd.merge(left, right, on=['FileName'], how='outer'), dfs)
     df['ProteinDomain'] = merged_df['FileName'].str.extract(r'(PF\d+)_')
@@ -94,6 +99,7 @@ def plot_heatmap(ax, data, vmin, vmax):
 
 
 def overlay_variance(var_data: ArrayLike, ax):
+
     max_variance = np.max(var_data)
 
     for i in range(var_data.shape[0]):
@@ -104,7 +110,9 @@ def overlay_variance(var_data: ArrayLike, ax):
 
 
 def extract_data(data: DataFrame, protein_domain: List[str], metrics: str, typ: str):
-
+    """
+    Extract data for specified protein families
+    """
     if typ == 'default':
         df = data[data['ProteinDomain'] == protein_domain]
         val = df[metrics].to_numpy().reshape(12, 12)

@@ -45,7 +45,7 @@ def plot_correlations(protein_domains: List, base_path: str, reference_csv: str)
     ref_dict = ref.set_index('ProteinDomain')['Corr'].to_dict()
 
     plt.rcParams['font.family'] = ['DejaVu Sans']
-    fig, axes = plt.subplots(4, 5, figsize=(15, 10))
+    fig, axes = plt.subplots(4, 5, figsize=(12, 8))
     axes = axes.flatten()
 
     for i, domain in enumerate(protein_domains):
@@ -53,7 +53,8 @@ def plot_correlations(protein_domains: List, base_path: str, reference_csv: str)
         for analysis_type, linestyle, color, label in [
             ('default', '--', 'navy', 'Default'),
             ('sc', '-.', '#ff7f0e', 'Shuffled columns'),
-            ('scovar', '--', 'blue', 'Shuffled covariance')]:
+            ('scovar', '--', ke, 'Shuffled covariance')]:
+
             data_dict = load_correlation_data(base_path, domain, analysis_type)
             if analysis_type == 'default':
                 if 'default' in data_dict:
@@ -77,7 +78,7 @@ def plot_correlations(protein_domains: List, base_path: str, reference_csv: str)
     fig.tight_layout(rect=[0, 0.03, 1, 0.97])
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(handles, labels, loc='lower center', ncol=4, bbox_to_anchor=(0.5, 0), fontsize=10)
-    plt.subplots_adjust(hspace=0.3, wspace=0.2)
+    plt.subplots_adjust(hspace=0.45, wspace=0.25)
     plt.show()
 
 
