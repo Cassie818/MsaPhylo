@@ -8,12 +8,11 @@ from params import MSA_PATH, EMB_PATH, ATTN_PATH, MSA_TYPE_MAP, EMB_TYPE_MAP, AT
 
 class Extractor:
     """Class for extracting embeddings and column attention heads."""
-
     def __init__(
             self,
             prot_family: str,
-            msa_typ: str,
-    ):
+            msa_typ: str, ):
+
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = "esm_msa1b_t12_100M_UR50S"
         self.encoding_dim, self.encoding_layer, self.max_seq_len, self.max_seq_depth = 768, 12, 1024, 1024
@@ -23,7 +22,10 @@ class Extractor:
 
     @staticmethod
     def remove_insertions(sequence: str) -> str:
-        """ Removes any insertions into the sequence. Needed to load aligned sequences in an MSA. """
+        """
+        Removes any insertions into the sequence. Needed to load aligned sequences in an MSA.
+        Utilities from https://github.com/facebookresearch/esm
+        """
         deletekeys = dict.fromkeys(string.ascii_lowercase)
         deletekeys["."] = None
         deletekeys["*"] = None

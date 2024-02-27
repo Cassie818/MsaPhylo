@@ -54,7 +54,7 @@ class PhyloStat:
             if os.path.isfile(nj_tree) and os.path.isfile(ml_tree):
                 print("Calculating statistics for:", base_name)
 
-                num_sequences, alignment_length, no_gap_length_avg = self.get_alignment_stats(alignments_file)
+                num_sequences, alignment_length, no_gap_length_avg = PhyloStat.get_alignment_stats(alignments_file)
                 avg_extant_to_root_nj = PhyloStat.get_mean_extant_to_root(nj_tree)
                 avg_extant_to_root_ml = PhyloStat.get_mean_extant_to_root(ml_tree)
 
@@ -69,12 +69,12 @@ class PhyloStat:
         print("Statistics have been written to", self.output_file)
 
 
-# Usage example:
-cwd = os.getcwd()
-alignments_folder = os.path.join(cwd, "data/Pfam")
-nj_tree_folder = os.path.join(cwd, "Trees/Pfam/NJ")
-ml_tree_folder = os.path.join(cwd, "Trees/Pfam/ML")
-output_file = "Pfam_summary.tsv"
+if __name__ == "__main__":
+    cwd = os.getcwd()
+    alignments_folder = os.path.join(cwd, "data/Pfam")
+    nj_tree_folder = os.path.join(cwd, "Trees/Pfam/NJ")
+    ml_tree_folder = os.path.join(cwd, "Trees/Pfam/ML")
+    output_file = "Pfam_summary.tsv"
 
-phylo_stats = PhyloStat(alignments_folder, nj_tree_folder, ml_tree_folder, output_file)
-phylo_stats.calc_stats()
+    phylo_stats = PhyloStat(alignments_folder, nj_tree_folder, ml_tree_folder, output_file)
+    phylo_stats.calc_stats()

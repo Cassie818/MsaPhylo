@@ -5,7 +5,7 @@ from params import MSA_PATH, MSA_TYPE_MAP, EMB_PATH, EMB_TYPE_MAP, ATTN_PATH, AT
 
 
 class PlmTree:
-
+    """Class for building treeS from the MSA Transformer"""
     def __init__(self, prot_family, msa_type):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = "esm_msa1b_t12_100M_UR50S"
@@ -17,26 +17,23 @@ class PlmTree:
 
     @staticmethod
     def euc_distance(a, b):
-        """
-        Calculate Euclidean distance between two points.
-        """
+        """Calculate Euclidean distance between two points."""
         return np.sqrt(np.sum((a - b) ** 2))
 
     @staticmethod
     def neighbor_joining(distmat, names):
         """
-          Builds a tree from a distance matrix using the NJ algorithm using the original algorithm published by Saitou and Nei.
-          The original code from https://github.com/esbgkannan/chumby
+        Builds a tree from a distance matrix using the NJ algorithm using the original algorithm published by Saitou and Nei.
+        Utilities from https://github.com/esbgkannan/chumby
 
-          Parameters
-          ----------
-          distmat : np.ndarray
-                    a square, symmetrical distance matrix of size (n, n)
-          names : list of str list of size (n) containing names corresponding to the distance matrix
+        Parameters
+        ----------
+        distmat : np.ndarray, a square, symmetrical distance matrix of size (n, n)
+        names : list of str list of size (n) containing names corresponding to the distance matrix
 
-          Returns
-          -------
-          tree : str a newick-formatted tree
+        Returns
+        -------
+        tree : str a newick-formatted tree
         """
 
         def join_ndx(D, n):
@@ -89,7 +86,8 @@ class PlmTree:
         newick = f'({t[1]}:{len1:.6f},{t[0]}:{len0:.6f},{t[2]}:{len2:.6f});'
         return newick
 
-    def pairwise_euclidean_distance(self, emb):
+    @staticmethod
+    def pairwise_euclidean_distance(emb):
         emb = np.array(emb)
         m, n, p = emb.shape
 
@@ -97,7 +95,7 @@ class PlmTree:
 
         for i in range(m):
             for j in range(i + 1, m):
-                distance = self.euc_distance(emb[i].flatten(), emb[j].flatten())
+                distance = PlmTree.euc_distance(emb[i].flatten(), emb[j].flatten())
                 distances[i, j] = distance
                 distances[j, i] = distance
 
@@ -105,15 +103,16 @@ class PlmTree:
 
     def build_embedding_tree(self):
 
-        # load the sequence names
+        # Load the sequence names
         prot_sequences = [record.id for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
-        # load embeddings
+        # Load embeddings
         all_embeddings = torch.load(self.emb)
 
         for layer in range(LAYER):
-            euc_dist = self.pairwise_euclidean_distance(all_embeddings[layer])
+            euc_dist = PlmTree.pairwise_euclidean_distance(all_embeddings[layer])
             phylo_path = f"{TREE_PATH}{self.prot_family}_{layer}.nwk"
-            tree = self.neighbor_joining(euc_dist, prot_sequences)
+            tree = PlmTree.neighbor_joining(euc_dist, prot_sequences)
+
             # Save the tree
             with open(phylo_path, "w") as file:
                 file.write(tree)
@@ -127,6 +126,7 @@ class PlmTree:
 
         # Remove start token
         attn_mean_on_cols_symm = attention["col_attentions"].cpu().numpy()[0, :, :, 1:, :, :].mean(axis=2)
+        # Compute and save symmetrized column attention matrices
         attn_mean_on_cols_symm += attn_mean_on_cols_symm.transpose(0, 1, 3, 2)
 
         for layer in range(LAYER):
@@ -135,5 +135,19 @@ class PlmTree:
                 phylo_path = f"{TREE_PATH}{self.prot_family}_{layer}_{head}.nwk"
                 tree = PlmTree.neighbor_joining(attn, prot_sequences)
                 # Save the tree
+
                 with open(phylo_path, "w") as file:
                     file.write(tree)
+
+
+if __name__ == "__main__":
+    msa_type_list = ['default', 'sc', 'scovar']
+    with open('./data/Pfam/protein_domain.txt', 'r') as file:
+        lines = file.readlines()
+    protein_domain_list = [line.strip() for line in lines]
+
+    for protein_family in protein_domain_list:
+        for msa_type in msa_type_list:
+            plmtree = PlmTree(protein_family, msa_type)
+            plmtree.build_embedding_tree()
+            plmtree.build_attention_tree()
