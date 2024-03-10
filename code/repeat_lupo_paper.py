@@ -183,7 +183,7 @@ def plot_protein_domain_correlations(protein_domain_list, regr_results_hamming_m
     y_vals_coeffs = np.arange(0, 12, 2)
 
     fig, axs = plt.subplots(
-        figsize=(9, 12),
+        figsize=(9, 9),
         nrows=len(protein_domain_list),
         ncols=1,
         gridspec_kw={"width_ratios": [10]},
