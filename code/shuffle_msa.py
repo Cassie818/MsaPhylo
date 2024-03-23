@@ -79,6 +79,34 @@ class ShuffleMsa:
 
         print(f'Generated Shuffle columns data of {self.protein_domain}!')
 
+    def shuffle_rows(self):
+        output_seq_file = f'{MSA_PATH}{self.protein_domain}_shuffle_rows.fasta'
+        output_order_file = f'{MSA_PATH}{self.protein_domain}_shuffle_rows_order.txt'
+        sequences = self._read_fasta()
+        sequence_length = len(sequences[1])
+
+        shuffled_sequences = []
+        shuffled_order_list = []
+
+        for sequence in sequences:
+            if not sequence.startswith('>'):
+                shuffled_order = random.sample(range(sequence_length), sequence_length)
+                shuffled_order_list.append(shuffled_order)
+                shuffled_sequence = ''.join(sequence[i] for i in shuffled_order)
+                shuffled_sequences.append(shuffled_sequence)
+
+            else:
+                shuffled_sequences.append(sequence)
+
+        with open(output_seq_file, 'w') as file:
+            file.write('\n'.join(shuffled_sequences))
+
+        with open(output_order_file, 'w') as file:
+            writer = csv.writer(file)
+            writer.writerows(shuffled_order_list)
+
+        print(f'Generated Shuffle rows data of {self.protein_domain}!')
+
     def keep_fasta_column(self):
         with open(self.msa_file, 'r') as f:
             content = f.readlines()
@@ -116,7 +144,7 @@ class ShuffleMsa:
 
 
 if __name__ == '__main__':
-    msa_type_list = ['default', 'sc', 'scovar']
+    msa_type_list = ['default', 'sc', 'scovar', 'sr']
     with open('./data/Pfam/protein_domain.txt', 'r') as file:
         lines = file.readlines()
     protein_domain_list = [line.strip() for line in lines]
@@ -125,3 +153,4 @@ if __name__ == '__main__':
         shuffled = ShuffleMsa(protein_domain)
         shuffled.shuffle_columns()
         shuffled.shuffle_covariance()
+        shuffled.shuffle_rows()
