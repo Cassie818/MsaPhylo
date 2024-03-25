@@ -127,7 +127,7 @@ class EvDist:
 
 
 if __name__ == '__main__':
-    msa_type_list = ['default', 'sc', 'scovar']
+    msa_type_list = ['default', 'sc', 'scovar', 'sr']
     with open('./data/Pfam/protein_domain.txt', 'r') as file:
         lines = file.readlines()
     protein_domain_list = [line.strip() for line in lines]
