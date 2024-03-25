@@ -31,12 +31,12 @@ process_file <- function(tree_file, nj_tree, ml_tree, result_file) {
   # Calculate scores
   nj_rf_score <- RobinsonFoulds(tree, nj_tree, similarity = TRUE, normalize = TRUE)
   ml_rf_score <- RobinsonFoulds(tree, ml_tree, similarity = TRUE, normalize = TRUE)
-  nj_ci_score <- TreeDistance(tree, nj_tree)
-  ml_ci_score <- TreeDistance(tree, ml_tree)
+  nj_ci_score <- MutualClusteringInfo(tree, nj_tree, normalize = TRUE)
+  ml_ci_score <- MutualClusteringInfo(tree, ml_tree, normalize = TRUE)
   
   file_name <- basename(sub("\\.nwk$", "", tree_file))
   data <- data.frame(FileName = file_name, NJRFScore = nj_rf_score, MLRFScore = ml_rf_score, 
-                     NJCID = nj_ci_score, MLCID = ml_ci_score)
+                     NJCI = nj_ci_score, MLCI = ml_ci_score)
   
   # Write to the correct result file
   write_scores(data, result_file)
@@ -45,9 +45,9 @@ process_file <- function(tree_file, nj_tree, ml_tree, result_file) {
 
 calculate_protein_family_scores <- function(folder_name) {
   # Directory paths for embeddings, attentions, and results
-  emb_folder <- file.path("/Users/cassie/Desktop/PlmPlylo/embeddings", folder_name)
-  attn_folder <- file.path("/Users/cassie/Desktop/PlmPlylo/attentions", folder_name)
-  results_folder <- file.path("/Users/cassie/Desktop/PlmPlylo/results", folder_name)
+  emb_folder <- file.path("/Users/cassie/Desktop/new/embeddings", folder_name)
+  attn_folder <- file.path("/Users/cassie/Desktop/new/attentions", folder_name)
+  results_folder <- file.path("/Users/cassie/Desktop/new/results", folder_name)
   
   # Corrected file paths for results
   emb_path <- file.path(results_folder, "emb_score.csv")
@@ -76,4 +76,4 @@ calculate_protein_family_scores <- function(folder_name) {
 
 
 # Run the function for a specific folder
-calculate_protein_family_scores("rep1")
+calculate_protein_family_scores("rep5")

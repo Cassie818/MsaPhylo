@@ -46,13 +46,13 @@ process_domain <- function(prot_domain) {
       
       nj_rf <- RobinsonFoulds(current_tree, nj_tree, similarity = TRUE, normalize = TRUE)
       ml_rf <- RobinsonFoulds(current_tree, ml_tree, similarity = TRUE, normalize = TRUE)
-      nj_ci <- TreeDistance(current_tree, nj_tree)
-      ml_ci <- TreeDistance(current_tree, ml_tree)
+      nj_ci <- MutualClusteringInfo(current_tree, nj_tree, normalize = TRUE)
+      ml_ci <- MutualClusteringInfo(current_tree, ml_tree, normalize = TRUE)
       
       
       base_name <- basename(sub("\\.nwk$", "", tree_file))
       data <- data.frame(FileName = base_name, NJRFScore = nj_rf, MLRFScore = ml_rf, 
-                         NJCID = nj_ci, MLCID = ml_ci)
+                         NJCI = nj_ci, MLCI = ml_ci)
       file_path <- switch(type, 
                           emb = paths$emb_file, 
                           attn = paths$attn_file)
@@ -64,8 +64,8 @@ process_domain <- function(prot_domain) {
   calculate_and_write_scores(attn_files, "attn")
                       
                       nj_ml_rf_score <- RobinsonFoulds(nj_tree, ml_tree, similarity = TRUE, normalize = TRUE)
-                      nj_ml_cid <- TreeDistance(nj_tree, ml_tree)
-                      data <- data.frame(ProteinDomain = prot_domain, RFScore = nj_ml_rf_score, CID = nj_ml_cid)
+                      nj_ml_cid <- MutualClusteringInfo(nj_tree, ml_tree, normalize = TRUE)
+                      data <- data.frame(ProteinDomain = prot_domain, RFScore = nj_ml_rf_score, CI = nj_ml_cid)
                       write_scores(data, paths$nj_ml_file)
 }
 
