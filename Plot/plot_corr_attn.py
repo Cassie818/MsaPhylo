@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def load_data(domain_name: str):
+def load_data(domain_name):
     default_dict = {}
     sc_dict = {}
     scovar_dict = {}
@@ -112,7 +112,7 @@ def create_domain_heatmaps(mean_dict, var_dict, protein_domains, domain_abs_max,
     axes[0, 2].set_title("Shuffled Covariance", fontsize=12)
     axes[0, 3].set_title("Shuffled Rows", fontsize=12)
 
-    plt.subplots_adjust(wspace=0.15, hspace=0.15)
+    plt.subplots_adjust(wspace=0.2, hspace=0.15)
     plt.show()
 
 
