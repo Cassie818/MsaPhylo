@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import warnings
 from functools import reduce
+import matplotlib.ticker as ticker
 
 warnings.filterwarnings('ignore')
 
@@ -79,53 +80,45 @@ def plot_heatmap(ax, data):
 
 
 def plot_protein_domains(sc_df, scovar_df, sr_df, protein_domains, metrics):
+    # Set font styles for plots
     plt.rcParams['font.family'] = 'sans-serif'
     plt.rcParams['font.sans-serif'] = ['arial']
-    fig, axs = plt.subplots(4, 3, figsize=(10, 10),
+    fig, axs = plt.subplots(len(protein_domains), 3, figsize=(10, 10),
                             gridspec_kw={"width_ratios": [10, 10, 10]})
 
+    # Decide on the columns to use based on the metrics variable once, to improve efficiency
+    metric_cols = ['RF_mean', 'RF_var'] if metrics == 'RF' else ['CI_mean', 'CI_var']
+
+    # Function to calculate the average and standard deviation
     def cal_avg_std(df, protein_domain):
-
-        if metrics == 'RF':
-            selec = df[['ProteinFamily', 'RF_mean', 'RF_var']]
-            selec_avg = selec[selec["ProteinFamily"] == protein_domain]['RF_mean'].to_numpy().reshape(12, 12)
-            selec_std = selec[selec["ProteinFamily"] == protein_domain]['RF_var'].to_numpy().reshape(12, 12)
-
-        else:
-            selec = df[['ProteinFamily', 'CI_mean', 'CI_var']]
-            selec_avg = selec[selec["ProteinFamily"] == protein_domain]['CI_mean'].to_numpy().reshape(12, 12)
-            selec_std = selec[selec["ProteinFamily"] == protein_domain]['CI_var'].to_numpy().reshape(12, 12)
-
+        selec = df.loc[df["ProteinFamily"] == protein_domain, ['ProteinFamily'] + metric_cols]
+        selec_avg = selec[metric_cols[0]].to_numpy().reshape(12, 12)
+        selec_std = selec[metric_cols[1]].to_numpy().reshape(12, 12)
         return selec_avg, selec_std
 
+    # Function to draw heatmap and overlay variance
+    def draw_heatmap_and_variance(ax, avg_data, var_data, protein_domain, label=""):
+        heatmap = plot_heatmap(ax, avg_data)
+        overlay_variance(var_data, ax)
+        cbar = fig.colorbar(heatmap, ax=ax)
+        cbar.formatter = ticker.FormatStrFormatter('%.2f')
+        cbar.update_ticks()
+
+    # Loop through each protein domain and dataset
+    dfs = [(sc_df, "Default"), (scovar_df, "Shuffled Covariance"), (sr_df, "Shuffled Rows")]
     for i, protein_domain in enumerate(protein_domains):
-
-        sc_avg, sc_var = cal_avg_std(sc_df, protein_domain)
-        scovar_avg, scovar_var = cal_avg_std(scovar_df, protein_domain)
-        sr_avg, sr_var = cal_avg_std(sr_df, protein_domain)
-
-        for j in list(range(3)):
-
+        for j, (df, label) in enumerate(dfs):
+            avg_data, var_data = cal_avg_std(df, protein_domain)
+            draw_heatmap_and_variance(axs[i, j], avg_data, var_data, protein_domain, label)
             if j == 0:
-                heatmap = plot_heatmap(axs[i, j], sc_avg)
-                overlay_variance(sc_var, axs[i, j])
-                axs[i, j].set_ylabel(f"{protein_domain}\nDefault", fontsize=12)
-                fig.colorbar(heatmap, ax=axs[i, j])
+                axs[i, j].set_ylabel(f"{protein_domain}\n{label}", fontsize=12)
 
-            elif j == 1:
-                heatmap = plot_heatmap(axs[i, j], scovar_avg)
-                overlay_variance(scovar_var, axs[i, j])
-                fig.colorbar(heatmap, ax=axs[i, j])
+    # Set titles for the first row to describe each column
+    axs[0, 0].set_title('Shuffled Positions', fontsize=12)
+    axs[0, 1].set_title('Shuffled Covariance', fontsize=12)
+    axs[0, 2].set_title('Shuffled Rows', fontsize=12)
 
-            else:
-                heatmap = plot_heatmap(axs[i, j], sr_avg)
-                overlay_variance(sr_var, axs[i, j])
-                fig.colorbar(heatmap, ax=axs[i, j])
-
-        axs[0, 0].set_title('Shuffled Positions', fontsize=12)
-        axs[0, 1].set_title('Shuffled Covariance', fontsize=12)
-        axs[0, 2].set_title('Shuffled Rows', fontsize=12)
-
+    # Adjust layout to make sure everything fits and is spaced nicely
     plt.subplots_adjust(wspace=0.01, hspace=0.15)
     plt.show()
 
