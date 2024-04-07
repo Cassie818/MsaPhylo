@@ -9,8 +9,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-def load_data(base_path: str = 'score',
-              default_file_name: str = 'attn_score.csv'):
+def load_data(base_path: str = 'score', default_file_name: str = 'attn_score.csv'):
     """
     Loads attention score data for default, shuffled column,
     shuffled covariance, and shuffled rows MSAs from a specified base path.
