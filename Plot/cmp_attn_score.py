@@ -9,11 +9,13 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-def load_data():
-    """Loads attention score data for default, shuffled column, and shuffled covariance MSAs from a specified base path."""
+def load_data(base_path: str = 'score',
+              default_file_name: str = 'attn_score.csv'):
+    """
+    Loads attention score data for default, shuffled column,
+    shuffled covariance, and shuffled rows MSAs from a specified base path.
+    """
 
-    base_path = 'score'
-    default_file_name = 'attn_score.csv'
     default_file_path = os.path.join(base_path, default_file_name)
 
     if not os.path.exists(default_file_path):
@@ -54,7 +56,7 @@ def load_data():
             for key in target_dict.keys():
                 target_dict[key].append(filtered_data[['FileName', key]])
 
-    # Load Shuffled column and covariance MSA data
+    # Load Shuffled column, covariance and rows MSA data
     for root, dirs, _ in os.walk(base_path):
         for dir_name in dirs:
             dir_path = os.path.join(root, dir_name)
@@ -122,7 +124,8 @@ def extract_data(data, protein_domain, metrics, typ):
         return mean, var
 
 
-def plot_protein_domains(default_df, sc_dict, scovar_dict, sr_dict, prot_domains, metrics):
+def plot_protein_domains(default_df, sc_dict, scovar_dict,
+                         sr_dict, prot_domains, metrics):
     plt.rcParams['font.family'] = 'sans-serif'
     plt.rcParams['font.sans-serif'] = ['arial']
     fig, axs = plt.subplots(4, 4, figsize=(10, 10),
@@ -174,5 +177,5 @@ if __name__ == '__main__':
     default_file_name = 'attn_score.csv'
     metrics = 'NJCID'
     prot_domains = ['PF00168', 'PF12172', 'PF14317', 'PF20171']
-    attn_data, sc_dict, scovar_dict, sr_dict = load_data()
+    attn_data, sc_dict, scovar_dict, sr_dict = load_data(base_path, default_file_name)
     plot_protein_domains(attn_data, sc_dict, scovar_dict, sr_dict, prot_domains, metrics)
