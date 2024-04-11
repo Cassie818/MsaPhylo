@@ -12,7 +12,6 @@ class PhyloStat:
                  ml_tree_folder,
                  output_file,
                  ):
-
         self.msa_folder = msa_folder
         self.nj_tree_folder = nj_tree_folder
         self.ml_tree_folder = ml_tree_folder

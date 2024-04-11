@@ -94,7 +94,8 @@ class EvDist:
 
     def compute_attention_correlation(self):
         """
-        Calculate the correlation between each column attention heads and evolutionary distances from the trees.
+        Calculate the correlation between each column attention
+        heads and evolutionary distances from the trees.
         """
         output_file = os.path.join('./Results', f"{self.prot_family}_{self.msa_type}_ev_analysis_col_attention.csv")
         spear_ev_dist_corr = []
@@ -127,6 +128,7 @@ class EvDist:
 
 
 if __name__ == '__main__':
+
     msa_type_list = ['default', 'sc', 'scovar', 'sr']
     with open('./data/Pfam/protein_domain.txt', 'r') as file:
         lines = file.readlines()
