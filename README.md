@@ -5,46 +5,57 @@
 Install pytorch: https://pytorch.org/
 
 ```python
-pip
+!pip
 install
 fair - esm - -quiet
-pip
+!pip
 install
 transformers - -quiet
-pip
+!pip
 install
 pysam - -quiet
-pip
+!pip
 install
 Bio
-pip
+!pip
 install
 ete3
+!pip
+install
+dendropy
 ```
 
 ## Usage
 
 ```python
 python
-MsaPhylo.py - input < INPUT
+MsaPhylo.py
+- input < INPUT
 MSA
-FILE > -name < NAME
+FILE >
+-name < NAME
 OF
 OUTPUT
-FILE > -output < PATH
+FILE >
+-output < PATH
 OF
 OUTPUT
-FILE > -layer < LAYER >
+FILE >
+-layer < LAYER >
 ```
 
 Examples:
 
 ```python
 python
-MsaPhylo.py - input
-"/Users/cassie/Desktop/MsaPhylo/data/Pfam/PF00066.fasta" - name
-'PF00066' - output
-"/Users/cassie/Desktop/" - layer
+MsaPhylo.py
+- input
+"/Users/cassie/Desktop/MsaPhylo/data/Pfam/PF00066.fasta"
+- name
+'PF00066'
+- output
+"/Users/cassie/Desktop/"
+- layer
 2
 ```
 
