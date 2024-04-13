@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 from Bio import SeqIO
-from params import MSA_PATH, MSA_TYPE_MAP, EMB_PATH, EMB_TYPE_MAP, ATTN_PATH, ATTN_TYPE_MAP, TREE_PATH, LAYER, HEAD
+from code.params import MSA_PATH, MSA_TYPE_MAP, EMB_PATH, EMB_TYPE_MAP, ATTN_PATH, ATTN_TYPE_MAP, TREE_PATH, LAYER, HEAD
 
 
 class PlmTree:

@@ -5,16 +5,18 @@ from typing import List, Tuple
 from esm import pretrained
 from Bio import SeqIO
 from code.build_plm_tree import PlmTree
+from code.extracting import Extractor
 
 
-class EmbeddingTree(PlmTree):
+class EmbeddingTree(PlmTree, Extractor):
     """ Class for building trees from embeddings."""
 
-    def __init__(self, msa, output_tree_path, layer=2):
+    def __init__(self, msa, name, output_tree_path, layer=2):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.msa_fasta_file = msa
+        self.name = name
         self.output_tree_path = output_tree_path
-        self.layer = layer
+        self.layer = int(layer)
         self.model_name = "esm_msa1b_t12_100M_UR50S"
         self.encoding_dim, self.encoding_layer, self.max_seq_len, self.max_seq_depth = 768, 12, 1024, 1024
 
@@ -33,10 +35,9 @@ class EmbeddingTree(PlmTree):
 
     def get_embedding(self):
         """ Extracts embeddings """
+        plm_embedding = {}
         model, alphabet = pretrained.load_model_and_alphabet(self.model_name)
         batch_converter = alphabet.get_batch_converter()
-
-        plm_embedding = {}
 
         model.eval()
         msa_data = [self.read_msa()]
@@ -56,16 +57,13 @@ class EmbeddingTree(PlmTree):
 
         return plm_embedding
 
-    @staticmethod
-    def build_embedding_tree(self):
+    def build_emb_tree(self):
         # Load the sequence names
         prot_sequences = [record.id for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
-        self.emb = self.get_embedding()
-        # Load embeddings
-        all_embeddings = torch.load(self.emb)
+        plm_embedding = self.get_embedding()
 
-        euc_dist = PlmTree.pairwise_euclidean_distance(all_embeddings[self.layer])
-        phylo_path = f"{self.output_tree_path}{self.prot_family}_{self.layer}.nwk"
+        euc_dist = PlmTree.pairwise_euclidean_distance(plm_embedding[self.layer])
+        phylo_path = f"{self.output_tree_path}{self.name}_{self.layer}.nwk"
         tree = PlmTree.neighbor_joining(euc_dist, prot_sequences)
 
         # Save the tree
@@ -76,14 +74,19 @@ class EmbeddingTree(PlmTree):
 def main():
     # Parse command-line arguments.
     parser = argparse.ArgumentParser(description='Building the phylogenetic trees using the MSA Transformer.')
-    parser.add_argument('--input', required=True, help='Input FASTA file path')
-    parser.add_argument('--output', required=True, help='Output path to save the phylogenetic trees')
-    parser.add_argument('--layer', required=False, help='Specify the layer of the MSA Transformer')
+    parser.add_argument('-input', required=True, help='Input FASTA file path')
+    parser.add_argument('-name', required=True, help='Name of output tree')
+    parser.add_argument('-output', required=True, help='Output path to save the phylogenetic trees')
+    parser.add_argument('-layer', required=False, help='Specify the layer of the MSA Transformer')
+
     args = parser.parse_args()
     msa_file = args.input
     layer = args.layer
+    name = args.name
     output_tree_path = args.output
-    tree = PlmTree.build_tree(msa_file, output_tree_path, layer)
+
+    embtree = EmbeddingTree(msa_file, name, output_tree_path, layer)
+    embtree.build_emb_tree()
 
 
 if __name__ == '__main__':

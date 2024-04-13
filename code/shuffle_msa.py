@@ -1,7 +1,7 @@
 import csv
 import random
 from Bio import SeqIO
-from params import MSA_PATH
+from code.params import MSA_PATH
 
 
 class ShuffleMsa:

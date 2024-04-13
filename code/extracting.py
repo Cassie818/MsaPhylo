@@ -3,7 +3,7 @@ import string
 from typing import List, Tuple
 from esm import pretrained
 from Bio import SeqIO
-from params import MSA_PATH, EMB_PATH, ATTN_PATH, MSA_TYPE_MAP, EMB_TYPE_MAP, ATTN_TYPE_MAP
+from code.params import MSA_PATH, EMB_PATH, ATTN_PATH, MSA_TYPE_MAP, EMB_TYPE_MAP, ATTN_TYPE_MAP
 
 
 class Extractor:

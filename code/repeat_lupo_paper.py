@@ -1,5 +1,4 @@
 """Adapted from https://github.com/Bitbol-Lab/Phylogeny-MSA-Transformer"""
-from params import MSA_PATH, ATTN_PATH, MSA_TYPE_MAP, ATTN_TYPE_MAP
 import torch
 import numpy as np
 from esm import pretrained
@@ -13,6 +12,7 @@ import matplotlib.pyplot as plt
 from matplotlib import colors
 from matplotlib import cm
 from patsy import dmatrices
+from code.params import MSA_PATH, ATTN_PATH, MSA_TYPE_MAP, ATTN_TYPE_MAP
 
 with warnings.catch_warnings():
     warnings.simplefilter("ignore", category=FutureWarning)
