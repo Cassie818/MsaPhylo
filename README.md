@@ -15,13 +15,27 @@ pip install ete3
 ## Usages
 
 ```python
-python MsaPhylo.py -input <INPUT MSA FILE> -name <NAME OF OUTPUT FILE> -output <PATH OF OUTPUT FILE> -layer <LAYER>
+python
+MsaPhylo.py - i < INPUT
+MSA
+FILE > -name < NAME
+OF
+OUTPUT
+FILE > -o < PATH
+OF
+OUTPUT
+FILE > -l < LAYER >
 ```
 
 Examples:
 
 ```python
-python MsaPhylo.py -input "/Users/cassie/Desktop/MsaPhylo/data/Pfam/PF00066.fasta" -name 'PF00066' -output "/Users/cassie/Desktop/" -layer 2
+python
+MsaPhylo.py - i
+"/Users/cassie/Desktop/MsaPhylo/data/Pfam/PF00066.fasta" - name
+'PF00066' - o
+"/Users/cassie/Desktop/" - l
+2
 ```
 
 a) INPUT MSA FILE
