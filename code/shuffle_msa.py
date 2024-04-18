@@ -6,7 +6,8 @@ from code.params import MSA_PATH
 
 class ShuffleMsa:
 
-    def __init__(self, protein_domain):
+    def __init__(self,
+                 protein_domain: str):
         self.protein_domain = protein_domain
         self.msa_file = f'{MSA_PATH}{self.protein_domain}.fasta'
 
@@ -106,41 +107,6 @@ class ShuffleMsa:
             writer.writerows(shuffled_order_list)
 
         print(f'Generated Shuffle rows data of {self.protein_domain}!')
-
-    def keep_fasta_column(self):
-        with open(self.msa_file, 'r') as f:
-            content = f.readlines()
-
-        sequences = []
-        current_sequence = ''
-        for line in content:
-            line = line.rstrip()
-            if line.startswith('>'):
-                if current_sequence:
-                    sequences.append(current_sequence)
-                sequences.append(line)
-                current_sequence = ''
-            else:
-                current_sequence += line
-        sequences.append(current_sequence)
-
-        sequence_length = len(sequences[1])
-
-        all_indices = list(range(sequence_length))
-
-        for pos in range(sequence_length):
-            keep_column = f'{MSA_PATH}{self.protein_domain}_keep_pos{pos}.fasta'
-            remove_sequences = []
-
-            for sequence in sequences:
-                if sequence.startswith('>'):
-                    remove_sequences.append(sequence)
-                else:
-                    remove_sequence = ''.join([sequence[pos]])
-                    remove_sequences.append(remove_sequence)
-
-            with open(keep_column, 'w') as f:
-                f.write('\n'.join(remove_sequences))
 
 
 if __name__ == '__main__':

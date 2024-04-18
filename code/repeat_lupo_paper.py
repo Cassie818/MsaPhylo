@@ -28,7 +28,7 @@ class Extractor:
     def __init__(
             self,
             prot_family: str,
-            msa_typ: str, ):
+            msa_typ: str):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = "esm_msa1b_t12_100M_UR50S"
         self.encoding_dim, self.encoding_layer, self.max_seq_len, self.max_seq_depth = 768, 12, 1024, 1024
@@ -169,7 +169,10 @@ class CorAns:
         return regr_results
 
 
-def plot_protein_domain_correlations(protein_domain_list, regr_results_hamming_msawise, cmap=cm.bwr, vpad=10):
+def plot_protein_domain_correlations(protein_domain_list,
+                                     regr_results_hamming_msawise,
+                                     cmap=cm.bwr,
+                                     vpad=10):
     """
     Plots correlation coefficients for protein domains.
 

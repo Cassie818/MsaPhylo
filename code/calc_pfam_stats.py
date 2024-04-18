@@ -7,10 +7,10 @@ import glob
 
 class PhyloStat:
     def __init__(self,
-                 msa_folder,
-                 nj_tree_folder,
-                 ml_tree_folder,
-                 output_file,
+                 msa_folder: str,
+                 nj_tree_folder: str,
+                 ml_tree_folder: str,
+                 output_file: str,
                  ):
         self.msa_folder = msa_folder
         self.nj_tree_folder = nj_tree_folder
@@ -37,6 +37,7 @@ class PhyloStat:
 
     @staticmethod
     def get_mean_extant_to_root(tree_file):
+        """Calculate the extant to root distance for the tree."""
         tree = Tree(tree_file)
         tree_heights = [PhyloStat.calculate_total_distance_to_root(leaf) for leaf in tree.get_leaves()]
         average_height = sum(tree_heights) / len(tree_heights) if tree_heights else 0

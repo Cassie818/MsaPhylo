@@ -1,12 +1,16 @@
 import torch
 import numpy as np
 from Bio import SeqIO
+from typing import List
 from code.params import MSA_PATH, MSA_TYPE_MAP, EMB_PATH, EMB_TYPE_MAP, ATTN_PATH, ATTN_TYPE_MAP, TREE_PATH, LAYER, HEAD
 
 
 class PlmTree:
     """Class for building treeS from the MSA Transformer"""
-    def __init__(self, prot_family, msa_type):
+
+    def __init__(self,
+                 prot_family: str,
+                 msa_type: str):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = "esm_msa1b_t12_100M_UR50S"
         self.prot_family = prot_family
@@ -121,7 +125,7 @@ class PlmTree:
 
         # Load the sequence names
         prot_sequences = [record.id for record in SeqIO.parse(self.msa_fasta_file, "fasta")]
-        # Load attention
+        # Load column attention
         attention = torch.load(self.col_attn)
 
         # Remove start token
@@ -133,9 +137,9 @@ class PlmTree:
             for head in range(HEAD):
                 attn = attn_mean_on_cols_symm[layer, head, :, :]
                 phylo_path = f"{TREE_PATH}{self.prot_family}_{layer}_{head}.nwk"
+                # Build attention tree for each column attention head
                 tree = PlmTree.neighbor_joining(attn, prot_sequences)
                 # Save the tree
-
                 with open(phylo_path, "w") as file:
                     file.write(tree)
 
