@@ -14,34 +14,22 @@ Install pytorch: https://pytorch.org/
 
 ## Usages
 
-```python
-python
-MsaPhylo.py
-- i < The
-MSA
-FILE >
--name < NAME
-OF
-OUTPUT
-FILE >
--o < Output
-DIRECTORY >
--l < LAYER >
+```
+python MsaPhylo.py
+    -i <The MSA FILE> \
+    -name <NAME OF OUTPUT FILE> \
+    -o <OUTPUT DIRECTORY> \
+    -l <LAYER>
 ```
 
 Examples:
 
-```python
-python
-MsaPhylo.py
-- i
-"/Users/cassie/Desktop/MsaPhylo/data/Pfam/PF00066.fasta"
-- name
-'PF00066'
-- o
-"/Users/cassie/Desktop/"
-- l
-2
+```
+python MsaPhylo.py
+        -i "/Users/cassie/Desktop/MsaPhylo/data/Pfam/PF00066.fasta" \
+        -name 'PF00066' \
+        -o "/Users/cassie/Desktop/" \
+        -l 2
 ```
 
 a) INPUT MSA FILE
