@@ -5,36 +5,42 @@
 Install pytorch: https://pytorch.org/
 
 ```
-pip install fair-esm --quiet
-pip install transformers --quiet
-pip install pysam --quiet
-pip install Bio
-pip install ete3
+!pip install fair-esm --quiet
+!pip install transformers --quiet
+!pip install pysam --quiet
+!pip install Bio
+!pip install ete3
 ```
 
 ## Usages
 
 ```python
 python
-MsaPhylo.py - i < INPUT
+MsaPhylo.py
+- i < The
 MSA
-FILE > -name < NAME
+FILE >
+-name < NAME
 OF
 OUTPUT
-FILE > -o < PATH
-OF
-OUTPUT
-FILE > -l < LAYER >
+FILE >
+-o < Output
+DIRECTORY >
+-l < LAYER >
 ```
 
 Examples:
 
 ```python
 python
-MsaPhylo.py - i
-"/Users/cassie/Desktop/MsaPhylo/data/Pfam/PF00066.fasta" - name
-'PF00066' - o
-"/Users/cassie/Desktop/" - l
+MsaPhylo.py
+- i
+"/Users/cassie/Desktop/MsaPhylo/data/Pfam/PF00066.fasta"
+- name
+'PF00066'
+- o
+"/Users/cassie/Desktop/"
+- l
 2
 ```
 
