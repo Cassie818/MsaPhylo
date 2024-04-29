@@ -19,6 +19,8 @@ pip install ete3
 
 ## Usages
 
+Check out guidance information ```python MsaPhylo.py -h ```
+
 ```bash
 python MsaPhylo.py
     -i <The MSA FILE> \
@@ -71,4 +73,9 @@ computational environments, the numbers varies. The limitation of sequence lengt
 
 ## Citation
 
-If you are using the MSA Transformer for Phylogenetic Reconstruction, please consider citing:
+If you are using the MSA Transformer for phylogenetic reconstruction, please consider citing:
+
+## Contact
+
+Feel free to contact me if you have any questions about phylogenetic reconstruction.
+
