@@ -2,7 +2,8 @@
 
 ## Introduction
 
-![](https://github.com/Cassie818/MsaPhylo/blob/main/Figures/fig1.png)
+<img src="https://github.com/Cassie818/MsaPhylo/blob/main/Figures/fig1.png" width=600>
+
 
 ## Install packages
 
@@ -18,28 +19,31 @@ pip install ete3
 
 ## Usages
 
-```
+```bash
 python MsaPhylo.py
     -i <The MSA FILE> \
     -name <NAME OF OUTPUT FILE> \
     -o <OUTPUT DIRECTORY> \
-    -l <LAYER>
+    -l <LAYER OF THE MSA TRANSFORMER>
 ```
 
 Examples:
 
-```
+``` bash
 python MsaPhylo.py
-        -i "/Users/cassie/Desktop/MsaPhylo/data/Pfam/PF00066.fasta" \
+        -i "./data/Pfam/PF00066.fasta" \
         -name 'PF00066' \
         -o "/Users/cassie/Desktop/" \
         -l 2
 ```
 
-a) INPUT MSA FILE
+## Instructions
+
+<ol>
+
+<li> INPUT MSA FILE
 
 ```
-
 >Seq1
 -SVNINELDLDLIRPGMKLIIIGRPGSGKSVIIKSLIASKRYIPAAIVISGSEEANHFYKTIFPSCFIYNKFNISIIEKI
 HKRQITAKNILGTSWLLLIIDDCMDDSKLFCEKTVMDLFKNGRHWNILVVVASQYVMDLKPVIRATIDGVFLLREPNMTY
@@ -56,13 +60,15 @@ VDKIYKQFGGNIP-KQTFHTLMEKVTQDHTCLYIDNTTTRQKWEDMVRYYKAPLDADVGFGFKDY---------
 ----------MSSLPDKSTVLFGESGTGKSTIIDDILFQIKPVGQIIVFCPTDRNNKAYSGRVPLPCIHDKITDEVLRDI
 WSRQSALTQVYKNPRLVIIFDDCSSQLNLKKNKVIQDIFYQGRHVFITTLIAIQTDKVLDPEIKKNAFVSIFTEETCASS
 ------YFERKSNDLDKEAKNRARNASKHQKLAWVRDEKR------FYKLMATKHDDFRFGNPIIWNYCEQIQ-
-
 ```
 
-(1) The maximum sequence numbers that the MSA Transformer can accepted is 1024. However, according different
-computational
-environments, the numbers varies.
+</li>
+
+<li> The theoretically maximum sequence numbers that the MSA Transformer can accept is 1024. However, according different
+computational environments, the numbers varies. The limitation of sequence length of the MSA is the same as well.</li>
+<li> To construct the phylogenetic tree, you can specify any layer from 1 to 12. It is recommended to use 2 or 3 layers for optimal results.</li>
+</ol>
 
 ## Citation
 
-If you are using the MSA Transformer for Phylogenetic Reconstruction, please cite our paper:
+If you are using the MSA Transformer for Phylogenetic Reconstruction, please consider citing:
