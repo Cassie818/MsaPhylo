@@ -79,7 +79,8 @@ def main():
     parser.add_argument('-i', required=True, help='Input FASTA file path')
     parser.add_argument('-name', required=True, help='Name of output tree')
     parser.add_argument('-o', required=True, help='Output path to save the phylogenetic trees')
-    parser.add_argument('-l', required=False, help='Specify the layer of the MSA Transformer')
+    parser.add_argument('-l', required=False, type=int, help='Specify the layer of the MSA Transformer (1-12)',
+                        choices=range(1, 13))
 
     args = parser.parse_args()
     msa_file = args.i
