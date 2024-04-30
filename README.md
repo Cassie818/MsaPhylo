@@ -66,8 +66,7 @@ WSRQSALTQVYKNPRLVIIFDDCSSQLNLKKNKVIQDIFYQGRHVFITTLIAIQTDKVLDPEIKKNAFVSIFTEETCASS
 
 </li>
 
-<li> The theoretically maximum sequence numbers that the MSA Transformer can accept is 1024. However, according different
-computational environments, the numbers varies. The limitation of sequence length of the MSA is the same as well.</li>
+<li> Theoretically, it can handle up to 1,024 protein sequences with an average alignment length of 1,024, but the actual capacity depends on memory requirements.</li>
 <li> To construct the phylogenetic tree, you can specify any layer from 1 to 12. It is recommended to use 2 or 3 layers for optimal results.</li>
 </ol>
 
