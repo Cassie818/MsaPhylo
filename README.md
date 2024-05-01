@@ -2,7 +2,7 @@
 
 ## Introduction
 
-<img src="https://github.com/Cassie818/MsaPhylo/blob/main/Figures/fig1.png" width=600>
+<img src="https://github.com/Cassie818/MsaPhylo/blob/main/Figures/fig1.png" width=800>
 
 
 ## Install packages
