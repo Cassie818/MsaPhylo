@@ -34,7 +34,7 @@ def load_data(base_path: str = 'score', default_file_name: str = 'attn_score.csv
     scovar_dict = {'NJRFScore': [], 'MLRFScore': [], 'NJCI': [], 'MLCI': []}
     sr_dict = {'NJRFScore': [], 'MLRFScore': [], 'NJCI': [], 'MLCI': []}
 
-    # Function to process shuffling files
+    # Function to process shuffling MSA files
     def process_files(directory, typ='scovar'):
         attn_file_path = os.path.join(directory, default_file_name)
 
@@ -174,7 +174,7 @@ def plot_protein_domains(default_df, sc_dict, scovar_dict,
 if __name__ == '__main__':
     base_path = 'score'
     default_file_name = 'attn_score.csv'
-    metrics = 'NJCID'
+    metrics = 'NJCI'
     prot_domains = ['PF00168', 'PF12172', 'PF14317', 'PF20171']
     attn_data, sc_dict, scovar_dict, sr_dict = load_data(base_path, default_file_name)
     plot_protein_domains(attn_data, sc_dict, scovar_dict, sr_dict, prot_domains, metrics)
