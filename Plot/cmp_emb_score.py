@@ -11,8 +11,7 @@ from numpy.typing import ArrayLike
 
 def load_data(base_path: str, default_file_name: str):
     """
-    Loads attention score data for default, shuffled positions,
-    shuffled covariance and shuffled rows MSAs from a specified base path.
+    Loads attention score data for default, shuffled column, and shuffled covariance MSAs from a specified base path.
     """
     default_file_path = os.path.join(base_path, default_file_name)
 
@@ -34,20 +33,20 @@ def load_data(base_path: str, default_file_name: str):
 
     # Function to process shuffling files
     def process_files(directory, typ='scovar'):
-        attn_file_path = os.path.join(directory, default_file_name)
+        emb_file_path = os.path.join(directory, default_file_name)
 
-        if os.path.exists(attn_file_path):
-            attn_file_data = pd.read_csv(attn_file_path)
+        if os.path.exists(emb_file_path):
+            emb_file_data = pd.read_csv(emb_file_path)
 
             if typ == 'scovar':
-                filtered_data = attn_file_data[attn_file_data['FileName'].str.contains('scovar')]
+                filtered_data = emb_file_data[emb_file_data['FileName'].str.contains('scovar')]
                 target_dict = scovar_dict
             elif typ == 'sr':
-                filtered_data = attn_file_data[attn_file_data['FileName'].str.contains('sr')]
+                filtered_data = emb_file_data[emb_file_data['FileName'].str.contains('sr')]
                 target_dict = sr_dict
             else:
-                filtered_data = attn_file_data[
-                    ~attn_file_data['FileName'].str.contains('scovar') & ~attn_file_data['FileName'].str.contains('sr')]
+                filtered_data = emb_file_data[
+                    ~emb_file_data['FileName'].str.contains('scovar') & ~emb_file_data['FileName'].str.contains('sr')]
                 target_dict = sc_dict
 
             for key in target_dict.keys():
@@ -65,12 +64,20 @@ def load_data(base_path: str, default_file_name: str):
 
 
 def merge_and_calculate_stats(dfs: DataFrame, typ: str) -> DataFrame:
+    merged_df = dfs[0]
+    for i in range(1, len(dfs)):
+        suffix_1 = f'_df{i}'
+        suffix_2 = f'_df{i + 1}'
+        while any(col + suffix_1 in merged_df.columns for col in dfs[i].columns if col != 'FileName'):
+            suffix_1 += '_'
+        while any(col + suffix_2 in dfs[i].columns for col in merged_df.columns if col != 'FileName'):
+            suffix_2 += '_'
+        merged_df = merged_df.merge(dfs[i], on='FileName', suffixes=(suffix_1, suffix_2))
     df = pd.DataFrame()
-    merged_df = reduce(lambda left, right: pd.merge(left, right, on=['FileName'], how='outer'), dfs)
     df['ProteinDomain'] = merged_df['FileName'].str.extract(r'(PF\d+)_')
     df['Layers'] = merged_df['FileName'].str.extract(f'_{typ}(\d+)')[0].astype(int)
-    df['Mean'] = merged_df.mean(axis=1)
-    df['Std'] = merged_df.std(axis=1)
+    df['Mean'] = merged_df.iloc[:, -5:].mean(axis=1)
+    df['Std'] = merged_df.iloc[:, -5:].std(axis=1)
     df.sort_values(by=['ProteinDomain', 'Layers'], inplace=True)
     df = df.reindex(columns=['ProteinDomain', 'Layers', 'Mean', 'Std'])
     return df
@@ -136,7 +143,7 @@ def plot_protein_domains(default_df: DataFrame, sc_dict: Dict[str, int],
     plt.rcParams['font.family'] = 'sans-serif'
     plt.rcParams['font.sans-serif'] = ['arial']
 
-    fig, axs = plt.subplots(4, 5, figsize=(12, 8))
+    fig, axs = plt.subplots(4, 5, figsize=(14, 8))
     axs = axs.flatten()
 
     typs = ['Default', 'Shuffled columns', 'Shuffled covariance', 'Shuffled rows']
@@ -150,34 +157,35 @@ def plot_protein_domains(default_df: DataFrame, sc_dict: Dict[str, int],
         sr_avg, sr_std = extract_data(sr_dict, protein_domain, metrics, 'sr')
 
         ax = axs[i]
-        ax.plot(layers, default, '--', markersize=3, color='#505050', label='Default')
-        ax.errorbar(layers, sc_avg, yerr=sc_std, fmt='--', markersize=3, color='#E75480',
+        ax.plot(layers, default, '-^', markersize=4, color='#505050', label='Default')
+        ax.errorbar(layers, sc_avg, yerr=sc_std, fmt='-x', markersize=4, color='lightpink',
                     label='Shuffled Positions')
-        ax.errorbar(layers, scovar_avg, yerr=scovar_std, fmt='--', markersize=3, color='#3399FF',
+        ax.errorbar(layers, scovar_avg, yerr=scovar_std, fmt='-*', markersize=4, color='lightskyblue',
                     label='Shuffled Covariance')
-        ax.errorbar(layers, sr_avg, yerr=sr_std, fmt='--', markersize=3, color='seagreen',
+        ax.errorbar(layers, sr_avg, yerr=sr_std, fmt='-o', markersize=4, color='darkseagreen',
                     label='Shuffled Rows')
 
         ref_val = ref_dict.get(protein_domain, 0)
-        ax.axhline(y=ref_val, color='#808080', label='Reference', linewidth=1)
-        ax.text(11, ref_val + 0.05, f'{ref_val:.2f}', color='black', ha='center', va='bottom', fontsize=12)
+        ax.axhline(y=ref_val, linestyle='--', color='dimgray', label='Reference', linewidth=1)
+        ax.text(11, ref_val + 0.05, f'{ref_val:.2f}', color='dimgray', ha='center', va='bottom', fontsize=12)
         ax.set_title(protein_domain, fontsize=14)
         ax.set_xticks(range(1, 13, 2))
         ax.set_yticks(np.arange(0, 1.1, 0.2))
-        ax.tick_params(axis='x', labelsize=12)
-        ax.tick_params(axis='y', labelsize=12)
+        ax.tick_params(axis='x', labelsize=14)
+        ax.tick_params(axis='y', labelsize=14)
 
         if i >= 15:
-            ax.set_xlabel('Layer', fontsize=12)
+            ax.set_xlabel('Layer', fontsize=14)
 
         if i % 5 == 0:
 
             if 'CI' in metrics:
-                ax.set_ylabel('CI Score', fontsize=12)
+                ax.set_ylabel('CI Score', fontsize=14)
             else:
-                ax.set_ylabel('RF Score', fontsize=12)
+                ax.set_ylabel('RF Score', fontsize=14)
         else:
             ax.set_yticklabels([])
+            ax.set_yticks([])
 
     handles, labels = axs[0].get_legend_handles_labels()
     fig.legend(handles, labels, loc='lower center', ncol=5, bbox_to_anchor=(0.5, 0), fontsize=12)
@@ -191,7 +199,7 @@ if __name__ == '__main__':
     base_path = 'score'
     default_file_name = 'emb_score.csv'
     reference_csv = 'score/nj_ml_score.csv'
-    metrics = 'NJCI'
+    metrics = 'MLRFScore'
     with open('./data/Pfam/protein_domain.txt', 'r') as file:
         lines = file.readlines()
     prot_domains = [line.strip() for line in lines]
