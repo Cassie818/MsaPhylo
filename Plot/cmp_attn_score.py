@@ -2,19 +2,17 @@ import numpy as np
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
-from functools import reduce
 import matplotlib.colors as mcolors
 import warnings
 
 warnings.filterwarnings('ignore')
 
 
-def load_data(base_path: str = 'score', default_file_name: str = 'attn_score.csv'):
-    """
-    Loads attention score data for default, shuffled column,
-    shuffled covariance, and shuffled rows MSAs from a specified base path.
-    """
+def load_data():
+    """Loads attention score data for default, shuffled column, and shuffled covariance MSAs from a specified base path."""
 
+    base_path = 'score'
+    default_file_name = 'attn_score.csv'
     default_file_path = os.path.join(base_path, default_file_name)
 
     if not os.path.exists(default_file_path):
@@ -34,7 +32,7 @@ def load_data(base_path: str = 'score', default_file_name: str = 'attn_score.csv
     scovar_dict = {'NJRFScore': [], 'MLRFScore': [], 'NJCI': [], 'MLCI': []}
     sr_dict = {'NJRFScore': [], 'MLRFScore': [], 'NJCI': [], 'MLCI': []}
 
-    # Function to process shuffling MSA files
+    # Function to process shuffling files
     def process_files(directory, typ='scovar'):
         attn_file_path = os.path.join(directory, default_file_name)
 
@@ -55,7 +53,7 @@ def load_data(base_path: str = 'score', default_file_name: str = 'attn_score.csv
             for key in target_dict.keys():
                 target_dict[key].append(filtered_data[['FileName', key]])
 
-    # Load Shuffled column, covariance and rows MSA data
+    # Load Shuffled column and covariance MSA data
     for root, dirs, _ in os.walk(base_path):
         for dir_name in dirs:
             dir_path = os.path.join(root, dir_name)
@@ -67,13 +65,21 @@ def load_data(base_path: str = 'score', default_file_name: str = 'attn_score.csv
 
 
 def merge_and_calculate_stats(dfs, typ):
+    merged_df = dfs[0]
+    for i in range(1, len(dfs)):
+        suffix_1 = f'_df{i}'
+        suffix_2 = f'_df{i + 1}'
+        while any(col + suffix_1 in merged_df.columns for col in dfs[i].columns if col != 'FileName'):
+            suffix_1 += '_'
+        while any(col + suffix_2 in dfs[i].columns for col in merged_df.columns if col != 'FileName'):
+            suffix_2 += '_'
+        merged_df = merged_df.merge(dfs[i], on='FileName', suffixes=(suffix_1, suffix_2))
     df = pd.DataFrame()
-    merged_df = reduce(lambda left, right: pd.merge(left, right, on=['FileName'], how='outer'), dfs)
     df['ProteinDomain'] = merged_df['FileName'].str.extract(r'(PF\d+)_')
     df['Layers'] = merged_df['FileName'].str.extract(f'{typ}_(\d+)_')[0].astype(int)
     df['Heads'] = merged_df['FileName'].str.extract(f'{typ}_\d+_(\d+)')[0].astype(int)
-    df['Mean'] = merged_df.mean(axis=1)
-    df['Variance'] = merged_df.var(axis=1)
+    df['Mean'] = merged_df.iloc[:, -5:].mean(axis=1)
+    df['Variance'] = merged_df.iloc[:, -5:].var(axis=1)
     df.sort_values(by=['ProteinDomain', 'Layers', 'Heads'], inplace=True)
     df = df.reindex(columns=['ProteinDomain', 'Layers', 'Heads', 'Mean', 'Variance'])
     return df
@@ -94,8 +100,8 @@ def plot_heatmap(ax, data, vmin, vmax):
     im = ax.imshow(data, cmap=red_white_cmap, aspect='equal', vmin=vmin, vmax=vmax)
     ax.set_xticks(np.arange(0, 12, 2))
     ax.set_yticks(np.arange(0, 12, 2))
-    ax.set_xticklabels(x_labels[::2])
-    ax.set_yticklabels(y_labels[::2])
+    ax.set_xticklabels(x_labels[::2], size=14)
+    ax.set_yticklabels(y_labels[::2], size=14)
     return im
 
 
@@ -123,8 +129,7 @@ def extract_data(data, protein_domain, metrics, typ):
         return mean, var
 
 
-def plot_protein_domains(default_df, sc_dict, scovar_dict,
-                         sr_dict, prot_domains, metrics):
+def plot_protein_domains(default_df, sc_dict, scovar_dict, sr_dict, prot_domains, metrics):
     plt.rcParams['font.family'] = 'sans-serif'
     plt.rcParams['font.sans-serif'] = ['arial']
     fig, axs = plt.subplots(4, 4, figsize=(10, 10),
@@ -154,11 +159,11 @@ def plot_protein_domains(default_df, sc_dict, scovar_dict,
                 heatmap = plot_heatmap(axs[i, j], sr_avg, vmin, vmax)
 
             if i == 3:
-                axs[i, j].set_xlabel("Head", fontsize=12)
+                axs[i, j].set_xlabel("Head", fontsize=14)
             if i == 0:
-                axs[0, j].set_title(typ, fontsize=12)
+                axs[0, j].set_title(typ, fontsize=14)
             if j == 0:
-                axs[i, j].set_ylabel(f"{protein_domain}\nLayer", fontsize=12)
+                axs[i, j].set_ylabel(f"{protein_domain}\nLayer", fontsize=14)
             if j == 1:
                 overlay_variance(sc_var, axs[i, j])
             if j == 2:
@@ -167,7 +172,7 @@ def plot_protein_domains(default_df, sc_dict, scovar_dict,
                 fig.colorbar(heatmap, ax=axs[i, j])
                 overlay_variance(sr_var, axs[i, j])
 
-    plt.subplots_adjust(wspace=0.15, hspace=0.15)
+    plt.subplots_adjust(wspace=0.18, hspace=0.15)
     plt.show()
 
 
