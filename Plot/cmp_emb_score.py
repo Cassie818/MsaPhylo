@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import os
-from functools import reduce
 import matplotlib.colors as mcolors
 from pandas import DataFrame
 from typing import List, Dict
