@@ -11,12 +11,13 @@ from code.extracting import Extractor
 class EmbeddingTree(PlmTree, Extractor):
     """Class for building trees from embeddings."""
 
-    def __init__(self,
-                 msa: str,
-                 name: str,
-                 output_tree_path: str,
-                 layer: int
-                 ):
+    def __init__(
+            self,
+            msa: str,
+            name: str,
+            output_tree_path: str,
+            layer: int
+    ):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.msa_fasta_file = msa
         self.name = name

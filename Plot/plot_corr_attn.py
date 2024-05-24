@@ -91,8 +91,12 @@ def create_domain_heatmaps(
 
     plt.rcParams['font.family'] = 'sans-serif'
     plt.rcParams['font.sans-serif'] = ['arial']
-    fig, axes = plt.subplots(nrows=num_protein, ncols=len(typs), figsize=(10, 10),
-                             gridspec_kw={"width_ratios": [10, 10, 10, 13]}, )
+    fig, axes = plt.subplots(
+        nrows=num_protein,
+        ncols=len(typs),
+        figsize=(10, 10),
+        gridspec_kw={"width_ratios": [10, 10, 10, 13]},
+    )
 
     for i, protein_domain in enumerate(protein_domains):
         pf_info_mean = mean_dict[protein_domain]
@@ -103,8 +107,12 @@ def create_domain_heatmaps(
             if typ != 'Default':
                 var_key = f'{protein_domain}_{typ}'
                 var_data = pf_info_var[var_key]
-            heatmap = create_heatmap(mean_data, axes[i, j], x_labels, y_labels, vmin=-domain_abs_max[protein_domain],
-                                     vmax=domain_abs_max[protein_domain])
+            heatmap = create_heatmap(
+                mean_data, axes[i, j],
+                x_labels, y_labels,
+                vmin=-domain_abs_max[protein_domain],
+                vmax=domain_abs_max[protein_domain]
+            )
 
             if j == 0:
                 axes[i, j].set_ylabel(f"{protein_domain}\nLayer", fontsize=12)
@@ -158,7 +166,12 @@ if __name__ == '__main__':
     var_dict = {}
     domain_abs_vmax = {}
 
-    protein_domains = ['PF13377', 'PF13466', 'PF14317', 'PF20171']
+    protein_domains = [
+        'PF13377',
+        'PF13466',
+        'PF14317',
+        'PF20171'
+    ]
     for domain in protein_domains:
         default_dict, sc_dict, scovar_dict, sr_dict = load_data(domain)
         mean_matrix_sc, variance_matrix_sc = calculate_mean_variance(sc_dict)
