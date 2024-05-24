@@ -9,8 +9,9 @@ from code.extracting import Extractor
 
 
 class EmbeddingTree(PlmTree, Extractor):
-    """ Class for building trees from embeddings."""
-
+    """
+    Class for building trees from embeddings.
+    """
     def __init__(self, msa, name, output_tree_path, layer=2):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.msa_fasta_file = msa
@@ -74,13 +75,35 @@ class EmbeddingTree(PlmTree, Extractor):
 
 
 def main():
-    # Parse command-line arguments.
-    parser = argparse.ArgumentParser(description='Building the phylogenetic trees using the MSA Transformer.')
-    parser.add_argument('-i', required=True, help='Input FASTA file path')
-    parser.add_argument('-name', required=True, help='Name of output tree')
-    parser.add_argument('-o', required=True, help='Output path to save the phylogenetic trees')
-    parser.add_argument('-l', required=False, type=int, help='Specify the layer of the MSA Transformer (1-12)',
-                        choices=range(1, 13))
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(
+        description='Building the phylogenetic trees using the MSA Transformer.'
+    )
+    parser.add_argument(
+        '--i',
+        type=str,
+        required=True,
+        help='Input FASTA file path'
+    )
+    parser.add_argument(
+        '--name',
+        type=str,
+        required=True,
+        help='Name of output tree'
+    )
+    parser.add_argument(
+        '--o',
+        type=str,
+        required=True,
+        help='Output path to save the phylogenetic trees'
+    )
+    parser.add_argument('--l',
+                        type=int,
+                        required=False,
+                        default=3,
+                        choices=range(1, 13),
+                        help='Specify the layer of the MSA Transformer (1-12)'
+                        )
 
     args = parser.parse_args()
     msa_file = args.i
