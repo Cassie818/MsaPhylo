@@ -9,10 +9,14 @@ from code.extracting import Extractor
 
 
 class EmbeddingTree(PlmTree, Extractor):
-    """
-    Class for building trees from embeddings.
-    """
-    def __init__(self, msa, name, output_tree_path, layer=2):
+    """Class for building trees from embeddings."""
+
+    def __init__(self,
+                 msa: str,
+                 name: str,
+                 output_tree_path: str,
+                 layer: int
+                 ):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.msa_fasta_file = msa
         self.name = name
@@ -74,7 +78,7 @@ class EmbeddingTree(PlmTree, Extractor):
         print(f"Finish building embedding trees from layer {self.layer + 1}.")
 
 
-def main():
+def parse_args():
     # Parse command-line arguments
     parser = argparse.ArgumentParser(
         description='Building the phylogenetic trees using the MSA Transformer.'
@@ -104,13 +108,16 @@ def main():
                         choices=range(1, 13),
                         help='Specify the layer of the MSA Transformer (1-12)'
                         )
-
     args = parser.parse_args()
+    return args
+
+
+def main():
+    args = parse_args()
     msa_file = args.i
     layer = args.l
     name = args.name
     output_tree_path = args.o
-
     embtree = EmbeddingTree(msa_file, name, output_tree_path, layer)
     embtree.build_emb_tree()
 

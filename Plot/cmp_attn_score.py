@@ -9,7 +9,8 @@ warnings.filterwarnings('ignore')
 
 
 def load_data():
-    """Loads attention score data for default, shuffled column, and shuffled covariance MSAs from a specified base path."""
+    """Loads attention score data for default, shuffled column,
+    and shuffled covariance MSAs from a specified base path."""
 
     base_path = 'score'
     default_file_name = 'attn_score.csv'
@@ -114,7 +115,11 @@ def overlay_variance(var_data, ax):
             ax.scatter(j, i, s=circle_size, color='gray', alpha=0.5)
 
 
-def extract_data(data, protein_domain, metrics, typ):
+def extract_data(
+        data,
+        protein_domain,
+        metrics, typ
+):
     if typ == 'default':
         df = data[data['ProteinDomain'] == protein_domain]
         val = df[metrics].to_numpy().reshape(12, 12)
@@ -129,10 +134,18 @@ def extract_data(data, protein_domain, metrics, typ):
         return mean, var
 
 
-def plot_protein_domains(default_df, sc_dict, scovar_dict, sr_dict, prot_domains, metrics):
+def plot_protein_domains(
+        default_df,
+        sc_dict,
+        scovar_dict,
+        sr_dict,
+        prot_domains,
+        metrics
+):
     plt.rcParams['font.family'] = 'sans-serif'
     plt.rcParams['font.sans-serif'] = ['arial']
-    fig, axs = plt.subplots(4, 4, figsize=(10, 10),
+    fig, axs = plt.subplots(4, 4,
+                            figsize=(10, 10),
                             gridspec_kw={"width_ratios": [10, 10, 10, 13]})
 
     typs = ['Default', 'Shuffled Positions', 'Shuffled Covariance', 'Shuffled Rows']

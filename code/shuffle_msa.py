@@ -6,8 +6,10 @@ from code.params import MSA_PATH
 
 class ShuffleMsa:
 
-    def __init__(self,
-                 protein_domain: str):
+    def __init__(
+            self,
+            protein_domain: str
+    ):
         self.protein_domain = protein_domain
         self.msa_file = f'{MSA_PATH}{self.protein_domain}.fasta'
 
@@ -110,7 +112,12 @@ class ShuffleMsa:
 
 
 if __name__ == '__main__':
-    msa_type_list = ['default', 'sc', 'scovar', 'sr']
+    msa_type_list = [
+        'default',
+        'sc',
+        'scovar',
+        'sr'
+    ]
     with open('./data/Pfam/protein_domain.txt', 'r') as file:
         lines = file.readlines()
     protein_domain_list = [line.strip() for line in lines]

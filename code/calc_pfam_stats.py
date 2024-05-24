@@ -6,12 +6,13 @@ import glob
 
 
 class PhyloStat:
-    def __init__(self,
-                 msa_folder: str,
-                 nj_tree_folder: str,
-                 ml_tree_folder: str,
-                 output_file: str,
-                 ):
+    def __init__(
+            self,
+            msa_folder: str,
+            nj_tree_folder: str,
+            ml_tree_folder: str,
+            output_file: str,
+    ):
         self.msa_folder = msa_folder
         self.nj_tree_folder = nj_tree_folder
         self.ml_tree_folder = ml_tree_folder
@@ -53,18 +54,27 @@ class PhyloStat:
 
             if os.path.isfile(nj_tree) and os.path.isfile(ml_tree):
                 print("Calculating statistics for:", base_name)
-
                 num_sequences, alignment_length, no_gap_length_avg = PhyloStat.get_alignment_stats(alignments_file)
                 avg_extant_to_root_nj = PhyloStat.get_mean_extant_to_root(nj_tree)
                 avg_extant_to_root_ml = PhyloStat.get_mean_extant_to_root(ml_tree)
 
-                data.append([base_name, num_sequences,
-                             alignment_length, no_gap_length_avg,
-                             avg_extant_to_root_nj, avg_extant_to_root_ml])
+                data.append([
+                    base_name,
+                    num_sequences,
+                    alignment_length,
+                    no_gap_length_avg,
+                    avg_extant_to_root_nj,
+                    avg_extant_to_root_ml
+                ])
 
-        df = pd.DataFrame(data, columns=["pfam_id", "sequence_num",
-                                         "alignment_len", "avg_sequence_len",
-                                         "average_extant_to_root_NJ", "average_extant_to_root_ML"])
+        df = pd.DataFrame(
+            data,
+            columns=[
+                "pfam_id", "sequence_num",
+                "alignment_len", "avg_sequence_len",
+                "average_extant_to_root_NJ", "average_extant_to_root_ML"
+            ]
+        )
         df.to_csv(self.output_file, sep='\t', index=False)
         print("Statistics have been written to", self.output_file)
 

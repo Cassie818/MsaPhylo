@@ -10,10 +10,11 @@ from code.params import MSA_PATH, MSA_TYPE_MAP, EMB_PATH, EMB_TYPE_MAP, ATTN_PAT
 
 class EvDist:
 
-    def __init__(self,
-                 prot_family: str,
-                 msa_typ: str
-                 ):
+    def __init__(
+            self,
+            prot_family: str,
+            msa_typ: str
+    ):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = "esm_msa1b_t12_100M_UR50S"
         self.prot_family = prot_family
@@ -29,7 +30,10 @@ class EvDist:
         return np.sqrt(np.sum((a - b) ** 2))
 
     @staticmethod
-    def evolutionary_distance(phylo_tree, seq_labels):
+    def evolutionary_distance(
+            phylo_tree,
+            seq_labels
+    ):
         """Calculate the evolutionary distance between sequences based on the phylogenetic tree."""
         ev_distances = []
 
@@ -77,13 +81,19 @@ class EvDist:
         sequence_list = [seq.split(' ')[0] for seq in sequences]
 
         # Compute evolutionary distances
-        ev_dist = EvDist.evolutionary_distance(Tree(self.tree), sequence_list)
+        ev_dist = EvDist.evolutionary_distance(
+            Tree(self.tree),
+            sequence_list
+        )
         spear_ev_dist_corr = []
 
         # Compute Euclidean distances and their correlation with evolutionary distances
         for layer in range(LAYER):
             euc_dist = EvDist.pairwise_euclidean_distance(embeddings[layer])
-            spear_corr = stats.spearmanr(ev_dist.flatten(), euc_dist.flatten())
+            spear_corr = stats.spearmanr(
+                ev_dist.flatten(),
+                euc_dist.flatten()
+            )
             spear_ev_dist_corr.append([self.prot_family, layer, spear_corr.correlation, spear_corr.pvalue])
 
         # Save to CSV file
@@ -105,7 +115,10 @@ class EvDist:
         sequence_list = [seq.split(' ')[0] for seq in sequences]
 
         # Compute evolutionary distances
-        ev_dist = EvDist.evolutionary_distance(Tree(self.tree), sequence_list)
+        ev_dist = EvDist.evolutionary_distance(
+            Tree(self.tree),
+            sequence_list
+        )
 
         # Load column attention
         col_attn = torch.load(self.attn)
@@ -117,7 +130,10 @@ class EvDist:
         for layer in range(LAYER):
             for head in range(HEAD):
                 attn = attn_mean_on_cols_symm[layer, head, :, :]
-                sp_corr = stats.spearmanr(ev_dist.flatten(), attn.flatten())
+                sp_corr = stats.spearmanr(
+                    ev_dist.flatten(),
+                    attn.flatten()
+                )
                 spear_ev_dist_corr.append([self.prot_family, layer, head, sp_corr.correlation, sp_corr.pvalue])
 
         # Save to CSV file
@@ -129,7 +145,12 @@ class EvDist:
 
 if __name__ == '__main__':
 
-    msa_type_list = ['default', 'sc', 'scovar', 'sr']
+    msa_type_list = [
+        'default',
+        'sc',
+        'scovar',
+        'sr'
+    ]
     with open('./data/Pfam/protein_domain.txt', 'r') as file:
         lines = file.readlines()
     protein_domain_list = [line.strip() for line in lines]

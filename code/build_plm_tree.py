@@ -10,7 +10,8 @@ class PlmTree:
 
     def __init__(self,
                  prot_family: str,
-                 msa_type: str):
+                 msa_type: str
+                 ):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = "esm_msa1b_t12_100M_UR50S"
         self.prot_family = prot_family

@@ -17,7 +17,14 @@ def extract_protein_family(s):
     return s.split('_')[0]
 
 
-def create_heatmap(data, ax, x_labels, y_labels, vmin=None, vmax=None):
+def create_heatmap(
+        data,
+        ax,
+        x_labels,
+        y_labels,
+        vmin=None,
+        vmax=None
+):
     heatmap = ax.imshow(data, cmap='bwr', aspect='equal', vmin=vmin, vmax=vmax)
     ax.set_xticks(np.arange(0, len(x_labels), 2))
     ax.set_yticks(np.arange(0, len(y_labels), 2))
@@ -59,7 +66,10 @@ def merge_dfs(typ):
     return df_sorted
 
 
-def overlay_variance(var_data, ax):
+def overlay_variance(
+        var_data,
+        ax
+):
     max_variance = np.max(var_data)
     for i in range(var_data.shape[0]):
         for j in range(var_data.shape[1]):
@@ -68,7 +78,10 @@ def overlay_variance(var_data, ax):
             ax.scatter(j, i, s=circle_size, color='gray', alpha=0.5)
 
 
-def plot_heatmap(ax, data):
+def plot_heatmap(
+        ax,
+        data
+):
     x_labels = [str(i) for i in range(1, 13)]
     y_labels = [str(i) for i in range(1, 13)]
     im = ax.imshow(data, cmap='bwr', aspect='equal')
@@ -79,7 +92,13 @@ def plot_heatmap(ax, data):
     return im
 
 
-def plot_protein_domains(sc_df, scovar_df, sr_df, protein_domains, metrics):
+def plot_protein_domains(
+        sc_df,
+        scovar_df,
+        sr_df,
+        protein_domains,
+        metrics
+):
     # Set font styles for plots
     plt.rcParams['font.family'] = 'sans-serif'
     plt.rcParams['font.sans-serif'] = ['arial']
@@ -97,7 +116,13 @@ def plot_protein_domains(sc_df, scovar_df, sr_df, protein_domains, metrics):
         return selec_avg, selec_std
 
     # Function to draw heatmap and overlay variance
-    def draw_heatmap_and_variance(ax, avg_data, var_data, protein_domain, label=""):
+    def draw_heatmap_and_variance(
+            ax,
+            avg_data,
+            var_data,
+            protein_domain,
+            label=""
+    ):
         heatmap = plot_heatmap(ax, avg_data)
         overlay_variance(var_data, ax)
         cbar = fig.colorbar(heatmap, ax=ax)

@@ -54,7 +54,10 @@ def calculate_mean_variance(domain_dict):
     return mean_matrix, variance_matrix
 
 
-def load_domain_abs_vmax(domain_name, data_dict):
+def load_domain_abs_vmax(
+        domain_name,
+        data_dict
+):
     all_data = []
 
     for data in data_dict[domain_name].values():
@@ -66,7 +69,13 @@ def load_domain_abs_vmax(domain_name, data_dict):
     return domain_abs_vmax
 
 
-def create_domain_heatmaps(mean_dict, var_dict, protein_domains, domain_abs_max, num_protein=4):
+def create_domain_heatmaps(
+        mean_dict,
+        var_dict,
+        protein_domains,
+        domain_abs_max,
+        num_protein=4
+):
     """
     Create and display heatmaps for protein domains with variance overlay.
 
@@ -116,7 +125,14 @@ def create_domain_heatmaps(mean_dict, var_dict, protein_domains, domain_abs_max,
     plt.show()
 
 
-def create_heatmap(data, ax, x_labels, y_labels, vmin=None, vmax=None):
+def create_heatmap(
+        data,
+        ax,
+        x_labels,
+        y_labels,
+        vmin=None,
+        vmax=None
+):
     heatmap = ax.imshow(data, cmap='bwr', aspect='equal', vmin=vmin, vmax=vmax)
     ax.set_xticks(np.arange(0, len(x_labels), 2))
     ax.set_yticks(np.arange(0, len(y_labels), 2))
@@ -125,7 +141,10 @@ def create_heatmap(data, ax, x_labels, y_labels, vmin=None, vmax=None):
     return heatmap
 
 
-def overlay_variance(var_data, ax):
+def overlay_variance(
+        var_data,
+        ax
+):
     max_variance = np.max(var_data)
     for i in range(var_data.shape[0]):
         for j in range(var_data.shape[1]):

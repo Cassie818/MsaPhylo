@@ -28,7 +28,8 @@ class Extractor:
     def __init__(
             self,
             prot_family: str,
-            msa_typ: str):
+            msa_typ: str
+    ):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = "esm_msa1b_t12_100M_UR50S"
         self.encoding_dim, self.encoding_layer, self.max_seq_len, self.max_seq_depth = 768, 12, 1024, 1024
@@ -78,15 +79,21 @@ class Extractor:
 
 class CorAns:
 
-    def __init__(self, attn, dist):
+    def __init__(
+            self,
+            attn,
+            dist
+    ):
         self.attn = attn
         self.dist = dist
 
-    def create_train_test_sets(self,
-                               normalize_dists=False,
-                               train_size=0.7,
-                               ensure_same_size=False,
-                               zero_attention_diagonal=False):
+    def create_train_test_sets(
+            self,
+            normalize_dists=False,
+            train_size=0.7,
+            ensure_same_size=False,
+            zero_attention_diagonal=False
+    ):
 
         """Attentions assumed averaged across column dimensions, i.e. 4D tensors"""
         if zero_attention_diagonal:
@@ -125,20 +132,26 @@ class CorAns:
 
         return (attns_train, dists_train), (attns_test, dists_test), (n_rows_train, n_rows_test)
 
-    def perform_regressions_msawise(self,
-                                    normalize_dists=False,
-                                    ensure_same_size=False,
-                                    zero_attention_diagonal=False):
+    def perform_regressions_msawise(
+            self,
+            normalize_dists=False,
+            ensure_same_size=False,
+            zero_attention_diagonal=False
+    ):
         ((attns_train, dists_train), (attns_test, dists_test),
          (n_rows_train, n_rows_test)) = self.create_train_test_sets(
             normalize_dists=normalize_dists,
             ensure_same_size=ensure_same_size,
             zero_attention_diagonal=zero_attention_diagonal)
-        df_train = pd.DataFrame(attns_train,
-                                columns=[f"lyr{i}_hd{j}" for i in range(12) for j in range(12)])
+        df_train = pd.DataFrame(
+            attns_train,
+            columns=[f"lyr{i}_hd{j}" for i in range(12) for j in range(12)]
+        )
         df_train["dist"] = dists_train
-        df_test = pd.DataFrame(attns_test,
-                               columns=[f"lyr{i}_hd{j}" for i in range(12) for j in range(12)])
+        df_test = pd.DataFrame(
+            attns_test,
+            columns=[f"lyr{i}_hd{j}" for i in range(12) for j in range(12)]
+        )
         df_test["dist"] = dists_test
 
         # Carve out the training matrices from the training and testing data frame using the regression formula
@@ -169,10 +182,12 @@ class CorAns:
         return regr_results
 
 
-def plot_protein_domain_correlations(protein_domain_list,
-                                     regr_results_hamming_msawise,
-                                     cmap=cm.bwr,
-                                     vpad=10):
+def plot_protein_domain_correlations(
+        protein_domain_list,
+        regr_results_hamming_msawise,
+        cmap=cm.bwr,
+        vpad=10
+):
     """
     Plots correlation coefficients for protein domains.
 
@@ -218,7 +233,12 @@ def plot_protein_domain_correlations(protein_domain_list,
 if __name__ == '__main__':
     regr_results = {}
     msa_type_list = ['default']
-    protein_domain_list = ['PF13377', 'PF13466', 'PF14317', 'PF20171']
+    protein_domain_list = [
+        'PF13377',
+        'PF13466',
+        'PF14317',
+        'PF20171'
+    ]
 
     for protein_family in protein_domain_list:
         for msa_type in msa_type_list:

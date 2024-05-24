@@ -8,9 +8,13 @@ from typing import List, Dict
 from numpy.typing import ArrayLike
 
 
-def load_data(base_path: str, default_file_name: str):
+def load_data(
+        base_path: str,
+        default_file_name: str
+):
     """
-    Loads attention score data for default, shuffled column, and shuffled covariance MSAs from a specified base path.
+    Loads attention score data for default, shuffled column,
+    and shuffled covariance MSAs from a specified base path.
     """
     default_file_path = os.path.join(base_path, default_file_name)
 
@@ -31,7 +35,10 @@ def load_data(base_path: str, default_file_name: str):
     sr_dict = {'NJRFScore': [], 'MLRFScore': [], 'NJCI': [], 'MLCI': []}
 
     # Function to process shuffling files
-    def process_files(directory, typ='scovar'):
+    def process_files(
+            directory,
+            typ='scovar'
+    ):
         emb_file_path = os.path.join(directory, default_file_name)
 
         if os.path.exists(emb_file_path):
@@ -62,7 +69,10 @@ def load_data(base_path: str, default_file_name: str):
     return data, sc_dict, scovar_dict, sr_dict
 
 
-def merge_and_calculate_stats(dfs: DataFrame, typ: str) -> DataFrame:
+def merge_and_calculate_stats(
+        dfs: DataFrame,
+        typ: str
+) -> DataFrame:
     merged_df = dfs[0]
     for i in range(1, len(dfs)):
         suffix_1 = f'_df{i}'
@@ -82,7 +92,12 @@ def merge_and_calculate_stats(dfs: DataFrame, typ: str) -> DataFrame:
     return df
 
 
-def plot_heatmap(ax, data, vmin, vmax):
+def plot_heatmap(
+        ax,
+        data,
+        vmin,
+        vmax
+):
     x_labels = [str(i) for i in range(1, 13)]
     y_labels = [str(i) for i in range(1, 13)]
 
@@ -104,7 +119,9 @@ def plot_heatmap(ax, data, vmin, vmax):
     return im
 
 
-def overlay_variance(var_data: ArrayLike, ax):
+def overlay_variance(
+        var_data: ArrayLike,
+        ax):
     max_variance = np.max(var_data)
 
     for i in range(var_data.shape[0]):
@@ -114,7 +131,12 @@ def overlay_variance(var_data: ArrayLike, ax):
             ax.scatter(j, i, s=circle_size, color='gray', alpha=0.5)
 
 
-def extract_data(data: DataFrame, protein_domain: List[str], metrics: str, typ: str):
+def extract_data(
+        data: DataFrame,
+        protein_domain: List[str],
+        metrics: str,
+        typ: str
+):
     if typ == 'default':
         df = data[data['ProteinDomain'] == protein_domain]
         val = df[metrics].to_numpy()
@@ -129,9 +151,15 @@ def extract_data(data: DataFrame, protein_domain: List[str], metrics: str, typ: 
         return mean, std
 
 
-def plot_protein_domains(default_df: DataFrame, sc_dict: Dict[str, int],
-                         scovar_dict: Dict[str, int], sr_dict: Dict[str, int],
-                         prot_domains: List[str], metrics: str, reference_csv: str):
+def plot_protein_domains(
+        default_df: DataFrame,
+        sc_dict: Dict[str, int],
+        scovar_dict: Dict[str, int],
+        sr_dict: Dict[str, int],
+        prot_domains: List[str],
+        metrics: str,
+        reference_csv: str
+):
     ref = pd.read_csv(reference_csv)
     if 'CI' in metrics:
         ref_dict = ref.set_index('ProteinDomain')['CI'].to_dict()
