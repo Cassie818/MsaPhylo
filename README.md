@@ -23,20 +23,20 @@ Check out guidance information ```python MsaPhylo.py -h ```
 
 ```bash
 python MsaPhylo.py
-    -i <The MSA FILE> \
-    -name <NAME OF OUTPUT FILE> \
-    -o <OUTPUT DIRECTORY> \
-    -l <LAYER OF THE MSA TRANSFORMER>
+    --i <The_MSA_FILE> \
+    --name <NAME_OF_OUTPUT_FILE> \
+    --o <OUTPUT_DIRECTORY> \
+    --l <LAYER_OF_THE_MSA_TRANSFORMER>
 ```
 
 Examples:
 
 ``` bash
 python MsaPhylo.py
-        -i "./data/Pfam/PF00066.fasta" \
-        -name 'PF00066' \
-        -o "/Users/cassie/Desktop/" \
-        -l 2
+        --i "./data/Pfam/PF00066.fasta" \
+        --name 'PF00066' \
+        --o "/Users/cassie/Desktop/" \
+        --l 2
 ```
 
 ## Instructions
