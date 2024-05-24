@@ -8,10 +8,11 @@ from code.params import MSA_PATH, MSA_TYPE_MAP, EMB_PATH, EMB_TYPE_MAP, ATTN_PAT
 class PlmTree:
     """Class for building treeS from the MSA Transformer"""
 
-    def __init__(self,
-                 prot_family: str,
-                 msa_type: str
-                 ):
+    def __init__(
+            self,
+            prot_family: str,
+            msa_type: str
+    ):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.model_name = "esm_msa1b_t12_100M_UR50S"
         self.prot_family = prot_family

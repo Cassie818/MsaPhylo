@@ -101,13 +101,14 @@ def parse_args():
         required=True,
         help='Output path to save the phylogenetic trees'
     )
-    parser.add_argument('--l',
-                        type=int,
-                        required=False,
-                        default=3,
-                        choices=range(1, 13),
-                        help='Specify the layer of the MSA Transformer (1-12)'
-                        )
+    parser.add_argument(
+        '--l',
+        type=int,
+        required=False,
+        default=3,
+        choices=range(1, 13),
+        help='Specify the layer of the MSA Transformer (1-12)'
+    )
     args = parser.parse_args()
     return args
 
