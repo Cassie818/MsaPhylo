@@ -3,13 +3,13 @@ library(ape)
 
 # setting the working directory
 paths <- list(
-  emb_folder = "/Users/cassie/Desktop/PlmPlylo/embeddings",
-  attn_folder = "/Users/cassie/Desktop/PlmPlylo/attentions",
-  nj_tree_folder = "/Users/cassie/Desktop/MsaPhylo/Trees/Pfam/NJ/",
-  ml_tree_folder = "/Users/cassie/Desktop/MsaPhylo/Trees/Pfam/ML/",
-  emb_file = "/Users/cassie/Desktop/PlmPlylo/results/emb_score.csv",
-  attn_file = "/Users/cassie/Desktop/PlmPlylo/results/attn_score.csv",
-  nj_ml_file = "/Users/cassie/Desktop/PlmPlylo/results/nj_ml_score.csv"
+  emb_folder = "MsaPhylo/embeddings",
+  attn_folder = "MsaPhylo/attentions",
+  nj_tree_folder = "MsaPhylo/Trees/Pfam/NJ/",
+  ml_tree_folder = "MsaPhylo/Trees/Pfam/ML/",
+  emb_file = "MsaPhylo/results/emb_score.csv",
+  attn_file = "MsaPhylo/results/attn_score.csv",
+  nj_ml_file = "MsaPhylo/results/nj_ml_score.csv"
 )
 
 prot_domains <- c(
@@ -21,7 +21,6 @@ prot_domains <- c(
 )
 
 write_scores <- function(data, file_path) {
-
   write.table(data, file = file_path, append = TRUE, sep = ",",
               col.names = !file.exists(file_path), row.names = FALSE)
 }
@@ -30,11 +29,9 @@ process_domain <- function(prot_domain) {
   pattern_string <- sprintf("^%s.*\\.nwk$", prot_domain)
   emb_files <- list.files(path = paths$emb_folder, pattern = pattern_string, full.names = TRUE)
   attn_files <- list.files(path = paths$attn_folder, pattern = pattern_string, full.names = TRUE)
-  
 
   njtree_path <- file.path(paths$nj_tree_folder, sprintf("%s.tree", prot_domain))
   mltree_path <- file.path(paths$ml_tree, sprintf("%s.tree", prot_domain))
-  
 
   nj_tree <- ape::read.tree(njtree_path)
   ml_tree <- ape::read.tree(mltree_path)
@@ -42,32 +39,29 @@ process_domain <- function(prot_domain) {
   calculate_and_write_scores <- function(tree_files, type) {
     for (tree_file in tree_files) {
       current_tree <- ape::read.tree(tree_file)
-      
-      
+
       nj_rf <- RobinsonFoulds(current_tree, nj_tree, similarity = TRUE, normalize = TRUE)
       ml_rf <- RobinsonFoulds(current_tree, ml_tree, similarity = TRUE, normalize = TRUE)
       nj_ci <- MutualClusteringInfo(current_tree, nj_tree, normalize = TRUE)
       ml_ci <- MutualClusteringInfo(current_tree, ml_tree, normalize = TRUE)
-      
-      
+
       base_name <- basename(sub("\\.nwk$", "", tree_file))
-      data <- data.frame(FileName = base_name, NJRFScore = nj_rf, MLRFScore = ml_rf, 
-                         NJCI = nj_ci, MLCI = ml_ci)
-      file_path <- switch(type, 
-                          emb = paths$emb_file, 
-                          attn = paths$attn_file)
+      data <- data.frame(FileName = base_name,
+                         NJRFScore = nj_rf,
+                         MLRFScore = ml_rf,
+                         NJCI = nj_ci,
+                         MLCI = ml_ci)
+      file_path <- switch(type, emb = paths$emb_file, attn = paths$attn_file)
       write_scores(data, file_path)
     }
   }
   
   calculate_and_write_scores(emb_files, "emb")
   calculate_and_write_scores(attn_files, "attn")
-                      
-                      nj_ml_rf_score <- RobinsonFoulds(nj_tree, ml_tree, similarity = TRUE, normalize = TRUE)
-                      nj_ml_cid <- MutualClusteringInfo(nj_tree, ml_tree, normalize = TRUE)
-                      data <- data.frame(ProteinDomain = prot_domain, RFScore = nj_ml_rf_score, CI = nj_ml_cid)
-                      write_scores(data, paths$nj_ml_file)
+  nj_ml_rf_score <- RobinsonFoulds(nj_tree, ml_tree, similarity = TRUE, normalize = TRUE)
+  nj_ml_cid <- MutualClusteringInfo(nj_tree, ml_tree, normalize = TRUE)
+  data <- data.frame(ProteinDomain = prot_domain, RFScore = nj_ml_rf_score, CI = nj_ml_cid)
+  write_scores(data, paths$nj_ml_file)
 }
-
 
 sapply(prot_domains, process_domain)

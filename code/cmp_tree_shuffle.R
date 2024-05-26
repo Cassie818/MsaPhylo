@@ -3,8 +3,8 @@ library(ape)
 
 
 paths <- list(
-  nj_tree_folder = "/Users/cassie/Desktop/MsaPhylo/Trees/Pfam/NJ/",
-  ml_tree_folder = "/Users/cassie/Desktop/MsaPhylo/Trees/Pfam/ML/"
+  nj_tree_folder = "MsaPhylo/Trees/Pfam/NJ/",
+  ml_tree_folder = "MsaPhylo/Trees/Pfam/ML/"
 )
 
 prot_domains <- c(
@@ -18,11 +18,9 @@ prot_domains <- c(
 
 # Function to write scores to files
 write_scores <- function(data, file_path) {
-  
   write.table(data, file = file_path, append = TRUE, sep = ",",
               col.names = !file.exists(file_path), row.names = FALSE)
 }
-
 
 # Helper function to process files and calculate scores
 process_file <- function(tree_file, nj_tree, ml_tree, result_file) {
@@ -35,13 +33,14 @@ process_file <- function(tree_file, nj_tree, ml_tree, result_file) {
   ml_ci_score <- MutualClusteringInfo(tree, ml_tree, normalize = TRUE)
   
   file_name <- basename(sub("\\.nwk$", "", tree_file))
-  data <- data.frame(FileName = file_name, NJRFScore = nj_rf_score, MLRFScore = ml_rf_score, 
-                     NJCI = nj_ci_score, MLCI = ml_ci_score)
-  
+  data <- data.frame(FileName = file_name,
+                     NJRFScore = nj_rf_score,
+                     MLRFScore = ml_rf_score,
+                     NJCI = nj_ci_score,
+                     MLCI = ml_ci_score)
   # Write to the correct result file
   write_scores(data, result_file)
 }
-
 
 calculate_protein_family_scores <- function(folder_name) {
   # Directory paths for embeddings, attentions, and results
@@ -73,7 +72,6 @@ calculate_protein_family_scores <- function(folder_name) {
     }
   }
 }
-
 
 # Run the function for a specific folder
 calculate_protein_family_scores("rep5")
