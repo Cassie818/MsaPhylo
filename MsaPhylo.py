@@ -26,14 +26,6 @@ class EmbeddingTree(PlmTree, Extractor):
         self.model_name = "esm_msa1b_t12_100M_UR50S"
         self.encoding_dim, self.encoding_layer, self.max_seq_len, self.max_seq_depth = 768, 12, 1024, 1024
 
-    @staticmethod
-    def remove_insertions(sequence: str) -> str:
-        deletekeys = dict.fromkeys(string.ascii_lowercase)
-        deletekeys["."] = None
-        deletekeys["*"] = None
-        translation = str.maketrans(deletekeys)
-        return sequence.translate(translation)
-
     def read_msa(self) -> List[Tuple[str, str]]:
         """ Reads MSA file. """
         return [(record.description, Extractor.remove_insertions(str(record.seq)))
