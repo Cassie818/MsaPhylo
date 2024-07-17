@@ -166,7 +166,6 @@ def plot_protein_domains(
     else:
         ref_dict = ref.set_index('ProteinDomain')['RFScore'].to_dict()
 
-    # plt.style.use('seaborn-whitegrid')
     plt.rcParams['font.family'] = 'sans-serif'
     plt.rcParams['font.sans-serif'] = ['arial']
 
@@ -184,13 +183,13 @@ def plot_protein_domains(
         sr_avg, sr_std = extract_data(sr_dict, protein_domain, metrics, 'sr')
 
         ax = axs[i]
-        ax.plot(layers, default, '-^', markersize=4, color='#505050', label='Default')
+        ax.plot(layers, default, '-^', markersize=4, color='#505050', label='Original')
         ax.errorbar(layers, sc_avg, yerr=sc_std, fmt='-x', markersize=4, color='lightpink',
-                    label='Shuffled Positions')
+                    label='Shuffled Columns')
         ax.errorbar(layers, scovar_avg, yerr=scovar_std, fmt='-*', markersize=4, color='lightskyblue',
-                    label='Shuffled Covariance')
+                    label='Shuffled within Columns')
         ax.errorbar(layers, sr_avg, yerr=sr_std, fmt='-o', markersize=4, color='darkseagreen',
-                    label='Shuffled Rows')
+                    label='Shuffled within Rows')
 
         ref_val = ref_dict.get(protein_domain, 0)
         ax.axhline(y=ref_val, linestyle='--', color='dimgray', label='Reference', linewidth=1)
