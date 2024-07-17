@@ -54,10 +54,7 @@ def calculate_mean_variance(domain_dict):
     return mean_matrix, variance_matrix
 
 
-def load_domain_abs_vmax(
-        domain_name,
-        data_dict
-):
+def load_domain_abs_vmax(domain_name, data_dict):
     all_data = []
 
     for data in data_dict[domain_name].values():
@@ -69,13 +66,7 @@ def load_domain_abs_vmax(
     return domain_abs_vmax
 
 
-def create_domain_heatmaps(
-        mean_dict,
-        var_dict,
-        protein_domains,
-        domain_abs_max,
-        num_protein=4
-):
+def create_domain_heatmaps(mean_dict, var_dict, protein_domains, domain_abs_max, num_protein=4):
     """
     Create and display heatmaps for protein domains with variance overlay.
 
@@ -91,12 +82,9 @@ def create_domain_heatmaps(
 
     plt.rcParams['font.family'] = 'sans-serif'
     plt.rcParams['font.sans-serif'] = ['arial']
-    fig, axes = plt.subplots(
-        nrows=num_protein,
-        ncols=len(typs),
-        figsize=(10, 10),
-        gridspec_kw={"width_ratios": [10, 10, 10, 13]},
-    )
+    fig, axes = plt.subplots(nrows=num_protein, ncols=len(typs), figsize=(10, 10),
+                             gridspec_kw={"width_ratios": [10, 10, 10, 12.5]},
+                             )
 
     for i, protein_domain in enumerate(protein_domains):
         pf_info_mean = mean_dict[protein_domain]
@@ -107,12 +95,12 @@ def create_domain_heatmaps(
             if typ != 'Default':
                 var_key = f'{protein_domain}_{typ}'
                 var_data = pf_info_var[var_key]
-            heatmap = create_heatmap(
-                mean_data, axes[i, j],
-                x_labels, y_labels,
-                vmin=-domain_abs_max[protein_domain],
-                vmax=domain_abs_max[protein_domain]
-            )
+            heatmap = create_heatmap(mean_data,
+                                     axes[i, j],
+                                     x_labels,
+                                     y_labels,
+                                     vmin=-domain_abs_max[protein_domain],
+                                     vmax=domain_abs_max[protein_domain])
 
             if j == 0:
                 axes[i, j].set_ylabel(f"{protein_domain}\nLayer", fontsize=12)
@@ -124,35 +112,25 @@ def create_domain_heatmaps(
                 fig.colorbar(heatmap, ax=axes[i, j])
 
     # Set column titles
-    axes[0, 0].set_title("Default", fontsize=12)
-    axes[0, 1].set_title("Shuffled Positions", fontsize=12)
-    axes[0, 2].set_title("Shuffled Covariance", fontsize=12)
-    axes[0, 3].set_title("Shuffled Rows", fontsize=12)
+    axes[0, 0].set_title("Original", fontsize=12)
+    axes[0, 1].set_title("Shuffled Columns", fontsize=12)
+    axes[0, 2].set_title("Shuffled within Columns", fontsize=12)
+    axes[0, 3].set_title("Shuffled within Rows", fontsize=12)
 
     plt.subplots_adjust(wspace=0.2, hspace=0.15)
     plt.show()
 
 
-def create_heatmap(
-        data,
-        ax,
-        x_labels,
-        y_labels,
-        vmin=None,
-        vmax=None
-):
+def create_heatmap(data, ax, x_labels, y_labels, vmin=None, vmax=None):
     heatmap = ax.imshow(data, cmap='bwr', aspect='equal', vmin=vmin, vmax=vmax)
     ax.set_xticks(np.arange(0, len(x_labels), 2))
     ax.set_yticks(np.arange(0, len(y_labels), 2))
-    ax.set_xticklabels(x_labels[::2])
-    ax.set_yticklabels(y_labels[::2])
+    ax.set_xticklabels(x_labels[::2], size=12)
+    ax.set_yticklabels(y_labels[::2], size=12)
     return heatmap
 
 
-def overlay_variance(
-        var_data,
-        ax
-):
+def overlay_variance(var_data, ax):
     max_variance = np.max(var_data)
     for i in range(var_data.shape[0]):
         for j in range(var_data.shape[1]):
@@ -166,12 +144,7 @@ if __name__ == '__main__':
     var_dict = {}
     domain_abs_vmax = {}
 
-    protein_domains = [
-        'PF13377',
-        'PF13466',
-        'PF14317',
-        'PF20171'
-    ]
+    protein_domains = ['PF13377', 'PF13466', 'PF14317', 'PF20171']
     for domain in protein_domains:
         default_dict, sc_dict, scovar_dict, sr_dict = load_data(domain)
         mean_matrix_sc, variance_matrix_sc = calculate_mean_variance(sc_dict)

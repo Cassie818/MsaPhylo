@@ -224,7 +224,7 @@ def plot_protein_domain_correlations(
         axs[i].set_xticklabels(list(map(str, x_vals_coeffs + 1)))
         axs[i].set_yticklabels(list(map(str, y_vals_coeffs + 1)))
 
-    axs[0].set_title("Default", pad=vpad, fontsize=12)
+    axs[0].set_title("Original", pad=vpad, fontsize=12)
     axs[-1].set_xlabel("Head", fontsize=12)
 
     plt.show()
