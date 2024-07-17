@@ -101,8 +101,8 @@ def plot_heatmap(ax, data, vmin, vmax):
     im = ax.imshow(data, cmap=red_white_cmap, aspect='equal', vmin=vmin, vmax=vmax)
     ax.set_xticks(np.arange(0, 12, 2))
     ax.set_yticks(np.arange(0, 12, 2))
-    ax.set_xticklabels(x_labels[::2], size=14)
-    ax.set_yticklabels(y_labels[::2], size=14)
+    ax.set_xticklabels(x_labels[::2], size=12)
+    ax.set_yticklabels(y_labels[::2], size=12)
     return im
 
 
@@ -115,11 +115,7 @@ def overlay_variance(var_data, ax):
             ax.scatter(j, i, s=circle_size, color='gray', alpha=0.5)
 
 
-def extract_data(
-        data,
-        protein_domain,
-        metrics, typ
-):
+def extract_data(data, protein_domain, metrics, typ):
     if typ == 'default':
         df = data[data['ProteinDomain'] == protein_domain]
         val = df[metrics].to_numpy().reshape(12, 12)
@@ -134,21 +130,15 @@ def extract_data(
         return mean, var
 
 
-def plot_protein_domains(
-        default_df,
-        sc_dict,
-        scovar_dict,
-        sr_dict,
-        prot_domains,
-        metrics
-):
+def plot_protein_domains(default_df, sc_dict, scovar_dict, sr_dict, prot_domains, metrics):
     plt.rcParams['font.family'] = 'sans-serif'
     plt.rcParams['font.sans-serif'] = ['arial']
-    fig, axs = plt.subplots(4, 4,
+    fig, axs = plt.subplots(4,
+                            4,
                             figsize=(10, 10),
-                            gridspec_kw={"width_ratios": [10, 10, 10, 13]})
+                            gridspec_kw={"width_ratios": [10, 10, 10, 12.5]})
 
-    typs = ['Default', 'Shuffled Positions', 'Shuffled Covariance', 'Shuffled Rows']
+    typs = ['Original', 'Shuffled Columns', 'Shuffled within Columns', 'Shuffled within Rows']
 
     for i, protein_domain in enumerate(prot_domains):
 
@@ -162,21 +152,21 @@ def plot_protein_domains(
 
         for j, typ in enumerate(typs):
 
-            if typ == 'Default':
+            if typ == 'Original':
                 heatmap = plot_heatmap(axs[i, j], default, vmin, vmax)
-            elif typ == 'Shuffled Positions':
+            elif typ == 'Shuffled Columns':
                 heatmap = plot_heatmap(axs[i, j], sc_avg, vmin, vmax)
-            elif typ == 'Shuffled Covariance':
+            elif typ == 'Shuffled within Columns':
                 heatmap = plot_heatmap(axs[i, j], scovar_avg, vmin, vmax)
             else:
                 heatmap = plot_heatmap(axs[i, j], sr_avg, vmin, vmax)
 
             if i == 3:
-                axs[i, j].set_xlabel("Head", fontsize=14)
+                axs[i, j].set_xlabel("Head", fontsize=12)
             if i == 0:
-                axs[0, j].set_title(typ, fontsize=14)
+                axs[0, j].set_title(typ, fontsize=12)
             if j == 0:
-                axs[i, j].set_ylabel(f"{protein_domain}\nLayer", fontsize=14)
+                axs[i, j].set_ylabel(f"{protein_domain}\nLayer", fontsize=12)
             if j == 1:
                 overlay_variance(sc_var, axs[i, j])
             if j == 2:
@@ -185,7 +175,7 @@ def plot_protein_domains(
                 fig.colorbar(heatmap, ax=axs[i, j])
                 overlay_variance(sr_var, axs[i, j])
 
-    plt.subplots_adjust(wspace=0.18, hspace=0.15)
+    plt.subplots_adjust(wspace=0.2, hspace=0.15)
     plt.show()
 
 
