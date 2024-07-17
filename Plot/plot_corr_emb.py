@@ -52,7 +52,6 @@ with open('./data/Pfam/protein_domain.txt', 'r') as file:
     lines = file.readlines()
     protein_domains = [line.strip() for line in lines]
 
-# plt.style.use('seaborn-whitegrid')
 plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['font.sans-serif'] = ['arial']
 fig, axes = plt.subplots(4, 5, figsize=(14, 8))
@@ -69,23 +68,22 @@ for i, domain in enumerate(protein_domains):
     ref = ref_dict[domain]
 
     ax = axes[i]
-    ax.plot(range(1, 13), default_corr, '-^', label='Default', color='#505050', markersize=4)
+    ax.plot(range(1, 13), default_corr, '-^', label='Original', color='#505050', markersize=4)
     ax.errorbar(range(1, 13), means1, yerr=stds1, color='lightpink',
-                fmt='-x', label='Shuffled Positions', elinewidth=1, markersize=4)
+                fmt='-x', label='Shuffled Columns', elinewidth=1, markersize=4)
     ax.errorbar(range(1, 13), means2, yerr=stds2, color='lightskyblue',
-                fmt='-*', label='Shuffled Covariance', elinewidth=1, markersize=4)
+                fmt='-*', label='Shuffled within Columns', elinewidth=1, markersize=4)
     ax.errorbar(range(1, 13), means3, yerr=stds3, color='darkseagreen',
-                fmt='-o', markersize=4, label='Shuffled Rows', elinewidth=1)
+                fmt='-o', markersize=4, label='Shuffled within Rows', elinewidth=1)
     ax.axhline(y=ref, linestyle='--', color='dimgray',
                label='Reference', linewidth=1)
-    ax.text(11, ref + 0.05, f'{ref:.2f}', color='dimgray',
-            ha='center', va='bottom', fontsize=12)
+    ax.text(11, ref + 0.05, f'{ref:.2f}', color='dimgray', ha='center', va='bottom', fontsize=12)
 
     ax.set_title(domain, fontsize=14)
     if i >= 15:
         ax.set_xlabel('Layer', fontsize=14)
     if i % 5 == 0:
-        ax.set_ylabel('Rho', fontsize=14)
+        ax.set_ylabel('Spearman\'s rho', fontsize=14)
         ax.tick_params(axis='y', labelsize=14)
         ax.set_yticks(np.arange(0, 1.1, 0.2))
     else:
