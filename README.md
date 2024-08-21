@@ -67,7 +67,7 @@ WSRQSALTQVYKNPRLVIIFDDCSSQLNLKKNKVIQDIFYQGRHVFITTLIAIQTDKVLDPEIKKNAFVSIFTEETCASS
 </li>
 
 <li> Theoretically, it can handle up to 1,024 protein sequences with an average alignment length of 1,022, but the actual capacity depends on memory requirements.</li>
-<li> To construct the phylogenetic tree, you can specify any layer from 1 to 12. It is recommended to use 2 or 3 layer for optimal results.</li>
+<li> To construct the phylogenetic tree, you can specify any layer from 1 to 12. It is recommended to use early layers, ranging from 2 to 5.</li>
 </ol>
 
 ## Citation
