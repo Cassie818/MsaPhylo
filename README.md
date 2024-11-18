@@ -35,7 +35,7 @@ Examples:
 python MsaPhylo.py
         --i "./data/Pfam/PF00066.fasta" \
         --name 'PF00066' \
-        --o "/Users/cassie/Desktop/" \
+        --o "/results/trees/" \
         --l 2
 ```
 
