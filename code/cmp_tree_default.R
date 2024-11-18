@@ -40,10 +40,20 @@ process_domain <- function(prot_domain) {
     for (tree_file in tree_files) {
       current_tree <- ape::read.tree(tree_file)
 
-      nj_rf <- RobinsonFoulds(current_tree, nj_tree, similarity = TRUE, normalize = TRUE)
-      ml_rf <- RobinsonFoulds(current_tree, ml_tree, similarity = TRUE, normalize = TRUE)
-      nj_ci <- MutualClusteringInfo(current_tree, nj_tree, normalize = TRUE)
-      ml_ci <- MutualClusteringInfo(current_tree, ml_tree, normalize = TRUE)
+      nj_rf <- RobinsonFoulds(current_tree, 
+                              nj_tree, 
+                              similarity = TRUE, 
+                              normalize = TRUE)
+      ml_rf <- RobinsonFoulds(current_tree, 
+                              ml_tree, 
+                              similarity = TRUE, 
+                              normalize = TRUE)
+      nj_ci <- MutualClusteringInfo(current_tree, 
+                                    nj_tree, 
+                                    normalize = TRUE)
+      ml_ci <- MutualClusteringInfo(current_tree, 
+                                    ml_tree, 
+                                    normalize = TRUE)
 
       base_name <- basename(sub("\\.nwk$", "", tree_file))
       data <- data.frame(FileName = base_name,
@@ -51,16 +61,25 @@ process_domain <- function(prot_domain) {
                          MLRFScore = ml_rf,
                          NJCI = nj_ci,
                          MLCI = ml_ci)
-      file_path <- switch(type, emb = paths$emb_file, attn = paths$attn_file)
+      file_path <- switch(type, 
+                          emb = paths$emb_file, 
+                          attn = paths$attn_file)
       write_scores(data, file_path)
     }
   }
   
   calculate_and_write_scores(emb_files, "emb")
   calculate_and_write_scores(attn_files, "attn")
-  nj_ml_rf_score <- RobinsonFoulds(nj_tree, ml_tree, similarity = TRUE, normalize = TRUE)
-  nj_ml_cid <- MutualClusteringInfo(nj_tree, ml_tree, normalize = TRUE)
-  data <- data.frame(ProteinDomain = prot_domain, RFScore = nj_ml_rf_score, CI = nj_ml_cid)
+  nj_ml_rf_score <- RobinsonFoulds(nj_tree, 
+                                   ml_tree, 
+                                   similarity = TRUE, 
+                                   normalize = TRUE)
+  nj_ml_cid <- MutualClusteringInfo(nj_tree, 
+                                    ml_tree, 
+                                    normalize = TRUE)
+  data <- data.frame(ProteinDomain = prot_domain, 
+                     RFScore = nj_ml_rf_score, 
+                     CI = nj_ml_cid)
   write_scores(data, paths$nj_ml_file)
 }
 
