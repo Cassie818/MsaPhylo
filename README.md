@@ -67,7 +67,8 @@ WSRQSALTQVYKNPRLVIIFDDCSSQLNLKKNKVIQDIFYQGRHVFITTLIAIQTDKVLDPEIKKNAFVSIFTEETCASS
 </li>
 
 <li> Theoretically, it can handle up to 1,024 protein sequences with an average alignment length of 1,024, but the actual capacity depends on memory requirements.</li>
-<li> To construct the phylogenetic tree, you can specify any layer from 1 to 12. It is recommended to use early layers, ranging from 2 to 5.</li>
+<li> To construct the embedding tree, you can specify any layer from 1 to 12. It is recommended to use early layers, ranging from 2 to 5.</li>
+<li> The current implementation of the embedding tree lacks support for bootstrapping values; therefore, the original MSA is utilized instead. This functionality is scheduled for enhancement in future updates. </li>
 </ol>
 
 ## Citation
@@ -76,5 +77,6 @@ If you are using the MSA Transformer for phylogenetic reconstruction, please con
 
 ## Contact
 
-Feel free to contact me if you have any questions about phylogenetic reconstruction.
+Feel free to contact me (<a href="ruyi.chen@uq.edu.au">ruyi.chen@uq.edu.au</a>) if you have any questions about
+phylogenetic reconstruction.
 
