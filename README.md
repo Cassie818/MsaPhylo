@@ -3,8 +3,11 @@
 ## Introduction
 
 MSA Transformer takes a multiple sequence alignment (MSA) as an input to reveal conservation patterns, and is trained
-with Masked Language Modeling objectives to capture epistasis. Its embedding tree can be used for phylogenetic research
-based on the hypothesis that MSA Transformer primarily relies on column-wise conservation information to infer
+with Masked Language Modeling objectives to capture epistasis  [1]. Previous research showed that combinations of MSA
+Transformer's column attention heads correlate with the Hamming
+distance between input sequences, suggesting their application in tracing evolutionary lineages of proteins [2]. We
+further found that its embedding tree can be used for phylogenetic reconstruction, based on the hypothesis that MSA
+Transformer primarily relies on column-wise conservation information to infer
 phylogeny. We anticipate it to not replace but complement classical phylogenetic inference, to recover the evolutionary
 history of protein families.
 
@@ -84,4 +87,10 @@ If you are using the MSA Transformer for phylogenetic reconstruction, please con
 
 Feel free to contact me (<a href="ruyi.chen@uq.edu.au">ruyi.chen@uq.edu.au</a>) if you have any questions about
 phylogenetic reconstruction.
+
+## References
+
+[1] Rao, Roshan M., et al. "MSA transformer." International Conference on Machine Learning. PMLR, 2021. <br>
+[2] Lupo, Umberto, Damiano Sgarbossa, and Anne-Florence Bitbol. "Protein language models trained on multiple sequence
+alignments learn phylogenetic relationships." Nature Communications 13.1 (2022): 6298.
 
