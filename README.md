@@ -1,9 +1,9 @@
-# Learning the Language of Phylogeny with the MSA Transformer
+# Learning the Language of Phylogeny with MSA Transformer
 
 ## Introduction
 
-<img src="https://github.com/Cassie818/MsaPhylo/blob/main/Figures/fig1.png" width=800>  
-The embedding tree can be used for phylogenetic research based on the hypothesis that the MSA Transformer primarily relies on column-wise conservation information to infer phylogeny
+<img src="https://github.com/Cassie818/MsaPhylo/blob/main/Figures/fig1.png" width=800>  <br>
+MSA Transformer takes a multiple sequence alignment (MSA) as an input to reveal conservation patterns, and is trained with Masked Language Modeling objectives to capture epistasis. The embedding tree can be used for phylogenetic research based on the hypothesis that MSA Transformer primarily relies on column-wise conservation information to infer phylogeny. We anticipate it to not replace but complement classical phylogenetic inference, to recover the evolutionary history of protein families. 
 
 
 ## Install packages
