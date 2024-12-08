@@ -2,13 +2,13 @@
 
 ## Introduction
 
-1. MSA Transformer takes a multiple sequence alignment (MSA) as an input to reveal conservation patterns, and is trained
-   with Masked Language Modeling objectives to capture epistasis  [1]. <br>
-2. Previous research showed that combinations of MSA Transformer's column attention heads correlate with the Hamming
+1. MSA Transformer takes a multiple sequence alignment as an input to reveal conservation patterns, and is trained
+   with Masked Language Modeling objectives to capture epistasis  [1]. Previous research showed that combinations of MSA
+   Transformer's column attention heads correlate with the Hamming
    distance between input sequences, suggesting their application in tracing evolutionary lineages of proteins [2]. <br>
-3. We further found that its embedding tree can be used for phylogenetic reconstruction, based on the hypothesis that
-   MSA Transformer primarily relies on column-wise conservation information to infer phylogeny. <br>
-4. We anticipate it to not replace but complement classical phylogenetic inference, to recover the evolutionary history
+2. We further found that its embedding tree can be used for phylogenetic reconstruction, based on the hypothesis that
+   MSA Transformer primarily relies on column-wise conservation information to infer phylogeny. We anticipate it to not
+   replace but complement classical phylogenetic inference, to recover the evolutionary history
    of protein families.
 
 <img src="https://github.com/Cassie818/MsaPhylo/blob/main/Figures/fig1.png" width=800> <br>
