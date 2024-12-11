@@ -116,6 +116,7 @@ def overlay_variance(var_data, ax):
 
 
 def extract_data(data, protein_domain, metrics, typ):
+
     if typ == 'default':
         df = data[data['ProteinDomain'] == protein_domain]
         val = df[metrics].to_numpy().reshape(12, 12)
@@ -130,7 +131,13 @@ def extract_data(data, protein_domain, metrics, typ):
         return mean, var
 
 
-def plot_protein_domains(default_df, sc_dict, scovar_dict, sr_dict, prot_domains, metrics):
+def plot_protein_domains(default_df,
+                         sc_dict,
+                         scovar_dict,
+                         sr_dict,
+                         prot_domains,
+                         metrics):
+
     plt.rcParams['font.family'] = 'sans-serif'
     plt.rcParams['font.sans-serif'] = ['arial']
     fig, axs = plt.subplots(4,

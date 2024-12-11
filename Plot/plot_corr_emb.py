@@ -68,16 +68,48 @@ for i, domain in enumerate(protein_domains):
     ref = ref_dict[domain]
 
     ax = axes[i]
-    ax.plot(range(1, 13), default_corr, '-^', label='Original', color='#505050', markersize=4)
-    ax.errorbar(range(1, 13), means1, yerr=stds1, color='lightpink',
-                fmt='-x', label='Shuffled Columns', elinewidth=1, markersize=4)
-    ax.errorbar(range(1, 13), means2, yerr=stds2, color='lightskyblue',
-                fmt='-*', label='Shuffled within Columns', elinewidth=1, markersize=4)
-    ax.errorbar(range(1, 13), means3, yerr=stds3, color='darkseagreen',
-                fmt='-o', markersize=4, label='Shuffled within Rows', elinewidth=1)
-    ax.axhline(y=ref, linestyle='--', color='dimgray',
-               label='Reference', linewidth=1)
-    ax.text(11, ref + 0.05, f'{ref:.2f}', color='dimgray', ha='center', va='bottom', fontsize=12)
+    ax.plot(range(1, 13),
+            default_corr,
+            '-^',
+            label='Original',
+            color='#505050',
+            markersize=4)
+    ax.errorbar(range(1, 13),
+                means1,
+                yerr=stds1,
+                color='lightpink',
+                fmt='-x',
+                label='Shuffled Columns',
+                elinewidth=1,
+                markersize=4)
+    ax.errorbar(range(1, 13),
+                means2,
+                yerr=stds2,
+                color='lightskyblue',
+                fmt='-*',
+                label='Shuffled within Columns',
+                elinewidth=1,
+                markersize=4)
+    ax.errorbar(range(1, 13),
+                means3,
+                yerr=stds3,
+                color='darkseagreen',
+                fmt='-o',
+                markersize=4,
+                label='Shuffled within Rows',
+                elinewidth=1)
+    ax.axhline(y=ref,
+               linestyle='--',
+               color='dimgray',
+               label='Reference',
+               linewidth=1)
+    ax.text(11,
+            ref + 0.05,
+            f'{ref:.2f}',
+            color='dimgray',
+            ha='center',
+            va='bottom',
+            fontsize=12)
 
     ax.set_title(domain, fontsize=14)
     if i >= 15:

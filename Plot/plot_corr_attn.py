@@ -121,7 +121,12 @@ def create_domain_heatmaps(mean_dict, var_dict, protein_domains, domain_abs_max,
     plt.show()
 
 
-def create_heatmap(data, ax, x_labels, y_labels, vmin=None, vmax=None):
+def create_heatmap(data,
+                   ax,
+                   x_labels,
+                   y_labels,
+                   vmin=None,
+                   vmax=None):
     heatmap = ax.imshow(data, cmap='bwr', aspect='equal', vmin=vmin, vmax=vmax)
     ax.set_xticks(np.arange(0, len(x_labels), 2))
     ax.set_yticks(np.arange(0, len(y_labels), 2))

@@ -34,8 +34,10 @@ def create_heatmap(
 
 
 def merge_dfs(typ):
-    file_paths = ['score/cmp_emb_score_rep1.csv', 'score/cmp_emb_score_rep2.csv',
-                  'score/cmp_emb_score_rep3.csv', 'score/cmp_emb_score_rep4.csv',
+    file_paths = ['score/cmp_emb_score_rep1.csv',
+                  'score/cmp_emb_score_rep2.csv',
+                  'score/cmp_emb_score_rep3.csv',
+                  'score/cmp_emb_score_rep4.csv',
                   'score/cmp_emb_score_rep5.csv']
     if typ == 'sc':
         dfs = [pd.read_csv(path)[
@@ -48,8 +50,13 @@ def merge_dfs(typ):
 
     merge_func = lambda left, right: pd.merge(left, right, on=['FileName1', 'FileName2'])
     df = reduce(merge_func, dfs)
-    new_column_names = ['FileName1', 'FileName2', 'RF_1', 'CI_1', 'RF_2', 'CI_2',
-                        'RF_3', 'CI_3', 'RF_4', 'CI_4', 'RF_5', 'CI_5']
+    new_column_names = ['FileName1', 'FileName2',
+                        'RF_1', 'CI_1',
+                        'RF_2', 'CI_2',
+                        'RF_3', 'CI_3',
+                        'RF_4', 'CI_4',
+                        'RF_5', 'CI_5']
+
     df.columns = new_column_names
     RF_columns = [col for col in df.columns if 'RF' in col]
     CI_columns = [col for col in df.columns if 'CI' in col]

@@ -26,8 +26,9 @@ def load_data(
     data['ProteinDomain'] = data['FileName'].str.extract(r'(PF\d+)_')
     data['Layers'] = data['FileName'].str.extract('_(\d+)')[0].astype(int)
     data = data.sort_values(by=['ProteinDomain', 'Layers']).drop(['FileName'], axis=1)
-    data = data.reindex(columns=['ProteinDomain', 'Layers', 'NJRFScore',
-                                 'MLRFScore', 'NJCI', 'MLCI'])
+    data = data.reindex(columns=['ProteinDomain', 'Layers',
+                                 'NJRFScore', 'MLRFScore',
+                                 'NJCI', 'MLCI'])
 
     # Initialize dictionaries to store shuffled data
     sc_dict = {'NJRFScore': [], 'MLRFScore': [], 'NJCI': [], 'MLCI': []}
@@ -184,11 +185,26 @@ def plot_protein_domains(
 
         ax = axs[i]
         ax.plot(layers, default, '-^', markersize=4, color='#505050', label='Original')
-        ax.errorbar(layers, sc_avg, yerr=sc_std, fmt='-x', markersize=4, color='lightpink',
+        ax.errorbar(layers,
+                    sc_avg,
+                    yerr=sc_std,
+                    fmt='-x',
+                    markersize=4,
+                    color='lightpink',
                     label='Shuffled Columns')
-        ax.errorbar(layers, scovar_avg, yerr=scovar_std, fmt='-*', markersize=4, color='lightskyblue',
+        ax.errorbar(layers,
+                    scovar_avg,
+                    yerr=scovar_std,
+                    fmt='-*',
+                    markersize=4,
+                    color='lightskyblue',
                     label='Shuffled within Columns')
-        ax.errorbar(layers, sr_avg, yerr=sr_std, fmt='-o', markersize=4, color='darkseagreen',
+        ax.errorbar(layers,
+                    sr_avg,
+                    yerr=sr_std,
+                    fmt='-o',
+                    markersize=4,
+                    color='darkseagreen',
                     label='Shuffled within Rows')
 
         ref_val = ref_dict.get(protein_domain, 0)
