@@ -10,6 +10,7 @@
    MSA Transformer primarily relies on column-wise conservation information to infer phylogeny. We anticipate it to not
    replace but complement classical phylogenetic inference, to recover the evolutionary history
    of protein families.
+3. Unlike traditional phylogenetic trees, embedding tree is assumed to capture epistasis effects and is more sensitive to gaps.
 
 <img src="https://github.com/Cassie818/MsaPhylo/blob/main/Figures/fig1.png" width=800> <br>
 
