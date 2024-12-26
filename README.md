@@ -15,6 +15,11 @@
 <img src="https://github.com/Cassie818/MsaPhylo/blob/main/Figures/fig1.png" width=800> <br>
 
 ## Install packages
+Install MsaPhylo
+```
+git clone https://github.com/Cassie818/MsaPhylo.git
+cd MsaPhylo
+```
 
 Install pytorch: https://pytorch.org/
 
@@ -83,11 +88,14 @@ WSRQSALTQVYKNPRLVIIFDDCSSQLNLKKNKVIQDIFYQGRHVFITTLIAIQTDKVLDPEIKKNAFVSIFTEETCASS
 ## Citation
 
 If you are using the MSA Transformer for phylogenetic reconstruction, please consider citing:
+```
+Chen, Ruyi, Gabriel Foley, and Mikael Boden. "Learning the Language of Phylogeny with MSA Transformer." bioRxiv (2024): 2024-12.
+```
 
 ## Contact
 
 Feel free to contact me (<a href="ruyi.chen@uq.edu.au">ruyi.chen@uq.edu.au</a>) if you have any questions about
-phylogenetic reconstruction.
+phylogenetic reconstruction
 
 ## References
 
