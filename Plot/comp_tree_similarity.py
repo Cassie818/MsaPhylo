@@ -39,6 +39,7 @@ def merge_dfs(typ):
                   'score/cmp_emb_score_rep3.csv',
                   'score/cmp_emb_score_rep4.csv',
                   'score/cmp_emb_score_rep5.csv']
+
     if typ == 'sc':
         dfs = [pd.read_csv(path)[
                    ~pd.read_csv(path)['FileName2'].str.contains('sr') & ~pd.read_csv(path)['FileName2'].str.contains(
@@ -56,18 +57,17 @@ def merge_dfs(typ):
                         'RF_3', 'CI_3',
                         'RF_4', 'CI_4',
                         'RF_5', 'CI_5']
-
+    
     df.columns = new_column_names
     RF_columns = [col for col in df.columns if 'RF' in col]
     CI_columns = [col for col in df.columns if 'CI' in col]
     df["RF_mean"] = df[RF_columns].mean(axis=1)
-    df["RF_var"] = df[RF_columns].var(axis=1)
+    df["RF_var"] = df[RF_columns].std(axis=1)
     df["CI_mean"] = df[CI_columns].mean(axis=1)
-    df["CI_var"] = df[CI_columns].var(axis=1)
+    df["CI_var"] = df[CI_columns].std(axis=1)
     df['FileName1_num'] = df['FileName1'].apply(extract_number)
     df['FileName2_num'] = df['FileName2'].apply(extract_number)
     df['ProteinFamily'] = df['FileName1'].apply(extract_protein_family)
-
     # Sort the dataframe by these new numeric columns
     df_sorted = df.sort_values(by=['ProteinFamily', 'FileName1_num', 'FileName2_num'])
     return df_sorted
