@@ -89,13 +89,20 @@ WSRQSALTQVYKNPRLVIIFDDCSSQLNLKKNKVIQDIFYQGRHVFITTLIAIQTDKVLDPEIKKNAFVSIFTEETCASS
 
 If you are using the MSA Transformer for phylogenetic reconstruction, please consider citing:
 ```
-Chen, Ruyi, Gabriel Foley, and Mikael Boden. "Learning the Language of Phylogeny with MSA Transformer." bioRxiv (2024): 2024-12.
+@article{chen2024learning,
+  title={Learning the Language of Phylogeny with MSA Transformer},
+  author={Chen, Ruyi and Foley, Gabriel and Boden, Mikael},
+  journal={bioRxiv},
+  pages={2024--12},
+  year={2024},
+  publisher={Cold Spring Harbor Laboratory}
+}
 ```
 
 ## Contact
 
 Feel free to contact me (<a href="ruyi.chen@uq.edu.au">ruyi.chen@uq.edu.au</a>) if you have any questions about
-phylogenetic reconstruction
+phylogenetic reconstruction🌟
 
 ## References
 
