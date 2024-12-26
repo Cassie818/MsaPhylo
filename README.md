@@ -10,10 +10,16 @@
    MSA Transformer primarily relies on column-wise conservation information to infer phylogeny. We anticipate it to not
    replace but complement classical phylogenetic inference, to recover the evolutionary history
    of protein families.
+3. Unlike traditional phylogenetic trees, embedding tree is assumed to capture epistasis effects and is more sensitive to gaps.
 
 <img src="https://github.com/Cassie818/MsaPhylo/blob/main/Figures/fig1.png" width=800> <br>
 
 ## Install packages
+Install MsaPhylo
+```
+git clone https://github.com/Cassie818/MsaPhylo.git
+cd MsaPhylo
+```
 
 Install pytorch: https://pytorch.org/
 
@@ -82,11 +88,21 @@ WSRQSALTQVYKNPRLVIIFDDCSSQLNLKKNKVIQDIFYQGRHVFITTLIAIQTDKVLDPEIKKNAFVSIFTEETCASS
 ## Citation
 
 If you are using the MSA Transformer for phylogenetic reconstruction, please consider citing:
+```
+@article{chen2024learning,
+  title={Learning the Language of Phylogeny with MSA Transformer},
+  author={Chen, Ruyi and Foley, Gabriel and Boden, Mikael},
+  journal={bioRxiv},
+  pages={2024--12},
+  year={2024},
+  publisher={Cold Spring Harbor Laboratory}
+}
+```
 
 ## Contact
 
 Feel free to contact me (<a href="ruyi.chen@uq.edu.au">ruyi.chen@uq.edu.au</a>) if you have any questions about
-phylogenetic reconstruction.
+phylogenetic reconstruction🌟
 
 ## References
 
