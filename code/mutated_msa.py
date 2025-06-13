@@ -21,7 +21,7 @@ def apply_single_mutation_on_seq(seq,
         raise ValueError(f"Invalid mutation format: {mutation}")
 
     original_aa, position, mutated_aa = match.groups()
-    position = int(position) - 1  # Convert 1-based to 0-based indexing
+    position = int(position) - 1  # Convert to 0-based indexing
 
     seq_list = list(seq)
     ref_aa = seq_list[position]
