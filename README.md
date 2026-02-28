@@ -89,13 +89,14 @@ WSRQSALTQVYKNPRLVIIFDDCSSQLNLKKNKVIQDIFYQGRHVFITTLIAIQTDKVLDPEIKKNAFVSIFTEETCASS
 
 If you are using the MSA Transformer for phylogenetic reconstruction, please consider citing:
 ```
-@article{chen2024learning,
-  title={Learning the Language of Phylogeny with MSA Transformer},
-  author={Chen, Ruyi and Foley, Gabriel and Boden, Mikael},
-  journal={bioRxiv},
-  pages={2024--12},
-  year={2024},
-  publisher={Cold Spring Harbor Laboratory}
+@article{chen2026learning,
+  title={Learning the language of phylogeny with MSA transformer},
+  author={Chen, Ruyi and Foley, Gabriel and Bod{\'e}n, Mikael},
+  journal={Cell Systems},
+  volume={17},
+  number={1},
+  year={2026},
+  publisher={Elsevier}
 }
 ```
 
